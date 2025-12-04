@@ -24,6 +24,12 @@
     
     <title>Dizband - Организация киберспортивных турниров</title>
     
+    <!-- Prevent FOUC (Flash of Unstyled Content) -->
+    <style>
+        html { visibility: hidden; opacity: 0; }
+        html.loaded { visibility: visible; opacity: 1; transition: opacity 0.3s ease-in-out; }
+    </style>
+    
     <!-- Resource hints for better performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,19 +43,31 @@
     
     <!-- Fonts with display=swap for better performance -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Show content after CSS loads -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.documentElement.classList.add('loaded');
+        });
+        
+        // Fallback in case DOMContentLoaded doesn't fire
+        window.addEventListener('load', function() {
+            document.documentElement.classList.add('loaded');
+        });
+    </script>
 </head>
 <body>
     <!-- FIXED ELEMENTS - MOVED TO BODY ROOT TO AVOID TRANSFORM ISSUES -->
     <!-- Social Media Icons in Top Right Corner -->
     <div class="social-icons-corner">
-        <a href="https://t.me/dizband" target="_blank">
-            <img src="assets/webp/telegram.webp" alt="Telegram" class="social-icon">
+        <a href="https://t.me/dizband" target="_blank" rel="noopener" aria-label="Перейти в Telegram канал Dizband">
+            <img src="assets/webp/telegram.webp" alt="Иконка Telegram" class="social-icon" loading="lazy">
         </a>
-        <a href="https://youtube.com/@dizband" target="_blank">
-            <img src="assets/webp/youtube.webp" alt="YouTube" class="social-icon">
+        <a href="https://youtube.com/@dizband" target="_blank" rel="noopener" aria-label="Перейти на YouTube канал Dizband">
+            <img src="assets/webp/youtube.webp" alt="Иконка YouTube" class="social-icon" loading="lazy">
         </a>
-        <a href="https://twitch.tv/dizband" target="_blank">
-            <img src="assets/webp/twitch.webp" alt="Twitch" class="social-icon">
+        <a href="https://twitch.tv/dizband" target="_blank" rel="noopener" aria-label="Перейти на Twitch канал Dizband">
+            <img src="assets/webp/twitch.webp" alt="Иконка Twitch" class="social-icon" loading="lazy">
         </a>
     </div>
     
@@ -71,14 +89,14 @@
     
     <!-- EXAMP Visual Elements -->
     <!-- Кристаллы по углам -->
-    <img src="assets/webp/1012-1.webp" alt="Crystal" class="examp-crystal examp-crystal-top-left">
-    <img src="assets/webp/1012-2.webp" alt="Crystal" class="examp-crystal examp-crystal-top-right">
-    <img src="assets/webp/1012-3.webp" alt="Crystal" class="examp-crystal examp-crystal-bottom-left">
-    <img src="assets/webp/1012.webp" alt="Crystal" class="examp-crystal examp-crystal-bottom-right">
+    <img src="assets/webp/1012-1.webp" alt="Декоративный кристалл в левом верхнем углу" class="examp-crystal examp-crystal-top-left" loading="lazy">
+    <img src="assets/webp/1012-2.webp" alt="Декоративный кристалл в правом верхнем углу" class="examp-crystal examp-crystal-top-right" loading="lazy">
+    <img src="assets/webp/1012-3.webp" alt="Декоративный кристалл в левом нижнем углу" class="examp-crystal examp-crystal-bottom-left" loading="lazy">
+    <img src="assets/webp/1012.webp" alt="Декоративный кристалл в правом нижнем углу" class="examp-crystal examp-crystal-bottom-right" loading="lazy">
     
     <!-- DOTA логотип -->
     <!-- Use a stable ASCII filename for the DOTA logo to avoid issues on different platforms -->
-    <img src="assets/webp/fooon.webp" alt="DOTA Logo" class="examp-dota-logo">
+    <img src="assets/webp/fooon.webp" alt="Логотип DOTA 2" class="examp-dota-logo" loading="lazy">
     
 
     
@@ -88,13 +106,13 @@
     <!-- <img src="assets/1012 (1)(1).gif" alt="" class="examp-gif examp-gif-3"> -->
 
 
-    <img src="assets/webp/stolb.webp" alt="" class="examp-gif examp-gif-6">
-    <img src="assets/webp/octopus.webp" alt="" class="examp-gif examp-gif-ct">
-    <img src="assets/webp/CS2.webp" alt="" class="examp-gif examp-gif-cs2">
-    <img src="assets/webp/pers.webp" alt="" class="examp-gif examp-gif-pers">
+    <img src="assets/webp/stolb.webp" alt="Декоративный элемент столб" class="examp-gif examp-gif-6" loading="lazy">
+    <img src="assets/webp/octopus.webp" alt="Декоративный осьминог" class="examp-gif examp-gif-ct" loading="lazy">
+    <img src="assets/webp/CS2.webp" alt="Логотип Counter-Strike 2" class="examp-gif examp-gif-cs2" loading="lazy">
+    <img src="assets/webp/pers.webp" alt="Персонаж игры" class="examp-gif examp-gif-pers" loading="lazy">
     <!-- <img src="assets/error.gif" alt="" class="examp-gif examp-gif-error"> -->
-    <img src="assets/webp/niz.webp" alt="" class="examp-gif examp-gif-niz">
-    <img src="assets/webp/verh.webp" alt="" class="examp-gif examp-gif-verh">
+    <img src="assets/webp/niz.webp" alt="Декоративный элемент снизу" class="examp-gif examp-gif-niz" loading="lazy">
+    <img src="assets/webp/verh.webp" alt="Декоративный элемент сверху" class="examp-gif examp-gif-verh" loading="lazy">
     
 
     
@@ -123,6 +141,12 @@
     <header class="header">
         <nav class="nav">
             <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="#" aria-label="Главная страница Dizband">
+                        <img src="assets/webp/69.webp" alt="Логотип Dizband" class="logo-img">
+                        <span class="logo-text">Dizband</span>
+                    </a>
+                </div>
 
                 <ul class="nav-menu">
                     <li><a href="#about" class="nav-link">О КОМПАНИИ</a></li>

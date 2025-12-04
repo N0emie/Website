@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Added loading class to body');
     
     // Minimum loading time to ensure user sees the loading screen
-    const minLoadingTime = 3000; // Minimum 3 seconds
+    const minLoadingTime = 2000; // Minimum 2 seconds
     const startTime = Date.now();
     
     // Initialize loading video
@@ -47,115 +47,147 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize animated background immediately
     initAnimatedBackground();
     
-    // Check if images are loaded for more realistic progress
-    let imagesLoaded = 0;
-    let totalImages = 0;
-    const images = document.querySelectorAll('img');
-    totalImages = images.length;
+    // Real resource loading tracking
+    let resourcesLoaded = 0;
+    let totalResources = 0;
+    let progress = 0;
     
-    images.forEach(img => {
-        if (img.complete) {
-            imagesLoaded++;
+    // Define all resources that need to be loaded
+    const allResources = [
+        // WebP images
+        'assets/webp/telegram.webp',
+        'assets/webp/youtube.webp', 
+        'assets/webp/twitch.webp',
+        'assets/webp/1012-1.webp',
+        'assets/webp/1012-2.webp',
+        'assets/webp/1012-3.webp',
+        'assets/webp/1012.webp',
+        'assets/webp/69.webp',
+        'assets/webp/okno.webp',
+        'assets/webp/fooon.webp',
+        'assets/webp/stolb.webp',
+        'assets/webp/octopus.webp',
+        'assets/webp/CS2.webp',
+        'assets/webp/pers.webp',
+        'assets/webp/niz.webp',
+        'assets/webp/verh.webp',
+        // Tournament images
+        'assets/images/tournaments/csgo-tournament.jpg',
+        'assets/images/tournaments/dota2-championship.jpg',
+        'assets/images/tournaments/valorant-cup.jpg',
+        'assets/images/tournaments/lol-tournament.jpg',
+        'assets/images/tournament-cards/mobile-fest.jpg',
+        'assets/images/tournament-cards/volt-energy-cup.jpg',
+        'assets/images/tournament-cards/winline-cs2.jpg',
+        'assets/images/tournament-cards/dota2-champions.jpg',
+        // Videos
+        'assets/video/new_loading_logo.mp4',
+        'assets/video/video1.mp4',
+        'assets/video/video2.mp4',
+        'assets/video/video3.mp4',
+        'assets/video/video4.mp4',
+        'assets/video/video5.mp4',
+        'assets/video/video6.mp4',
+        'assets/services/technical.mp4',
+        'assets/services/stream.mp4',
+        'assets/services/prize.mp4'
+    ];
+    
+    totalResources = allResources.length;
+    console.log(`Total resources to load: ${totalResources}`);
+    
+    // Load each resource
+    allResources.forEach((resourcePath, index) => {
+        const isVideo = resourcePath.endsWith('.mp4');
+        
+        if (isVideo) {
+            // Load video
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+            
+            video.addEventListener('loadeddata', () => {
+                resourcesLoaded++;
+                console.log(`Video ${index + 1} loaded (${resourcePath}): ${resourcesLoaded}/${totalResources}`);
+                updateProgress();
+            });
+            
+            video.addEventListener('error', () => {
+                resourcesLoaded++;
+                console.log(`Video ${index + 1} failed (${resourcePath}): ${resourcesLoaded}/${totalResources}`);
+                updateProgress();
+            });
+            
+            video.src = resourcePath;
+            video.load();
         } else {
+            // Load image
+            const img = new Image();
+            
             img.addEventListener('load', () => {
-                imagesLoaded++;
-                console.log(`Image loaded: ${imagesLoaded}/${totalImages}`);
+                resourcesLoaded++;
+                console.log(`Image ${index + 1} loaded (${resourcePath}): ${resourcesLoaded}/${totalResources}`);
+                updateProgress();
             });
+            
             img.addEventListener('error', () => {
-                imagesLoaded++; // Count failed images as loaded to prevent hanging
-                console.log(`Image failed to load: ${imagesLoaded}/${totalImages}`);
+                resourcesLoaded++;
+                console.log(`Image ${index + 1} failed (${resourcePath}): ${resourcesLoaded}/${totalResources}`);
+                updateProgress();
             });
+            
+            img.src = resourcePath;
         }
     });
     
-    console.log(`Total images to load: ${totalImages}`);
-    
-    // Simulate loading progress with realistic timing
-    console.log('Starting loading progress...');
-    let loadingSpeed = 1; // Initial speed multiplier
-    
-    const loadingInterval = setInterval(() => {
-        // Calculate image loading progress (0-40% of total progress)
-        const imageProgress = totalImages > 0 ? (imagesLoaded / totalImages) * 40 : 40;
-        
-        // Adjust speed based on progress - slower at the end for realism
-        if (progress < 30) {
-            loadingSpeed = 2.5; // Fast initial loading
-        } else if (progress < 70) {
-            loadingSpeed = 1.5; // Medium speed
-        } else if (progress < 90) {
-            loadingSpeed = 0.8; // Slower near the end
+    // Update progress based on actual resource loading
+    function updateProgress() {
+        if (totalResources > 0) {
+            progress = (resourcesLoaded / totalResources) * 100;
         } else {
-            loadingSpeed = 0.3; // Very slow final loading
+            progress = 100;
         }
         
-        // Combine simulated progress with actual image loading
-        const simulatedProgress = progress + (Math.random() * 1.2 + 0.8) * loadingSpeed;
-        progress = Math.max(simulatedProgress, imageProgress);
-        
-        if (progress > 100) progress = 100;
-        
-        // Update progress bar and text
         const roundedProgress = Math.floor(progress);
-        progressBar.style.width = progress + '%';
         if (progressText) {
-            progressText.textContent = roundedProgress + '%';
+            progressText.textContent = `${roundedProgress}%`;
+        }
+        if (progressBar) {
+            progressBar.style.width = `${progress}%`;
         }
         
-        // Log progress every 5%
-        if (roundedProgress % 5 === 0 && roundedProgress !== 0) {
-            console.log(`Loading progress: ${roundedProgress}%`);
-        }
+        console.log(`Loading progress: ${roundedProgress}% (${resourcesLoaded}/${totalResources})`);
         
-        // Only hide loading screen when progress reaches 100% AND minimum time has passed
-        if (progress >= 100) {
+        // Hide loading screen when all resources are loaded
+        if (resourcesLoaded >= totalResources) {
             const elapsedTime = Date.now() - startTime;
             const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
             
-            console.log(`Loading completed! Elapsed: ${elapsedTime}ms, Remaining: ${remainingTime}ms`);
-            clearInterval(loadingInterval);
+            console.log(`All resources loaded! Elapsed: ${elapsedTime}ms, Remaining: ${remainingTime}ms`);
             
-            // Ensure we show 100% for a moment
-            progressBar.style.width = '100%';
-            if (progressText) {
-                progressText.textContent = '100%';
-            }
-            
-            // Wait for remaining time + 1.5 seconds to show completed progress bar
             setTimeout(() => {
                 console.log('Hiding loading screen...');
                 loadingScreen.classList.add('fade-out');
                 body.classList.remove('loading');
-                mainContent.classList.add('loaded');
                 
-                // Remove from DOM after animation
                 setTimeout(() => {
                     loadingScreen.style.display = 'none';
                     console.log('Loading screen removed from DOM');
-                }, 800);
-            }, remainingTime + 1500); // Show completed progress for remaining time + 1.5 seconds
+                }, 500);
+            }, remainingTime);
         }
-    }, 150); // Faster interval for smoother animation
+    }
     
-    // Emergency fallback only if something goes wrong (much longer timeout)
+    // Initial progress update
+    updateProgress();
+    
+    // Emergency fallback - force completion after 15 seconds
     setTimeout(() => {
         if (!loadingScreen.classList.contains('fade-out')) {
             console.log('Emergency fallback triggered - forcing loading completion');
-            clearInterval(loadingInterval);
-            progressBar.style.width = '100%';
-            if (progressText) {
-                progressText.textContent = '100%';
-            }
-            setTimeout(() => {
-                loadingScreen.classList.add('fade-out');
-                body.classList.remove('loading');
-                mainContent.classList.add('loaded');
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                }, 800);
-            }, 500);
+            resourcesLoaded = totalResources;
+            updateProgress();
         }
-    }, 15000); // Emergency fallback after 15 seconds
+    }, 15000);
 });
 
 // Tournament Carousel Drag-and-Drop Navigation
@@ -1077,3 +1109,49 @@ function initVideoWindows() {
         }
     });
 }
+
+// Scroll to Top Button Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const scrollToTopBtn = document.getElementById('scroll-to-top');
+    
+    if (scrollToTopBtn) {
+        // Show/hide button based on scroll position
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('visible');
+            } else {
+                scrollToTopBtn.classList.remove('visible');
+            }
+        });
+        
+        // Smooth scroll to top when clicked
+        scrollToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+});
+
+// Mobile Navigation Toggle
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    if (mobileMenuBtn && navMenu) {
+        mobileMenuBtn.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            mobileMenuBtn.classList.toggle('active');
+        });
+        
+        // Close menu when clicking on a link
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navMenu.classList.remove('active');
+                mobileMenuBtn.classList.remove('active');
+            });
+        });
+    }
+});
