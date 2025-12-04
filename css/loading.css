@@ -121,10 +121,46 @@
     z-index: 2; /* Поверх тумана */
 }
 
+/* Более специфичные селекторы для перекрытия style.min.css */
+#loading-screen .loading-logo,
+.loading-screen .loading-logo {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 60px;
+    background: transparent !important;
+    background-color: transparent !important;
+    /* Убираем любые возможные фоны с контейнера */
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 .loading-logo {
     width: 200px;
     height: 200px;
     margin-bottom: 60px;
+    background: transparent !important;
+    background-color: transparent !important;
+    /* Убираем любые возможные фоны с контейнера */
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Более специфичные селекторы для видео и изображений */
+#loading-screen .loading-logo video,
+#loading-screen .loading-logo img,
+.loading-screen .loading-logo video,
+.loading-screen .loading-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: transparent !important;
+    background-color: transparent !important;
+    /* Убираем любые возможные фоны */
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 .loading-logo video,
@@ -132,6 +168,12 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
+    background: transparent !important;
+    background-color: transparent !important;
+    /* Убираем любые возможные фоны */
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 .loading-progress {
