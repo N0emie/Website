@@ -5,8 +5,8 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    /* Фоновое изображение */
-    background: url('../assets/loading-background.png') center center / cover no-repeat !important;
+    /* HD фоновое изображение - PNG fallback */
+    background: url('../assets/loading-background-hd.png') center center / cover no-repeat !important;
     z-index: 999999 !important;
     display: flex;
     justify-content: center;
@@ -19,6 +19,13 @@
 .loading-screen.fade-out {
     opacity: 0;
     visibility: hidden;
+}
+
+/* WebP поддержка для современных браузеров */
+@supports (background-image: url('data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA=')) {
+    .loading-screen {
+        background: url('../assets/loading-background-hd.webp') center center / cover no-repeat !important;
+    }
 }
 
 
