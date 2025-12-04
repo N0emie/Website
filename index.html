@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dizband - профессиональная организация киберспортивных турниров. Создаем незабываемые соревнования по CS2, Dota 2, Valorant и другим играм.">
+    <meta name="keywords" content="киберспорт, турниры, CS2, Dota 2, Valorant, организация турниров, esports">
+    <meta name="author" content="Dizband">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dizband.media/">
+    <meta property="og:title" content="Dizband - Организация киберспортивных турниров">
+    <meta property="og:description" content="Профессиональная организация киберспортивных турниров полного цикла. Создаем захватывающие соревнования.">
+    <meta property="og:image" content="assets/webp/69.webp">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://dizband.media/">
+    <meta property="twitter:title" content="Dizband - Организация киберспортивных турниров">
+    <meta property="twitter:description" content="Профессиональная организация киберспортивных турниров полного цикла.">
+    <meta property="twitter:image" content="assets/webp/69.webp">
+    
+    <title>Dizband - Организация киберспортивных турниров</title>
+    
+    <!-- Resource hints for better performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://t.me">
+    <link rel="dns-prefetch" href="https://youtube.com">
+    <link rel="dns-prefetch" href="https://twitch.tv">
+    
+    <!-- Critical CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/examp-effects.css">
+    
+    <!-- Fonts with display=swap for better performance -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- FIXED ELEMENTS - MOVED TO BODY ROOT TO AVOID TRANSFORM ISSUES -->
+    <!-- Social Media Icons in Top Right Corner -->
+    <div class="social-icons-corner">
+        <a href="https://t.me/dizband" target="_blank">
+            <img src="assets/webp/telegram.webp" alt="Telegram" class="social-icon">
+        </a>
+        <a href="https://youtube.com/@dizband" target="_blank">
+            <img src="assets/webp/youtube.webp" alt="YouTube" class="social-icon">
+        </a>
+        <a href="https://twitch.tv/dizband" target="_blank">
+            <img src="assets/webp/twitch.webp" alt="Twitch" class="social-icon">
+        </a>
+    </div>
+    
+
+    
+    <!-- Lisa Animation in Bottom Right -->
+    <div class="hero-lisa">
+
+    </div>
+    
+    <!-- EXAMP Effects Background -->
+    <div class="examp-background"></div>
+    <div class="examp-fog-left"></div>
+    <div class="examp-fog-right"></div>
+    
+
+    
+
+    
+    <!-- EXAMP Visual Elements -->
+    <!-- Кристаллы по углам -->
+    <img src="assets/webp/1012-1.webp" alt="Crystal" class="examp-crystal examp-crystal-top-left">
+    <img src="assets/webp/1012-2.webp" alt="Crystal" class="examp-crystal examp-crystal-top-right">
+    <img src="assets/webp/1012-3.webp" alt="Crystal" class="examp-crystal examp-crystal-bottom-left">
+    <img src="assets/webp/1012.webp" alt="Crystal" class="examp-crystal examp-crystal-bottom-right">
+    
+    <!-- DOTA логотип -->
+    <!-- Use a stable ASCII filename for the DOTA logo to avoid issues on different platforms -->
+    <img src="assets/webp/fooon.webp" alt="DOTA Logo" class="examp-dota-logo">
+    
+
+    
+    <!-- GIF элементы -->
+    <!-- <img src="assets/CS2MOV.gif" alt="" class="examp-gif examp-gif-1"> -->
+
+    <!-- <img src="assets/1012 (1)(1).gif" alt="" class="examp-gif examp-gif-3"> -->
+
+
+    <img src="assets/webp/stolb.webp" alt="" class="examp-gif examp-gif-6">
+    <img src="assets/webp/octopus.webp" alt="" class="examp-gif examp-gif-ct">
+    <img src="assets/webp/CS2.webp" alt="" class="examp-gif examp-gif-cs2">
+    <img src="assets/webp/pers.webp" alt="" class="examp-gif examp-gif-pers">
+    <!-- <img src="assets/error.gif" alt="" class="examp-gif examp-gif-error"> -->
+    <img src="assets/webp/niz.webp" alt="" class="examp-gif examp-gif-niz">
+    <img src="assets/webp/verh.webp" alt="" class="examp-gif examp-gif-verh">
+    
+
+    
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-container">
+            <div class="logo-container">
+                <video id="loading-video" autoplay muted loop playsinline class="loading-logo" preload="auto">
+                    <source src="assets/video/new_loading_logo.mp4" type="video/mp4">
+                    <!-- Fallback image if video fails to load -->
+                    <img id="loading-fallback" src="assets/webp/69.webp" alt="Dizband Logo" class="loading-logo">
+                </video>
+            </div>
+        </div>
+        <div class="loading-progress">
+            <div class="progress-bar"></div>
+            <div class="progress-text">0%</div>
+        </div>
+    </div>
+
+    <!-- Оригинальный фон удален - используется только EXAMP фон -->
+
+    <!-- Main Content -->
+    <div class="main-content">
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+
+                <ul class="nav-menu">
+                    <li><a href="#about" class="nav-link">О КОМПАНИИ</a></li>
+                    <li><a href="#services" class="nav-link">УСЛУГИ</a></li>
+                    <li><a href="#tournaments" class="nav-link">ТУРНИРЫ</a></li>
+                    <li><a href="#achievements" class="nav-link">ДОСТИЖЕНИЯ</a></li>
+                    <li><a href="#clients" class="nav-link">КЛИЕНТЫ</a></li>
+                    <li><a href="#contact" class="nav-link">КОНТАКТЫ</a></li>
+                </ul>
+
+                <button class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" style="position: relative; z-index: 9999;">
+        <!-- NEW OCTOPUS COMPOSITION -->
+        <div class="new-hero-content" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000;">
+            <!-- Octopus Logo Center -->
+            <div class="octopus-container">
+                <div class="octopus-logo">
+                    <img src="assets/webp/69.webp" alt="Dizband Octopus Logo" class="octopus-image">
+                    <div class="octopus-glow"></div>
+                    <div class="animated-ring"></div>
+                </div>
+                <div class="company-name">Dizband</div>
+            </div>
+
+            <!-- Video Windows in Semicircle -->
+            <div class="video-windows">
+                <div class="video-window window-1">
+                    <video autoplay muted loop playsinline class="window-content" preload="auto">
+                        <source src="assets/video/video1.mp4" type="video/mp4">
+                    </video>
+                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame">
+                </div>
+                <div class="video-window window-2">
+                    <video autoplay muted loop playsinline class="window-content" preload="auto">
+                        <source src="assets/video/video2.mp4" type="video/mp4">
+                    </video>
+                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame">
+                </div>
+                <div class="video-window window-3">
+                    <video autoplay muted loop playsinline class="window-content" preload="auto">
+                        <source src="assets/video/video3.mp4" type="video/mp4">
+                    </video>
+                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame">
+                </div>
+                <div class="video-window window-4">
+                    <video autoplay muted loop playsinline class="window-content" preload="auto">
+                        <source src="assets/video/video4.mp4" type="video/mp4">
+                    </video>
+                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame">
+                </div>
+                <div class="video-window window-5">
+                    <video autoplay muted loop playsinline class="window-content" preload="auto">
+                        <source src="assets/video/video5.mp4" type="video/mp4">
+                    </video>
+                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame">
+                </div>
+                <div class="video-window window-6">
+                    <video autoplay muted loop playsinline class="window-content" preload="auto">
+                        <source src="assets/video/video6.mp4" type="video/mp4">
+                    </video>
+                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">НАША ЦЕЛЬ — СОЗДАВАТЬ НЕЗАБЫВАЕМЫЕ КИБЕРСПОРТИВНЫЕ СОБЫТИЯ</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <div class="about-description">
+                        <p>Профессиональная организация киберспортивных турниров полного цикла. Мы создаем захватывающие соревнования, объединяем игроков и зрителей, обеспечиваем высочайший уровень проведения мероприятий.</p>
+                        <p>Dizband — ваш надежный партнер в мире киберспорта. Мы превращаем идеи в яркие турниры, которые запоминаются надолго.</p>
+                    </div>
+                    <div class="about-services-preview">
+                        <a href="#tournaments" class="tournaments-button">
+                            НАШИ ТУРНИРЫ
+                        </a>
+                    </div>
+                </div>
+                <div class="about-images">
+                    <div class="about-image">
+                        <img src="assets/images/tournaments/csgo-tournament.jpg" alt="Турнир CS:GO" class="tournament-photo">
+                        <div class="image-overlay">
+                            <span class="image-title">Турнир CS:GO</span>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <img src="assets/images/tournaments/dota2-championship.jpg" alt="Dota 2 Championship" class="tournament-photo">
+                        <div class="image-overlay">
+                            <span class="image-title">Dota 2 Championship</span>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <img src="assets/images/tournaments/valorant-cup.jpg" alt="Valorant Cup" class="tournament-photo">
+                        <div class="image-overlay">
+                            <span class="image-title">Valorant Cup</span>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <img src="assets/images/tournaments/lol-tournament.jpg" alt="League of Legends" class="tournament-photo">
+                        <div class="image-overlay">
+                            <span class="image-title">League of Legends</span>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <img src="assets/images/tournament-cards/mobile-fest.jpg" alt="Mobile Esports Fest" class="tournament-photo">
+                        <div class="image-overlay">
+                            <span class="image-title">Mobile Esports Fest</span>
+                        </div>
+                    </div>
+                    <div class="about-image about-image-small">
+                        <img src="assets/images/tournament-cards/volt-energy-cup.jpg" alt="Volt Energy Cup" class="tournament-photo">
+                        <div class="image-overlay">
+                            <span class="image-title">Volt Energy Cup</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">УСЛУГИ</h2>
+            <div class="services-grid">
+                <!-- First service: image on left, content on right -->
+                <div class="service-card">
+                    <div class="service-image">
+                        <video autoplay muted loop playsinline loading="lazy">
+                            <source src="assets/services/technical.mp4" type="video/mp4">
+                            <img src="assets/services/technical.gif" alt="Планирование и концепция" loading="lazy">
+                        </video>
+                        <div class="service-name">Планирование</div>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">ПЛАНИРОВАНИЕ И КОНЦЕПЦИЯ</h3>
+                        <p class="service-description">Разработка концепции турнира, планирование формата, создание регламента и системы проведения</p>
+                    </div>
+                </div>
+                <!-- Second service: content on left, image on right -->
+                <div class="service-card">
+                    <div class="service-content">
+                        <h3 class="service-title">ТЕХНИЧЕСКОЕ ОБЕСПЕЧЕНИЕ</h3>
+                        <p class="service-description">Настройка серверов, античит системы, техническая поддержка участников</p>
+                    </div>
+                    <div class="service-image">
+                        <video autoplay muted loop playsinline loading="lazy">
+                            <source src="assets/services/technical.mp4" type="video/mp4">
+                            <img src="assets/services/technical.gif" alt="Техническое обеспечение" loading="lazy">
+                        </video>
+                    </div>
+                </div>
+                <!-- Third service: image on left, content on right -->
+                <div class="service-card">
+                    <div class="service-image">
+                        <video autoplay muted loop playsinline loading="lazy">
+                            <source src="assets/services/stream.mp4" type="video/mp4">
+                            <img src="assets/services/stream.gif" alt="Трансляция и стрим" loading="lazy">
+                        </video>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">ТРАНСЛЯЦИЯ И СТРИМ</h3>
+                        <p class="service-description">Профессиональная трансляция турниров, комментаторы, графическое оформление</p>
+                    </div>
+                </div>
+                <!-- Fourth service: content on left, image on right -->
+                <div class="service-card">
+                    <div class="service-content">
+                        <h3 class="service-title">ПРИЗОВОЙ ФОНД</h3>
+                        <p class="service-description">Организация призового фонда, поиск спонсоров, распределение наград</p>
+                    </div>
+                    <div class="service-image">
+                        <video autoplay muted loop playsinline loading="lazy">
+                            <source src="assets/services/prize.mp4" type="video/mp4">
+                            <img src="assets/services/prize.gif" alt="Призовой фонд" loading="lazy">
+                        </video>
+                    </div>
+                </div>
+                <!-- Fifth service: image on left, content on right -->
+                <div class="service-card">
+                    <div class="service-image">
+                        <video autoplay muted loop playsinline loading="lazy">
+                            <source src="assets/services/prize.mp4" type="video/mp4">
+                            <img src="assets/services/prize.gif" alt="Маркетинг и продвижение" loading="lazy">
+                        </video>
+                        <div class="service-name">Маркетинг</div>
+                    </div>
+                    <div class="service-content">
+                        <h3 class="service-title">МАРКЕТИНГ И ПРОДВИЖЕНИЕ</h3>
+                        <p class="service-description">Продвижение турнира, работа с медиа, привлечение аудитории и участников</p>
+                    </div>
+                </div>
+                <!-- Sixth service: content on left, image on right -->
+                <div class="service-card">
+                    <div class="service-content">
+                        <h3 class="service-title">СУДЕЙСТВО</h3>
+                        <p class="service-description">Профессиональные судьи, контроль честности игры, разрешение спорных ситуаций</p>
+                    </div>
+                    <div class="service-image">
+                        <video autoplay muted loop playsinline loading="lazy">
+                            <source src="assets/services/stream.mp4" type="video/mp4">
+                            <img src="assets/services/stream.gif" alt="Судейство" loading="lazy">
+                        </video>
+                        <div class="service-name">Судейство</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tournaments Section -->
+    <section id="tournaments" class="tournaments">
+        <div class="tournaments-header">
+            <h2 class="section-title">НАШИ ТУРНИРЫ</h2>
+        </div>
+        <!-- Горизонтальная карусель турниров -->
+        <div class="tournaments-carousel" id="tournaments-carousel">
+            <div class="tournament-card">
+                <div class="tournament-image">
+                    <img src="assets/images/tournament-cards/volt-energy-cup.jpg" alt="Volt Energy Cyber Cup" style="width: 100%; height: 100%; object-fit: cover;" draggable="false">
+                </div>
+                <div class="tournament-tags">
+                    <span class="tag">Professional</span>
+                    <span class="tag">Dota 2</span>
+                    <span class="tag">Online</span>
+                </div>
+                <h3 class="tournament-title">VOLT ENERGY CYBER CUP</h3>
+                <p class="tournament-description">Турнир по Dota 2 с призовым фондом 5,000,000₽</p>
+            </div>
+
+            <div class="tournament-card">
+                <div class="tournament-image">
+                    <img src="assets/images/tournament-cards/winline-cs2.jpg" alt="Winline Star Series CS2" style="width: 100%; height: 100%; object-fit: cover;" draggable="false">
+                </div>
+                <div class="tournament-tags">
+                    <span class="tag">Professional</span>
+                    <span class="tag">CS2</span>
+                    <span class="tag">Offline</span>
+                </div>
+                <h3 class="tournament-title">WINLINE STAR SERIES CS2</h3>
+                <p class="tournament-description">Профессиональная серия турниров по CS2 от Winline. Призовой фонд 1,200,000₽</p>
+            </div>
+
+            <div class="tournament-card">
+                <div class="tournament-image">
+                    <img src="assets/images/tournament-cards/dota2-champions.jpg" alt="Dota2 Champions" style="width: 100%; height: 100%; object-fit: cover;" draggable="false">
+                </div>
+                <div class="tournament-tags">
+                    <span class="tag">Professional</span>
+                    <span class="tag">Championship</span>
+                    <span class="tag">Offline</span>
+                </div>
+                <h3 class="tournament-title">DOTA2 CHAMPIONS</h3>
+                <p class="tournament-description">Чемпионат по Dota 2 среди лучших команд региона</p>
+            </div>
+
+            <div class="tournament-card">
+                <div class="tournament-image">
+                    <img src="assets/images/tournament-cards/mobile-fest.jpg" alt="Mobile Esports Fest" style="width: 100%; height: 100%; object-fit: cover;" draggable="false">
+                </div>
+                <div class="tournament-tags">
+                    <span class="tag">Mobile</span>
+                    <span class="tag">Festival</span>
+                    <span class="tag">Online</span>
+                </div>
+                <h3 class="tournament-title">MOBILE ESPORTS FEST</h3>
+                <p class="tournament-description">Фестиваль мобильного киберспорта с турнирами</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section id="achievements" class="achievements">
+        <div class="container">
+            <h2 class="section-title">НАШИ ДОСТИЖЕНИЯ</h2>
+            <div class="achievements-stats">
+                <div class="achievement-stat">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Проведенных турниров</div>
+                </div>
+                <div class="achievement-stat">
+                    <div class="stat-number">10,000+</div>
+                    <div class="stat-label">Участников</div>
+                </div>
+                <div class="achievement-stat">
+                    <div class="stat-number">5M₽</div>
+                    <div class="stat-label">Общий призовой фонд</div>
+                </div>
+                <div class="achievement-stat">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Партнеров</div>
+                </div>
+            </div>
+            <div class="achievements-highlights">
+                <div class="highlight">
+                    <h3>Первый турнир по CS2 в регионе с призовым фондом 500,000₽</h3>
+                </div>
+                <div class="highlight">
+                    <h3>Организация крупнейшего Dota 2 турнира в СНГ</h3>
+                </div>
+                <div class="highlight">
+                    <h3>Партнерство с ведущими киберспортивными организациями</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clients Section -->
+    <section id="clients" class="clients">
+        <div class="container">
+            <h2 class="section-title">МЫ ГОРДИМСЯ РАБОТОЙ С ЛУЧШИМИ КОМАНДАМИ И ОРГАНИЗАЦИЯМИ</h2>
+            <div class="clients-list">
+                <div class="client">NAVI</div>
+                <div class="client">GAMBIT</div>
+                <div class="client">VIRTUS.PRO</div>
+                <div class="client">TEAM SPIRIT</div>
+                <div class="client">FORZE</div>
+                <div class="client">NEMIGA</div>
+                <div class="client">1WIN</div>
+                <div class="client">CYBER LEGACY</div>
+                <div class="client">WINSTRIKE</div>
+                <div class="client">ESPADA</div>
+                <div class="client">SLTV</div>
+                <div class="client">RU-CUP</div>
+                <div class="client">EPICENTER</div>
+                <div class="client">STARLADDER</div>
+                <div class="client">ESL</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2 class="section-title">СВЯЖИТЕСЬ С НАМИ</h2>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <h3>Telegram</h3>
+                            <a href="https://t.me/dizband">@dizband</a>
+                        </div>
+                        <div class="contact-item">
+                            <h3>Email</h3>
+                            <a href="mailto:hello@dizband.media">hello@dizband.media</a>
+                        </div>
+                        <div class="contact-item">
+                            <h3>Время работы</h3>
+                            <p>Пн-Пт: 10:00-19:00 МСК</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <h3>Заказать турнир</h3>
+                    <form>
+                        <input type="text" placeholder="Ваше имя" required>
+                        <input type="email" placeholder="Email" required>
+                        <input type="tel" placeholder="Телефон">
+                        <select required>
+                            <option value="">Выберите игру</option>
+                            <option value="csgo">CS:GO</option>
+                            <option value="dota2">Dota 2</option>
+                            <option value="valorant">Valorant</option>
+                            <option value="lol">League of Legends</option>
+                            <option value="pubg">PUBG</option>
+                            <option value="other">Другая игра</option>
+                        </select>
+                        <textarea placeholder="Опишите ваши требования к турниру" rows="4"></textarea>
+                        <button type="submit" class="submit-btn">
+                            <span>ОТПРАВИТЬ ЗАЯВКУ</span>
+                            <span>ОТПРАВИТЬ ЗАЯВКУ</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/webp/69.webp" alt="Dizband">
+                </div>
+                <div class="footer-links">
+                    <a href="#about">О компании</a>
+                    <a href="#services">Услуги</a>
+                    <a href="#tournaments">Турниры</a>
+                    <a href="#achievements">Достижения</a>
+                    <a href="#clients">Клиенты</a>
+                    <a href="#contact">Контакты</a>
+                </div>
+                <div class="footer-contacts">
+                    <a href="https://t.me/dizband">Telegram</a>
+                    <a href="mailto:hello@dizband.media">hello@dizband.media</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Dizband 2025 © Все права защищены</p>
+            </div>
+        </div>
+    </footer>
+    </div> <!-- End Main Content -->
+
+    <!-- Tournament Modal -->
+    <div id="tournament-modal" class="tournament-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-header">
+                <div class="modal-image">
+                    <img id="modal-tournament-image" src="" alt="Tournament Image">
+                </div>
+                <div class="modal-info">
+                    <h2 id="modal-tournament-title"></h2>
+                    <div id="modal-tournament-tags" class="modal-tags"></div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-description">
+                    <h3>Описание турнира</h3>
+                    <p id="modal-tournament-description"></p>
+                </div>
+                <div class="modal-details">
+                    <h3>Детали турнира</h3>
+                    <div class="detail-item">
+                        <span class="detail-label">Призовой фонд:</span>
+                        <span id="modal-prize-pool" class="detail-value"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Формат:</span>
+                        <span id="modal-format" class="detail-value"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Дата проведения:</span>
+                        <span id="modal-date" class="detail-value"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Количество команд:</span>
+                        <span id="modal-teams" class="detail-value"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn primary">Принять участие</button>
+                <button class="modal-btn secondary">Подробнее</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="scroll-to-top">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4L12 20M12 4L6 10M12 4L18 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <script src="js/script.js"></script>
+    <script>
+        // EXAMP Floating Dots
+        function createExampFloatingDots() {
+            const container = document.getElementById('exampFloatingDots');
+            if (!container) return;
+            
+            setInterval(() => {
+                const dot = document.createElement('div');
+                dot.className = 'examp-dot';
+                dot.style.left = Math.random() * 100 + '%';
+                dot.style.animationDelay = Math.random() * 2 + 's';
+                dot.style.animationDuration = (15 + Math.random() * 10) + 's';
+                
+                container.appendChild(dot);
+                
+                // Удаляем точку после анимации
+                setTimeout(() => {
+                    if (dot.parentNode) {
+                        dot.parentNode.removeChild(dot);
+                    }
+                }, 25000);
+            }, 300);
+        }
+
+        // Запуск создания точек - DISABLED (removed firefly effect)
+        document.addEventListener('DOMContentLoaded', function() {
+            // createExampFloatingDots();
+            
+            // Скрытие загрузочного экрана
+            setTimeout(function() {
+                const loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen) {
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(function() {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }
+            }, 2000); // Показываем загрузочный экран 2 секунды
+        });
+
+        // Simple modal functionality
+        function showTournamentModal(title, description, index) {
+            console.log('Modal function called:', title, description, index);
+            
+            const modal = document.getElementById('tournament-modal');
+            const modalTitle = document.getElementById('modal-tournament-title');
+            const modalDescription = document.getElementById('modal-tournament-description');
+            
+            if (!modal || !modalTitle || !modalDescription) {
+                console.error('Modal elements not found');
+                return;
+            }
+            
+            // Tournament data
+            const tournaments = [
+                {
+                    title: 'VOLT ENERGY CYBER CUP',
+                    description: 'Турнир по Dota 2 с призовым фондом 5,000,000₽',
+                    prizePool: '5,000,000₽',
+                    format: 'Single Elimination',
+                    date: '15-20 декабря 2024',
+                    teams: '16 команд',
+                    tags: ['Professional', 'Dota 2', 'Online']
+                },
+                {
+                    title: 'WINLINE STAR SERIES CS2',
+                    description: 'Профессиональная серия турниров по CS2 от Winline. Призовой фонд 1,200,000₽',
+                    prizePool: '1,200,000₽',
+                    format: 'Swiss System + Playoffs',
+                    date: '10-15 января 2025',
+                    teams: '24 команды',
+                    tags: ['Professional', 'CS2', 'Offline']
+                },
+                {
+                    title: 'DOTA2 CHAMPIONS',
+                    description: 'Чемпионат по Dota 2 среди лучших команд региона',
+                    prizePool: '2,500,000₽',
+                    format: 'Double Elimination',
+                    date: '1-10 февраля 2025',
+                    teams: '12 команд',
+                    tags: ['Professional', 'Championship', 'Offline']
+                },
+                {
+                    title: 'MOBILE ESPORTS FEST',
+                    description: 'Фестиваль мобильного киберспорта с турнирами',
+                    prizePool: '800,000₽',
+                    format: 'Round Robin',
+                    date: '20-25 марта 2025',
+                    teams: '20 команд',
+                    tags: ['Mobile', 'Festival', 'Online']
+                }
+            ];
+            
+            const tournament = tournaments[index] || tournaments[0];
+            
+            // Fill modal content
+            modalTitle.textContent = tournament.title;
+            modalDescription.textContent = tournament.description;
+            
+            const modalTags = document.getElementById('modal-tournament-tags');
+            const modalPrizePool = document.getElementById('modal-prize-pool');
+            const modalFormat = document.getElementById('modal-format');
+            const modalDate = document.getElementById('modal-date');
+            const modalTeams = document.getElementById('modal-teams');
+            
+            if (modalTags) {
+                modalTags.innerHTML = tournament.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+            }
+            if (modalPrizePool) modalPrizePool.textContent = tournament.prizePool;
+            if (modalFormat) modalFormat.textContent = tournament.format;
+            if (modalDate) modalDate.textContent = tournament.date;
+            if (modalTeams) modalTeams.textContent = tournament.teams;
+            
+            // Show modal
+            modal.style.display = 'flex';
+            // Add active class so opacity and animations apply
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('tournament-modal');
+            if (modal) {
+                // Remove active class and hide
+                modal.classList.remove('active');
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+        
+
+        
+        // Close modal when clicking outside or close button
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('tournament-modal');
+            const closeButton = document.querySelector('.modal-close');
+
+            /*
+             * Close the modal when the user clicks on the overlay or anywhere
+             * outside of the modal content.  In the previous implementation
+             * we only closed the modal when the click target was the modal
+             * element itself (which sits behind an overlay).  As a result,
+             * clicks on the semi‑transparent overlay were ignored and the
+             * modal appeared to freeze the page.  To resolve this we also
+             * listen for clicks on the overlay and close the modal when
+             * detected.
+             */
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    // If the click originated from the modal container or the overlay
+                    // (which has the class .modal-overlay), close the modal.  We do
+                    // not want to close the modal if the user clicks on the
+                    // modal content itself or its children.
+                    if (e.target === modal || e.target.classList.contains('modal-overlay')) {
+                        closeModal();
+                    }
+                });
+            }
+
+            // Close modal on click of the close button
+            if (closeButton) {
+                closeButton.addEventListener('click', closeModal);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,770 @@
+/* EXAMP EFFECTS - CSS для интеграции на любой сайт */
+/* Версия: 2.0 с уменьшенным свечением */
+
+/* Основные стили для контейнера */
+.examp-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: visible; /* Увеличиваем область видимости GIF элементов */
+}
+
+/* Увеличиваем область видимости для всех анимированных элементов */
+body, html {
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+}
+
+/* Дополнительные стили для расширения области видимости */
+.main-content {
+    overflow: visible !important;
+}
+
+/* Расширяем область видимости для всех секций */
+section, header, footer {
+    overflow: visible !important;
+}
+
+/* Увеличиваем высоту body для размещения элементов */
+body {
+    min-height: 100vh !important;
+}
+
+/* Фон в стиле EXAMP - оригинальный */
+.examp-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #313131;
+    background-image: 
+        radial-gradient(circle, #242424 1px, rgba(0,0,0,.9) 0),
+        url(https://grainy-gradients.vercel.app/noise.svg);
+    background-position: 50px 50px;
+    background-size: 100px 100px;
+    z-index: 1;
+}
+
+/* Густой черный туман по краям - оригинальный */
+.examp-fog-left {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100vh;
+    background: linear-gradient(to right, 
+        rgba(0, 0, 0, 0.9) 0%, 
+        rgba(0, 0, 0, 0.7) 30%, 
+        rgba(0, 0, 0, 0.5) 60%, 
+        rgba(0, 0, 0, 0.2) 80%, 
+        transparent 100%);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.examp-fog-right {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100vh;
+    background: linear-gradient(to left, 
+        rgba(0, 0, 0, 0.9) 0%, 
+        rgba(0, 0, 0, 0.7) 30%, 
+        rgba(0, 0, 0, 0.5) 60%, 
+        rgba(0, 0, 0, 0.2) 80%, 
+        transparent 100%);
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Плавающие точки */
+.examp-floating-dots {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+}
+
+.examp-dot {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #ada2de;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: exampFloatDot 15s linear infinite;
+}
+
+@keyframes exampFloatDot {
+    0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(-10px) translateX(50px);
+        opacity: 0;
+    }
+}
+
+
+
+/* Кристаллы - базовые стили */
+.examp-crystal {
+    position: absolute;
+    z-index: 12;
+    animation: exampFloatCrystal 8s ease-in-out infinite;
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.8)) 
+            drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6))
+            drop-shadow(0 0 15px rgba(173, 174, 222, 0.8))
+            invert(20%) sepia(80%) saturate(200%) hue-rotate(240deg) brightness(1.4);
+    transition: all 0.3s ease;
+}
+
+.examp-crystal:hover {
+    transform: scale(0.92) translateY(5px);
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.9)) 
+            drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7))
+            drop-shadow(0 0 12px rgba(173, 174, 222, 1.0))
+            invert(20%) sepia(80%) saturate(250%) hue-rotate(240deg) brightness(1.5);
+}
+
+/* Позиции кристаллов */
+.examp-crystal-top-left {
+    top: 10%;
+    left: 10%;
+    width: 120px;
+    height: auto;
+}
+
+.examp-crystal-top-right {
+    top: 10%;
+    right: 15%;
+    width: 100px;
+    height: auto;
+}
+
+.examp-crystal-bottom-left {
+    bottom: 10%;
+    left: 10%;
+    width: 100px;
+    height: auto;
+}
+
+.examp-crystal-bottom-right {
+    bottom: 10%;
+    right: 10%;
+    width: 120px;
+    height: auto;
+}
+
+/* Логотип DOTA - убираем все цветовые эффекты */
+body img.examp-dota-logo,
+html img.examp-dota-logo,
+img.examp-dota-logo,
+.examp-dota-logo {
+    position: absolute !important;
+    /* Перемещаем логотип DOTA выше */
+    /* moved slightly lower per user request */
+    top: 28% !important;
+    left: 3% !important;
+    transform: translateY(-50%) !important;
+    width: 380px !important;
+    height: auto !important;
+    z-index: 13 !important;
+    animation: exampFloatRobot 10s ease-in-out infinite !important;
+    transition: all 0.3s ease !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    -webkit-filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    /* Убираем все возможные цветовые эффекты */
+    hue-rotate: 0deg !important;
+    saturate: 1 !important;
+    brightness: 1 !important;
+    contrast: 1 !important;
+    sepia: 0% !important;
+    invert: 0% !important;
+}
+
+.examp-dota-logo:hover {
+    transform: translateY(-50%) scale(0.94) translateY(6px) !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    -webkit-filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    /* Убираем все возможные цветовые эффекты при hover */
+    hue-rotate: 0deg !important;
+    saturate: 1 !important;
+    brightness: 1 !important;
+    contrast: 1 !important;
+    sepia: 0% !important;
+    invert: 0% !important;
+}
+
+/* Огонек вокруг логотипа DOTA - DISABLED */
+/*
+.examp-logo-firefly {
+    position: absolute;
+    top: 28%;
+    left: 3%;
+    transform: translateY(-50%);
+    width: 380px;
+    height: 380px;
+    z-index: 14;
+    pointer-events: none;
+}
+
+.examp-logo-firefly::before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ada2de;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #ada2de, 0 0 16px #ada2de;
+    animation: exampCircleFirefly 8s linear infinite;
+}
+*/
+
+/* GIF элементы */
+.examp-gif {
+    position: absolute;
+    z-index: 14;
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.8)) 
+            drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6))
+            drop-shadow(0 0 12px rgba(0, 255, 255, 0.05))
+            brightness(1.3) contrast(1.4) saturate(1.1);
+    transition: all 0.3s ease;
+    mix-blend-mode: screen;
+}
+
+.examp-gif:hover {
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.9)) 
+            drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7))
+            drop-shadow(0 0 10px rgba(0, 255, 255, 0.08));
+}
+
+/* GIF 1 - центр справа */
+.examp-gif-1 {
+    top: 35%;
+    right: 8%;
+    transform: translateY(-50%);
+    width: 315px;
+    height: auto;
+    animation: exampFloatCube 12s ease-in-out infinite;
+}
+
+.examp-gif-1:hover {
+    transform: translateY(-50%) scale(0.92) translateY(5px);
+}
+
+/* GIF 2 - низ справа, отзеркален */
+.examp-gif-2 {
+    top: 85%;
+    right: 2%;
+    transform: translateY(-50%) scaleX(-1);
+    width: 220px;
+    height: auto;
+    animation: exampFloatCube2 14s ease-in-out infinite;
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.8)) 
+            drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6))
+            drop-shadow(0 0 15px rgba(0, 255, 255, 0.15))
+            brightness(1.3) contrast(1.4) saturate(1.1);
+}
+
+.examp-gif-2:hover {
+    transform: translateY(-50%) scaleX(-1) scale(0.92) translateY(5px);
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.9)) 
+            drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7))
+            drop-shadow(0 0 18px rgba(0, 255, 255, 0.25));
+}
+
+/* GIF 3 - ниже DOTA логотипа на 10 см */
+.examp-gif-3 {
+    /* Поднимаем GIF (1012 (1)(1).gif) выше */
+    /* moved slightly lower per user request */
+    top: 25%;
+    left: 8%;
+    transform: translateY(-50%);
+    width: 160px;
+    height: auto;
+    animation: exampFloatCube3 16s ease-in-out infinite;
+    z-index: 5;
+    mix-blend-mode: normal;
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.8)) 
+            drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6))
+            drop-shadow(0 0 12px rgba(173, 174, 222, 0.4))
+            hue-rotate(270deg) saturate(1.2) brightness(0.9) contrast(1.1);
+}
+
+.examp-gif-3:hover {
+    transform: translateY(-50%) scale(0.92) translateY(5px);
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.9)) 
+            drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7))
+            drop-shadow(0 0 10px rgba(173, 174, 222, 0.5))
+            hue-rotate(270deg) saturate(1.2) brightness(0.9) contrast(1.1);
+}
+
+/* GIF 4 - новый элемент на 20% выше DOTA логотипа */
+.examp-gif-4 {
+    top: 15%;
+    left: -2%;
+    transform: translateY(-50%);
+    width: 400px;
+    height: auto;
+    animation: exampFloatCube4 18s ease-in-out infinite;
+    z-index: 12;
+    mix-blend-mode: screen;
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.8)) 
+            drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6))
+            drop-shadow(0 0 12px rgba(0, 255, 255, 0.05))
+            brightness(1.3) contrast(1.4) saturate(1.1);
+}
+
+.examp-gif-4:hover {
+    transform: translateY(-50%) scale(0.92) translateY(5px);
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.9)) 
+            drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7))
+            drop-shadow(0 0 10px rgba(0, 255, 255, 0.08));
+}
+
+
+
+
+
+/* GIF 6 - stolb.png (размер 22.44px, смещен правее на 595px и ниже на 1477px, зафиксирован на странице) */
+.examp-gif-6 {
+    position: absolute;
+    top: calc(50vh + 1355px);
+    left: calc(50vw + 600px);
+    transform: translate(-50%, -50%);
+    width: 47px;
+    height: auto;
+    z-index: 15;
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.8)) 
+            drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6))
+            drop-shadow(0 0 12px rgba(0, 255, 255, 0.1))
+            brightness(1.1) contrast(1.2) saturate(1.1);
+}
+
+
+
+/* Адаптивность для stolb.png */
+@media (max-width: 1366px) {
+    .examp-gif-6 {
+        width: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .examp-gif-6 {
+        width: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .examp-gif-6 {
+        width: 12px;
+    }
+}
+
+
+
+/* Анимации */
+@keyframes exampFloatCrystal {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-15px) rotate(2deg);
+    }
+    50% {
+        transform: translateY(-10px) rotate(0deg);
+    }
+    75% {
+        transform: translateY(-20px) rotate(-2deg);
+    }
+}
+
+@keyframes exampFloatRobot {
+    0%, 100% {
+        transform: translateY(-50%) translateX(0px);
+    }
+    25% {
+        transform: translateY(-50%) translateX(10px);
+    }
+    50% {
+        transform: translateY(-50%) translateX(0px);
+    }
+    75% {
+        transform: translateY(-50%) translateX(-10px);
+    }
+}
+
+@keyframes exampFloatCube {
+    0%, 100% {
+        transform: translateY(-50%) translateX(0px) rotate(0deg);
+    }
+    33% {
+        transform: translateY(-50%) translateX(-15px) rotate(1deg);
+    }
+    66% {
+        transform: translateY(-50%) translateX(15px) rotate(-1deg);
+    }
+}
+
+@keyframes exampFloatCube2 {
+    0%, 100% {
+        transform: translateY(-50%) scaleX(-1) translateX(0px);
+    }
+    25% {
+        transform: translateY(-50%) scaleX(-1) translateX(-10px);
+    }
+    50% {
+        transform: translateY(-50%) scaleX(-1) translateX(5px);
+    }
+    75% {
+        transform: translateY(-50%) scaleX(-1) translateX(-5px);
+    }
+}
+
+@keyframes exampFloatCube3 {
+    0%, 100% {
+        transform: translateY(-50%) translateX(0px) rotate(0deg);
+    }
+    20% {
+        transform: translateY(-50%) translateX(8px) rotate(1deg);
+    }
+    40% {
+        transform: translateY(-50%) translateX(-5px) rotate(0deg);
+    }
+    60% {
+        transform: translateY(-50%) translateX(12px) rotate(-1deg);
+    }
+    80% {
+        transform: translateY(-50%) translateX(-8px) rotate(0deg);
+    }
+}
+
+@keyframes exampFloatCube4 {
+    0%, 100% {
+        transform: translateY(-50%) translateX(0px) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-50%) translateX(-12px) rotate(1.5deg);
+    }
+    50% {
+        transform: translateY(-50%) translateX(8px) rotate(0deg);
+    }
+    75% {
+        transform: translateY(-50%) translateX(-6px) rotate(-1.5deg);
+    }
+}
+
+@keyframes exampFloatCube5 {
+    0%, 100% {
+        transform: translateY(-50%) translateX(0px) rotate(0deg);
+    }
+    20% {
+        transform: translateY(-50%) translateX(10px) rotate(1deg);
+    }
+    40% {
+        transform: translateY(-50%) translateX(-8px) rotate(-0.5deg);
+    }
+    60% {
+        transform: translateY(-50%) translateX(12px) rotate(1.2deg);
+    }
+    80% {
+        transform: translateY(-50%) translateX(-5px) rotate(-0.8deg);
+    }
+}
+
+@keyframes exampCircleFirefly {
+    0% {
+        transform: rotate(0deg) translateX(200px) rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg) translateX(200px) rotate(-360deg);
+    }
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .examp-dota-logo {
+        width: 250px;
+        left: 5%;
+    }
+    
+    .examp-gif-1 {
+        width: 180px;
+        right: 5%;
+    }
+    
+    .examp-gif-2 {
+        width: 160px;
+        right: 5%;
+    }
+    
+    .examp-gif-3 {
+        width: 120px;
+        left: 8%;
+    }
+    
+    .examp-gif-4 {
+        width: 140px;
+        left: 5%;
+    }
+    
+    .examp-crystal {
+        width: 80px !important;
+    }
+    
+    .examp-fog-left,
+    .examp-fog-right {
+        width: 150px;
+    }
+}
+
+/* Обеспечиваем корректный z-index для контента сайта */
+.main-content,
+.header,
+.cyberpunk-background {
+    position: relative;
+    z-index: 21;
+}
+
+/* Загрузочный экран должен быть поверх всего */
+.loading-screen {
+    z-index: 10001 !important;
+}
+
+/* CT.gif - по центру сайта, перемещен правее на 300px и ниже на 50px (увеличен в 3 раза: 80px * 3 = 240px) */
+.examp-gif-ct {
+    position: absolute;
+    width: 100px;
+    height: auto;
+    top: calc(2100px);
+    left: calc(1450px);
+    transform: translate(-50%, -50%);
+    z-index: 15;
+    opacity: 0.8;
+    pointer-events: none;
+    animation: cs2Float 10s ease-in-out infinite alternate;
+}
+
+/* CS2.png - перемещен выше на 1200px и правее на 640px с минимальной анимацией (увеличен в 2 раза: 100px * 2 = 200px) */
+.examp-gif-cs2 {
+    position: absolute;
+    width: 200px;
+    height: auto;
+    top: calc(45% - 1400px);
+    left: calc(55% + 640px);
+    transform: translate(-50%, -50%);
+    z-index: 16;
+    opacity: 0.9;
+    pointer-events: none;
+    animation: cs2Float 6s ease-in-out infinite alternate;
+}
+
+@keyframes cs2Float {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -52%) rotate(1deg) scale(1.01);
+    }
+    100% {
+        transform: translate(-50%, -48%) rotate(-1deg) scale(0.99);
+    }
+}
+
+/* pers.gif - по центру сайта, уменьшен на 30%, перемещен вверх на 100px и правее на 320px (120px * 0.7 = 84px) */
+.examp-gif-pers {
+    position: absolute;
+    width: 84px;
+    height: auto;
+    top: calc(5570px);
+    left: calc(1080px);
+    transform: translate(-50%, -50%);
+    z-index: 17;
+    opacity: 0.8;
+    pointer-events: none;
+    animation: persFloat 4s ease-in-out infinite;
+}
+
+/* Анимация для pers.gif - небольшое плавающее движение */
+@keyframes persFloat {
+    0%, 100% {
+        transform: translate(-50%, -50%) translateY(0px) translateX(0px);
+    }
+    25% {
+        transform: translate(-50%, -50%) translateY(-3px) translateX(2px);
+    }
+    50% {
+        transform: translate(-50%, -50%) translateY(0px) translateX(4px);
+    }
+    75% {
+        transform: translate(-50%, -50%) translateY(3px) translateX(2px);
+    }
+}
+
+/* error.gif - по центру сайта, перемещен правее на 250px и выше на 200px */
+.examp-gif-error {
+    position: absolute;
+    width: 100px;
+    height: auto;
+    top: calc(2050px);
+    left: calc(1080px);
+    transform: translate(-50%, -50%);
+    z-index: 18;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* niz.png - нижняя часть центра */
+.examp-gif-niz {
+    position: absolute;
+    width: 200px;
+    height: auto;
+    top: calc(2370px);
+    left: calc(50% + 550px);
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+/* verh.png - верхняя часть центра, уменьшен на 30% и перемещен выше на 1135px, правее на 90px (270px * 0.7 = 189px) */
+.examp-gif-verh {
+    position: absolute;
+    width: 200px;
+    height: auto;
+    top: calc(30% - 1465px);
+    left: calc(50% + 59px);
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+@media (max-width: 1366px) {
+    .examp-gif-ct {
+        width: 210px; /* 70px * 3 */
+        top: calc(50% + 40px);
+        left: calc(50% + 240px);
+    }
+    
+    .examp-gif-cs2 {
+        width: 170px; /* 85px * 2 */
+    }
+    
+    .examp-gif-pers {
+        width: 70px; /* 100px * 0.7 */
+        top: calc(60% - 80px);
+        left: calc(40% + 256px);
+    }
+    
+    .examp-gif-error {
+        width: 85px;
+        top: calc(35% - 160px);
+        left: calc(65% + 200px);
+    }
+    
+    .examp-gif-niz {
+        width: 70px;
+    }
+    
+    .examp-gif-verh {
+        width: 158px; /* 225px * 0.7 */
+        top: calc(30% - 909px);
+        left: calc(50% + 72px);
+    }
+}
+
+@media (max-width: 768px) {
+    .examp-gif-ct {
+        width: 180px; /* 60px * 3 */
+        top: calc(50% + 35px);
+        left: calc(50% + 210px);
+    }
+    
+    .examp-gif-cs2 {
+        width: 140px; /* 70px * 2 */
+        top: calc(42% - 960px);
+        left: calc(52% + 512px);
+    }
+    
+    .examp-gif-pers {
+        width: 63px; /* 90px * 0.7 */
+        top: calc(58% - 80px);
+        left: calc(38% + 256px);
+    }
+    
+    .examp-gif-error {
+        width: 75px;
+        top: calc(35% - 140px);
+        left: calc(65% + 175px);
+    }
+    
+    .examp-gif-niz {
+        width: 60px;
+        top: 68%;
+    }
+    
+    .examp-gif-verh {
+        width: 137px; /* 195px * 0.7 */
+        top: calc(28% - 909px);
+        left: calc(50% + 72px);
+    }
+}
+
+@media (max-width: 480px) {
+    .examp-gif-ct {
+        width: 135px; /* 45px * 3 */
+        top: calc(50% + 30px);
+        left: calc(50% + 150px);
+    }
+    
+    .examp-gif-cs2 {
+        width: 110px; /* 55px * 2 */
+        top: calc(45% - 720px);
+        left: calc(55% + 384px);
+    }
+    
+    .examp-gif-pers {
+        width: 49px; /* 70px * 0.7 */
+        top: calc(55% - 60px);
+        left: calc(35% + 192px);
+    }
+    
+    .examp-gif-error {
+        width: 60px;
+        top: calc(35% - 120px);
+        left: calc(65% + 150px);
+    }
+    
+    .examp-gif-niz {
+        width: 50px;
+        top: 65%;
+    }
+    
+    .examp-gif-verh {
+        width: 116px; /* 165px * 0.7 */
+        top: calc(25% - 683px);
+        left: calc(50% + 54px);
+    }
+}
