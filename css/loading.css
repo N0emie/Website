@@ -1,0 +1,229 @@
+/* Loading Screen - Completely Separate Overlay */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #0a0a0a;
+    z-index: 999999 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loading-screen.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loading-container {
+    text-align: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-logo {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 60px;
+}
+
+.loading-logo video,
+.loading-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.loading-progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 20px;
+    overflow: hidden;
+    z-index: 1000000;
+    background: rgba(0, 0, 0, 0.3);
+    
+    /* Создаем объемную форму щупальца с волнами сверху и снизу */
+    clip-path: polygon(
+        0% 85%, 
+        3% 80%, 
+        6% 83%, 
+        10% 77%, 
+        14% 81%, 
+        18% 73%, 
+        22% 77%, 
+        26% 70%, 
+        30% 73%, 
+        34% 67%, 
+        38% 70%, 
+        42% 63%, 
+        46% 67%, 
+        50% 60%, 
+        54% 63%, 
+        58% 57%, 
+        62% 60%, 
+        66% 53%, 
+        70% 57%, 
+        74% 50%, 
+        78% 53%, 
+        82% 47%, 
+        86% 50%, 
+        90% 43%, 
+        94% 47%, 
+        98% 40%, 
+        100% 43%, 
+        100% 57%, 
+        98% 60%, 
+        94% 53%, 
+        90% 57%, 
+        86% 50%, 
+        82% 53%, 
+        78% 47%, 
+        74% 50%, 
+        70% 43%, 
+        66% 47%, 
+        62% 40%, 
+        58% 43%, 
+        54% 37%, 
+        50% 40%, 
+        46% 33%, 
+        42% 37%, 
+        38% 30%, 
+        34% 33%, 
+        30% 27%, 
+        26% 30%, 
+        22% 23%, 
+        18% 27%, 
+        14% 19%, 
+        10% 23%, 
+        6% 17%, 
+        3% 20%, 
+        0% 15%
+    );
+}
+
+.loading-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #7c6ce8, #a855f7, #7c6ce8);
+    transition: width 0.1s ease;
+    box-shadow: 0 0 15px rgba(124, 108, 232, 0.8);
+    position: relative;
+}
+
+/* Добавляем анимацию волн и присоски */
+.loading-progress-fill::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        rgba(124, 108, 232, 0.4), 
+        rgba(168, 85, 247, 0.6), 
+        rgba(124, 108, 232, 0.4)
+    );
+    animation: tentacle-wave 3s ease-in-out infinite;
+}
+
+/* Добавляем эффект присосок */
+.loading-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 15px,
+        rgba(255, 255, 255, 0.1) 15px,
+        rgba(255, 255, 255, 0.1) 18px,
+        transparent 18px,
+        transparent 30px
+    );
+    animation: sucker-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes tentacle-wave {
+    0%, 100% {
+        transform: scaleY(1) scaleX(1);
+    }
+    33% {
+        transform: scaleY(1.1) scaleX(0.98);
+    }
+    66% {
+        transform: scaleY(0.9) scaleX(1.02);
+    }
+}
+
+@keyframes sucker-pulse {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 0.7;
+    }
+}
+
+.loading-percentage {
+    display: none;
+}
+
+/* Hide ALL content during loading EXCEPT loading screen */
+body.loading > *:not(.loading-screen) {
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* Ensure loading screen is always visible during loading */
+body.loading .loading-screen {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: flex !important;
+}
+
+body.loading .loading-screen * {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .loading-logo {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .loading-progress {
+        width: 80%;
+    }
+    
+    .loading-percentage {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .loading-logo {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .loading-percentage {
+        font-size: 18px;
+    }
+}

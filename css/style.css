@@ -2413,12 +2413,55 @@ a[href*="youtube"] .social-icon {
     filter: none;
 }
 
-/* Hide elements during loading */
+/* Hide ALL elements during loading except loading screen */
 body.loading .social-icons-corner,
 body.loading .hero-logo-corner,
-body.loading .hero-lisa {
+body.loading .hero-lisa,
+body.loading .main-content,
+body.loading .examp-background,
+body.loading .examp-fog-left,
+body.loading .examp-fog-right,
+body.loading .examp-crystal,
+body.loading .examp-dota-logo,
+body.loading .examp-gif {
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
+}
+
+/* Smooth transition when loading completes */
+.social-icons-corner,
+.hero-logo-corner,
+.hero-lisa,
+.main-content,
+.examp-background,
+.examp-fog-left,
+.examp-fog-right,
+.examp-crystal,
+.examp-dota-logo,
+.examp-gif {
+    transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+}
+
+/* Ensure content is visible when loading is complete */
+body:not(.loading) .social-icons-corner,
+body:not(.loading) .hero-logo-corner,
+body:not(.loading) .hero-lisa,
+body:not(.loading) .main-content,
+body:not(.loading) .examp-background,
+body:not(.loading) .examp-fog-left,
+body:not(.loading) .examp-fog-right,
+body:not(.loading) .examp-crystal,
+body:not(.loading) .examp-dota-logo,
+body:not(.loading) .examp-gif {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Ensure loading screen is always on top */
+.loading-screen {
+    z-index: 999999 !important;
 }
 
 /* Scroll to Top Button */
