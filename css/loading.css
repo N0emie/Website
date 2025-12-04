@@ -5,7 +5,13 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: #0a0a0a;
+    /* Используем тот же фон, что и на основном сайте */
+    background-color: #313131;
+    background-image: 
+        radial-gradient(circle, #242424 1px, rgba(0,0,0,.9) 0),
+        url(https://grainy-gradients.vercel.app/noise.svg);
+    background-position: 50px 50px;
+    background-size: 100px 100px;
     z-index: 999999 !important;
     display: flex;
     justify-content: center;
@@ -20,6 +26,41 @@
     visibility: hidden;
 }
 
+/* Добавляем туман по краям экрана загрузки, как на основном сайте */
+.loading-screen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100vh;
+    background: linear-gradient(to right, 
+        rgba(0, 0, 0, 0.9) 0%, 
+        rgba(0, 0, 0, 0.7) 30%, 
+        rgba(0, 0, 0, 0.5) 60%, 
+        rgba(0, 0, 0, 0.2) 80%, 
+        transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.loading-screen::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100vh;
+    background: linear-gradient(to left, 
+        rgba(0, 0, 0, 0.9) 0%, 
+        rgba(0, 0, 0, 0.7) 30%, 
+        rgba(0, 0, 0, 0.5) 60%, 
+        rgba(0, 0, 0, 0.2) 80%, 
+        transparent 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
 .loading-container {
     text-align: center;
     position: relative;
@@ -29,6 +70,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    z-index: 2; /* Поверх тумана */
 }
 
 .loading-logo {
