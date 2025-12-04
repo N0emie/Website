@@ -6,7 +6,7 @@
     width: 100vw;
     height: 100vh;
     /* Черный фон со звездным небом */
-    background: #0a0a0a;
+    background: #0a0a0a !important;
     z-index: 999999 !important;
     display: flex;
     justify-content: center;
