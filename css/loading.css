@@ -5,8 +5,8 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    /* Черный фон со звездным небом */
-    background: #0a0a0a !important;
+    /* Фоновое изображение */
+    background: url('../assets/loading-background.png') center center / cover no-repeat !important;
     z-index: 999999 !important;
     display: flex;
     justify-content: center;
@@ -21,44 +21,7 @@
     visibility: hidden;
 }
 
-/* Контейнер для звезд на экране загрузки */
-.loading-floating-dots {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    pointer-events: none;
-}
 
-/* Звезды на экране загрузки */
-.loading-dot {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: #ada2de;
-    border-radius: 50%;
-    opacity: 0.6;
-    animation: loadingFloatDot 15s linear infinite;
-}
-
-@keyframes loadingFloatDot {
-    0% {
-        transform: translateY(100vh) translateX(0);
-        opacity: 0;
-    }
-    10% {
-        opacity: 0.6;
-    }
-    90% {
-        opacity: 0.6;
-    }
-    100% {
-        transform: translateY(-10px) translateX(50px);
-        opacity: 0;
-    }
-}
 
 .loading-container {
     text-align: center;

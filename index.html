@@ -142,9 +142,6 @@
     
     <!-- Loading Screen - Completely Separate -->
     <div id="loading-screen" class="loading-screen">
-        <!-- Контейнер для звезд на экране загрузки -->
-        <div id="loadingFloatingDots" class="loading-floating-dots"></div>
-        
         <div class="loading-container">
             <div class="loading-logo">
                 <video autoplay muted loop playsinline preload="auto">
@@ -669,42 +666,11 @@
             }, 300);
         }
 
-        // Loading Screen Floating Dots (Stars)
-        function createLoadingFloatingDots() {
-            const container = document.getElementById('loadingFloatingDots');
-            if (!container) return;
-            
-            const interval = setInterval(() => {
-                // Проверяем, виден ли экран загрузки
-                const loadingScreen = document.getElementById('loading-screen');
-                if (!loadingScreen || loadingScreen.style.display === 'none') {
-                    clearInterval(interval);
-                    return;
-                }
-                
-                const dot = document.createElement('div');
-                dot.className = 'loading-dot';
-                dot.style.left = Math.random() * 100 + '%';
-                dot.style.animationDelay = Math.random() * 2 + 's';
-                dot.style.animationDuration = (15 + Math.random() * 10) + 's';
-                
-                container.appendChild(dot);
-                
-                // Удаляем точку после анимации
-                setTimeout(() => {
-                    if (dot.parentNode) {
-                        dot.parentNode.removeChild(dot);
-                    }
-                }, 25000);
-            }, 200);
-        }
+
 
         // Запуск создания точек - DISABLED (removed firefly effect)
         document.addEventListener('DOMContentLoaded', function() {
             // createExampFloatingDots();
-            
-            // Запускаем звезды на экране загрузки
-            createLoadingFloatingDots();
             
             // Скрытие загрузочного экрана
             setTimeout(function() {
