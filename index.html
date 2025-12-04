@@ -37,7 +37,14 @@
     <link rel="dns-prefetch" href="https://youtube.com">
     <link rel="dns-prefetch" href="https://twitch.tv">
     
+    <!-- Preload critical resources -->
+    <link rel="preload" href="assets/webp/69.webp" as="image">
+    <link rel="preload" href="assets/webp/telegram.webp" as="image">
+    <link rel="preload" href="assets/webp/youtube.webp" as="image">
+    <link rel="preload" href="assets/webp/twitch.webp" as="image">
+    
     <!-- Critical CSS -->
+    <link rel="stylesheet" href="css/loading.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/examp-effects.css">
     
@@ -56,7 +63,7 @@
         });
     </script>
 </head>
-<body>
+<body class="loading">
     <!-- FIXED ELEMENTS - MOVED TO BODY ROOT TO AVOID TRANSFORM ISSUES -->
     <!-- Social Media Icons in Top Right Corner -->
     <div class="social-icons-corner">
@@ -116,20 +123,19 @@
     
 
     
-    <!-- Loading Screen -->
+    <!-- Loading Screen - Completely Separate -->
     <div id="loading-screen" class="loading-screen">
         <div class="loading-container">
-            <div class="logo-container">
-                <video id="loading-video" autoplay muted loop playsinline class="loading-logo" preload="auto">
+            <div class="loading-logo">
+                <video autoplay muted loop playsinline preload="auto">
                     <source src="assets/video/new_loading_logo.mp4" type="video/mp4">
-                    <!-- Fallback image if video fails to load -->
-                    <img id="loading-fallback" src="assets/webp/69.webp" alt="Dizband Logo" class="loading-logo">
+                    <img src="assets/webp/69.webp" alt="Dizband Logo">
                 </video>
             </div>
-        </div>
-        <div class="loading-progress">
-            <div class="progress-bar"></div>
-            <div class="progress-text">0%</div>
+            <div class="loading-progress">
+                <div class="loading-progress-fill"></div>
+            </div>
+            <div class="loading-percentage">0%</div>
         </div>
     </div>
 
@@ -183,40 +189,40 @@
             <!-- Video Windows in Semicircle -->
             <div class="video-windows">
                 <div class="video-window window-1">
-                    <video autoplay muted loop playsinline class="window-content" preload="auto">
+                    <video autoplay muted loop playsinline class="window-content" preload="none">
                         <source src="assets/video/video1.mp4" type="video/mp4">
                     </video>
-                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame">
+                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame" loading="lazy">
                 </div>
                 <div class="video-window window-2">
-                    <video autoplay muted loop playsinline class="window-content" preload="auto">
+                    <video autoplay muted loop playsinline class="window-content" preload="none">
                         <source src="assets/video/video2.mp4" type="video/mp4">
                     </video>
-                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame">
+                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame" loading="lazy">
                 </div>
                 <div class="video-window window-3">
-                    <video autoplay muted loop playsinline class="window-content" preload="auto">
+                    <video autoplay muted loop playsinline class="window-content" preload="none">
                         <source src="assets/video/video3.mp4" type="video/mp4">
                     </video>
-                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame">
+                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame" loading="lazy">
                 </div>
                 <div class="video-window window-4">
-                    <video autoplay muted loop playsinline class="window-content" preload="auto">
+                    <video autoplay muted loop playsinline class="window-content" preload="none">
                         <source src="assets/video/video4.mp4" type="video/mp4">
                     </video>
-                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame">
+                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame" loading="lazy">
                 </div>
                 <div class="video-window window-5">
-                    <video autoplay muted loop playsinline class="window-content" preload="auto">
+                    <video autoplay muted loop playsinline class="window-content" preload="none">
                         <source src="assets/video/video5.mp4" type="video/mp4">
                     </video>
-                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame">
+                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame" loading="lazy">
                 </div>
                 <div class="video-window window-6">
-                    <video autoplay muted loop playsinline class="window-content" preload="auto">
+                    <video autoplay muted loop playsinline class="window-content" preload="none">
                         <source src="assets/video/video6.mp4" type="video/mp4">
                     </video>
-                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame">
+                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame" loading="lazy">
                 </div>
             </div>
         </div>
@@ -288,7 +294,7 @@
                 <!-- First service: image on left, content on right -->
                 <div class="service-card">
                     <div class="service-image">
-                        <video autoplay muted loop playsinline loading="lazy">
+                        <video autoplay muted loop playsinline loading="lazy" preload="none">
                             <source src="assets/services/technical.mp4" type="video/mp4">
                             <img src="assets/services/technical.gif" alt="Планирование и концепция" loading="lazy">
                         </video>
@@ -306,7 +312,7 @@
                         <p class="service-description">Настройка серверов, античит системы, техническая поддержка участников</p>
                     </div>
                     <div class="service-image">
-                        <video autoplay muted loop playsinline loading="lazy">
+                        <video autoplay muted loop playsinline loading="lazy" preload="none">
                             <source src="assets/services/technical.mp4" type="video/mp4">
                             <img src="assets/services/technical.gif" alt="Техническое обеспечение" loading="lazy">
                         </video>
@@ -315,7 +321,7 @@
                 <!-- Third service: image on left, content on right -->
                 <div class="service-card">
                     <div class="service-image">
-                        <video autoplay muted loop playsinline loading="lazy">
+                        <video autoplay muted loop playsinline loading="lazy" preload="none">
                             <source src="assets/services/stream.mp4" type="video/mp4">
                             <img src="assets/services/stream.gif" alt="Трансляция и стрим" loading="lazy">
                         </video>
@@ -332,7 +338,7 @@
                         <p class="service-description">Организация призового фонда, поиск спонсоров, распределение наград</p>
                     </div>
                     <div class="service-image">
-                        <video autoplay muted loop playsinline loading="lazy">
+                        <video autoplay muted loop playsinline loading="lazy" preload="none">
                             <source src="assets/services/prize.mp4" type="video/mp4">
                             <img src="assets/services/prize.gif" alt="Призовой фонд" loading="lazy">
                         </video>
@@ -341,7 +347,7 @@
                 <!-- Fifth service: image on left, content on right -->
                 <div class="service-card">
                     <div class="service-image">
-                        <video autoplay muted loop playsinline loading="lazy">
+                        <video autoplay muted loop playsinline loading="lazy" preload="none">
                             <source src="assets/services/prize.mp4" type="video/mp4">
                             <img src="assets/services/prize.gif" alt="Маркетинг и продвижение" loading="lazy">
                         </video>
@@ -359,7 +365,7 @@
                         <p class="service-description">Профессиональные судьи, контроль честности игры, разрешение спорных ситуаций</p>
                     </div>
                     <div class="service-image">
-                        <video autoplay muted loop playsinline loading="lazy">
+                        <video autoplay muted loop playsinline loading="lazy" preload="none">
                             <source src="assets/services/stream.mp4" type="video/mp4">
                             <img src="assets/services/stream.gif" alt="Судейство" loading="lazy">
                         </video>
