@@ -8,8 +8,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const loadingScreen = document.getElementById('loading-screen');
     const progressBar = document.querySelector('.loading-progress-fill');
     const progressText = document.querySelector('.loading-percentage');
+    const loadingVideo = document.querySelector('.loading-logo video');
     const body = document.body;
     const html = document.documentElement;
+    
+    // Force video to play
+    if (loadingVideo) {
+        console.log('🎬 Attempting to play loading video...');
+        loadingVideo.play().then(() => {
+            console.log('✅ Loading video started successfully!');
+        }).catch(error => {
+            console.warn('⚠️ Video autoplay failed:', error);
+            // Try to play on user interaction
+            document.addEventListener('click', () => {
+                loadingVideo.play().catch(e => console.warn('Video play failed:', e));
+            }, { once: true });
+        });
+    }
     
     if (!loadingScreen || !progressBar || !progressText) {
         console.error('❌ Loading screen elements not found!');
