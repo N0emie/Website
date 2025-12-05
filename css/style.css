@@ -2367,39 +2367,139 @@ img {
 
 /* ABSOLUTE POSITIONED ELEMENTS - STAY WITH CONTENT, DON'T FOLLOW SCROLL */
 
-/* Social Media Icons - Absolute in Top Right */
-.social-icons-corner {
-    position: absolute;
+/* Menu Toggle Button - Absolute in Top Right */
+.menu-toggle-container {
+    position: fixed;
     top: 20px;
     right: 20px;
     z-index: 99999;
+}
+
+.menu-toggle {
     display: flex;
-    gap: 15px;
-}
-
-.social-icon {
-    width: 55px;
-    height: 55px;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #ffffff 0%, #adaede 100%);
+    color: #1a1a2e;
+    border-radius: 20px;
     transition: all 0.3s ease;
-    object-fit: contain;
+    border: 2px solid rgba(173, 174, 222, 0.3);
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(15px 0%, 100% 0%, calc(100% - 15px) 100%, 0% 100%);
 }
 
-/* Уменьшаем Telegram и Twitch на 20% */
-a[href*="t.me"] .social-icon,
-a[href*="twitch"] .social-icon {
-    width: 44px;
-    height: 44px;
+
+
+.menu-toggle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #8a7bc8 0%, #adaede 100%);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-/* Увеличиваем YouTube на 20% */
-a[href*="youtube"] .social-icon {
-    width: 66px;
-    height: 66px;
+.menu-toggle:hover {
+    background: linear-gradient(135deg, #adaede 0%, #8a7bc8 100%);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(173, 162, 222, 0.4);
+    color: #ffffff;
+    border-color: #adaede;
 }
 
-.social-icon:hover {
-    transform: scale(1.2) rotate(10deg);
-    filter: drop-shadow(0 0 15px rgba(138, 43, 226, 0.6));
+.menu-toggle:hover::before {
+    opacity: 0.1;
+}
+
+.menu-text {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.menu-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.line {
+    width: 16px;
+    height: 2px;
+    background: #1a1a2e;
+    transition: all 0.3s ease;
+    border-radius: 1px;
+}
+
+.menu-toggle:hover .line {
+    background: #ffffff;
+}
+
+/* Compact Navigation Panel */
+.menu-nav-panel {
+    position: absolute;
+    top: 0;
+    right: 100%;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(173, 162, 222, 0.3);
+    padding: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(20px);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    margin-right: 8px;
+    border: 1px solid rgba(173, 162, 222, 0.2);
+    clip-path: polygon(15px 0%, 100% 0%, calc(100% - 15px) 100%, 0% 100%);
+    white-space: nowrap;
+}
+
+.menu-toggle-container:hover .menu-nav-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.nav-link {
+    display: inline-block;
+    padding: 8px 12px;
+    color: #1a1a2e;
+    text-decoration: none;
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+    position: relative;
+    border-radius: 15px;
+    margin: 0 2px;
+}
+
+.nav-link:hover {
+    background: linear-gradient(135deg, #adaede 0%, #8a7bc8 100%);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.nav-link:first-child {
+    margin-left: 8px;
+}
+
+.nav-link:last-child {
+    margin-right: 8px;
 }
 
 /* Logo Corner - Absolute in Top Left */
@@ -2435,7 +2535,7 @@ a[href*="youtube"] .social-icon {
 }
 
 /* Hide ALL elements during loading except loading screen */
-body.loading .social-icons-corner,
+body.loading .menu-toggle-container,
 body.loading .hero-logo-corner,
 body.loading .hero-lisa,
 body.loading .main-content,
@@ -2451,7 +2551,7 @@ body.loading .examp-gif {
 }
 
 /* Smooth transition when loading completes */
-.social-icons-corner,
+.menu-toggle-container,
 .hero-logo-corner,
 .hero-lisa,
 .main-content,
@@ -2465,7 +2565,7 @@ body.loading .examp-gif {
 }
 
 /* Ensure content is visible when loading is complete */
-body:not(.loading) .social-icons-corner,
+body:not(.loading) .menu-toggle-container,
 body:not(.loading) .hero-logo-corner,
 body:not(.loading) .hero-lisa,
 body:not(.loading) .main-content,
@@ -3664,4 +3764,85 @@ h1[class*="hero"]:not(.hero-title),
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
+}
+
+/* Responsive Menu Styles */
+@media (max-width: 768px) {
+    .menu-toggle-container {
+        top: 15px;
+        right: 15px;
+    }
+    
+    .menu-toggle {
+        padding: 6px 12px;
+        gap: 6px;
+    }
+    
+    .menu-text {
+        font-size: 10px;
+    }
+    
+    .line {
+        width: 14px;
+    }
+    
+    .menu-nav-panel {
+        margin-right: 6px;
+        clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    }
+    
+    .nav-link {
+        font-size: 10px;
+        padding: 6px 8px;
+        margin: 0 1px;
+    }
+    
+    .nav-link:first-child {
+        margin-left: 6px;
+    }
+    
+    .nav-link:last-child {
+        margin-right: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-toggle-container {
+        top: 10px;
+        right: 10px;
+    }
+    
+    .menu-toggle {
+        padding: 5px 10px;
+        gap: 5px;
+        clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    }
+    
+    .menu-text {
+        font-size: 9px;
+    }
+    
+    .line {
+        width: 12px;
+        height: 1.5px;
+    }
+    
+    .menu-nav-panel {
+        margin-right: 4px;
+        clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+    
+    .nav-link {
+        font-size: 9px;
+        padding: 5px 6px;
+        margin: 0 1px;
+    }
+    
+    .nav-link:first-child {
+        margin-left: 4px;
+    }
+    
+    .nav-link:last-child {
+        margin-right: 4px;
+    }
 }
