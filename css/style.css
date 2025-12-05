@@ -853,15 +853,7 @@ html.loading {
 
 
 
-.hero-content {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+/* Old hero-content styles - overridden below */
 
 /* Octopus Logo Center */
 /* NEW HERO CONTENT CONTAINER */
@@ -3518,14 +3510,102 @@ body:not(.loading) .examp-gif {
     }
 }
 
-/* Hide old hero title */
-.hero h1,
-.hero-title,
+/* New Hero Section Styles - Goose.gg Style */
+.hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.hero-content {
+    position: relative !important;
+    z-index: 10 !important;
+    text-align: center !important;
+    max-width: 1200px !important;
+    padding: 0 20px !important;
+    width: auto !important;
+    height: auto !important;
+    display: block !important;
+    align-items: unset !important;
+    justify-content: unset !important;
+}
+
+.hero-title {
+    font-family: 'Orbitron', sans-serif !important;
+    font-size: clamp(2.5rem, 5vw, 4rem) !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+    text-transform: uppercase !important;
+    line-height: 1.2 !important;
+    margin-bottom: 2rem !important;
+    letter-spacing: 2px !important;
+    text-shadow: 0 0 20px rgba(138, 43, 226, 0.5) !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.hero-button {
+    background: linear-gradient(135deg, #8a2be2, #4b0082);
+    border: none;
+    padding: 15px 40px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(138, 43, 226, 0.3);
+}
+
+.hero-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(138, 43, 226, 0.5);
+    background: linear-gradient(135deg, #9932cc, #6a0dad);
+}
+
+.hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.hero-video-element {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+}
+
+.hero-video::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(75, 0, 130, 0.3));
+    z-index: 2;
+}
+
+/* Hide old hero elements */
+.new-hero-content,
+.octopus-container,
+.video-windows,
+.hero h1:not(.hero-title),
 .hero-title-line,
 .hero-title-brand,
-h1[class*="hero"],
-.hero-content h1,
-.hero-content .hero-title {
+h1[class*="hero"]:not(.hero-title),
+.hero-content h1:not(.hero-title) {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
