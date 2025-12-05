@@ -21,7 +21,7 @@
     <!-- Preload Critical Resources -->
     <link rel="preload" href="/assets/webp/69.webp" as="image" type="image/webp">
     <link rel="preload" href="/assets/video/new_loading_logo_final.webm" as="video" type="video/webm">
-    <link rel="preload" href="/css/style.min.css" as="style">
+    <link rel="preload" href="/css/style.css" as="style">
     <link rel="preload" href="/css/loading.css" as="style">
     <link rel="preload" href="/js/script.min.js" as="script">
     
@@ -62,7 +62,7 @@
     
     <!-- Critical CSS -->
     <link rel="stylesheet" href="css/loading.css">
-    <link rel="stylesheet" href="css/style.min.css?v=2">
+    <link rel="stylesheet" href="css/style.css?v=3">
     <link rel="stylesheet" href="css/examp-effects.css">
     
     <!-- Fonts with display=swap for better performance -->
@@ -193,58 +193,20 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero" style="position: relative; z-index: 9999;">
-        <!-- NEW OCTOPUS COMPOSITION -->
-        <div class="new-hero-content" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000;">
-            <!-- Octopus Logo Center -->
-            <div class="octopus-container">
-                <div class="octopus-logo">
-                    <img src="assets/webp/69.webp" alt="Dizband Octopus Logo" class="octopus-image">
-                    <div class="octopus-glow"></div>
-                    <div class="animated-ring"></div>
-                </div>
-                <div class="company-name">Dizband</div>
-            </div>
-
-            <!-- Video Windows in Semicircle -->
-            <div class="video-windows">
-                <div class="video-window window-1">
-                    <video autoplay muted loop playsinline class="window-content" preload="none">
-                        <source src="assets/video/video1.mp4" type="video/mp4">
-                    </video>
-                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame" loading="lazy">
-                </div>
-                <div class="video-window window-2">
-                    <video autoplay muted loop playsinline class="window-content" preload="none">
-                        <source src="assets/video/video2.mp4" type="video/mp4">
-                    </video>
-                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame" loading="lazy">
-                </div>
-                <div class="video-window window-3">
-                    <video autoplay muted loop playsinline class="window-content" preload="none">
-                        <source src="assets/video/video3.mp4" type="video/mp4">
-                    </video>
-                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame" loading="lazy">
-                </div>
-                <div class="video-window window-4">
-                    <video autoplay muted loop playsinline class="window-content" preload="none">
-                        <source src="assets/video/video4.mp4" type="video/mp4">
-                    </video>
-                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame" loading="lazy">
-                </div>
-                <div class="video-window window-5">
-                    <video autoplay muted loop playsinline class="window-content" preload="none">
-                        <source src="assets/video/video5.mp4" type="video/mp4">
-                    </video>
-                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame" loading="lazy">
-                </div>
-                <div class="video-window window-6">
-                    <video autoplay muted loop playsinline class="window-content" preload="none">
-                        <source src="assets/video/video6.mp4" type="video/mp4">
-                    </video>
-                    <img src="assets/webp/okno.webp" alt="Window Frame" class="window-frame" loading="lazy">
-                </div>
-            </div>
+    <section class="hero">
+        <!-- Logo in top left corner -->
+        <div class="hero-logo">
+            <img src="assets/webp/69.webp" alt="Dizband Logo">
+        </div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">ДОБРО ПОЖАЛОВАТЬ В DIZBAND — ПРОВОДНИК В МИР КИБЕРСПОРТА ДЛЯ БРЕНДОВ</h1>
+            <button class="hero-button">ЗАКАЗАТЬ ТУРНИР</button>
+        </div>
+        <div class="hero-video">
+            <video autoplay muted loop playsinline class="hero-video-element">
+                <source src="hero-video.mp4" type="video/mp4">
+            </video>
         </div>
     </section>
 
@@ -316,7 +278,6 @@
                     <div class="service-image">
                         <video autoplay muted loop playsinline loading="lazy" preload="none">
                             <source src="assets/services/technical.mp4" type="video/mp4">
-                            <img src="assets/services/technical.gif" alt="Планирование и концепция" loading="lazy">
                         </video>
                         <div class="service-name">Планирование</div>
                     </div>
@@ -334,7 +295,6 @@
                     <div class="service-image">
                         <video autoplay muted loop playsinline loading="lazy" preload="none">
                             <source src="assets/services/technical.mp4" type="video/mp4">
-                            <img src="assets/services/technical.gif" alt="Техническое обеспечение" loading="lazy">
                         </video>
                     </div>
                 </div>
@@ -343,7 +303,6 @@
                     <div class="service-image">
                         <video autoplay muted loop playsinline loading="lazy" preload="none">
                             <source src="assets/services/stream.mp4" type="video/mp4">
-                            <img src="assets/services/stream.gif" alt="Трансляция и стрим" loading="lazy">
                         </video>
                     </div>
                     <div class="service-content">
@@ -360,7 +319,6 @@
                     <div class="service-image">
                         <video autoplay muted loop playsinline loading="lazy" preload="none">
                             <source src="assets/services/prize.mp4" type="video/mp4">
-                            <img src="assets/services/prize.gif" alt="Призовой фонд" loading="lazy">
                         </video>
                     </div>
                 </div>
@@ -369,7 +327,6 @@
                     <div class="service-image">
                         <video autoplay muted loop playsinline loading="lazy" preload="none">
                             <source src="assets/services/prize.mp4" type="video/mp4">
-                            <img src="assets/services/prize.gif" alt="Маркетинг и продвижение" loading="lazy">
                         </video>
                         <div class="service-name">Маркетинг</div>
                     </div>
@@ -387,7 +344,6 @@
                     <div class="service-image">
                         <video autoplay muted loop playsinline loading="lazy" preload="none">
                             <source src="assets/services/stream.mp4" type="video/mp4">
-                            <img src="assets/services/stream.gif" alt="Судейство" loading="lazy">
                         </video>
                         <div class="service-name">Судейство</div>
                     </div>

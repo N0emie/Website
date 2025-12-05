@@ -1,3 +1,14 @@
+/* Font Face */
+@font-face {
+    font-family: 'PINNACLE';
+    src: url('../assets/fonts/fonts/Web/Pinnacle-Light.woff2') format('woff2'),
+         url('../assets/fonts/fonts/Web/Pinnacle-Light.woff') format('woff'),
+         url('../assets/fonts/fonts/OTF/Pinnacle-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* Reset and Base Styles */
 * {
     margin: 0;
@@ -853,15 +864,7 @@ html.loading {
 
 
 
-.hero-content {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+/* Old hero-content styles - overridden below */
 
 /* Octopus Logo Center */
 /* NEW HERO CONTENT CONTAINER */
@@ -3518,14 +3521,146 @@ body:not(.loading) .examp-gif {
     }
 }
 
-/* Hide old hero title */
-.hero h1,
-.hero-title,
+/* New Hero Section Styles - Goose.gg Style */
+.hero {
+    position: relative !important;
+    height: 100vh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+}
+
+.hero-content {
+    position: absolute !important;
+    top: calc(50% + 150px) !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 10 !important;
+    text-align: center !important;
+    max-width: 1200px !important;
+    padding: 0 20px !important;
+    width: auto !important;
+    height: auto !important;
+    display: block !important;
+}
+
+.hero-title {
+    font-family: 'PINNACLE', 'Orbitron', sans-serif !important;
+    font-size: clamp(1.8rem, 4vw, 3rem) !important;
+    font-weight: 300 !important;
+    color: #ffffff !important;
+    text-transform: uppercase !important;
+    line-height: 1.2 !important;
+    margin-bottom: 2rem !important;
+    letter-spacing: 2px !important;
+    text-shadow: 0 0 20px rgba(138, 43, 226, 0.8), 0 0 40px rgba(138, 43, 226, 0.4) !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-width: 800px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.hero-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #ffffff 0%, #adaede 100%);
+    color: #1a1a2e;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 20px 40px;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid #adaede;
+    box-shadow: 0 8px 25px rgba(173, 162, 222, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 0;
+    clip-path: polygon(20px 0%, 100% 0%, calc(100% - 20px) 100%, 0% 100%);
+    background-clip: padding-box;
+}
+
+.hero-button:hover {
+    background: linear-gradient(135deg, #adaede 0%, #8a7bc8 100%);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(173, 162, 222, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    border-color: #adaede;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+.hero-logo {
+    position: absolute !important;
+    top: 30px !important;
+    left: 30px !important;
+    z-index: 10 !important;
+    width: 60px !important;
+    height: auto !important;
+}
+
+.hero-logo img {
+    width: 100% !important;
+    height: auto !important;
+    filter: brightness(1.2) contrast(1.1) drop-shadow(0 0 10px rgba(138, 43, 226, 0.6)) blur(0.5px) !important;
+    transition: all 0.3s ease !important;
+}
+
+.hero-logo img:hover {
+    filter: brightness(1.4) contrast(1.2) drop-shadow(0 0 15px rgba(138, 43, 226, 0.8)) blur(0.3px) !important;
+    transform: scale(1.05) !important;
+}
+
+.hero-video {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 125vh !important;
+    max-width: none !important;
+    max-height: none !important;
+    transform: none !important;
+    z-index: 1 !important;
+    overflow: hidden !important;
+    border-radius: 0px !important;
+    box-shadow: none !important;
+    mask: radial-gradient(ellipse at center, black 60%, transparent 100%);
+    -webkit-mask: radial-gradient(ellipse at center, black 60%, transparent 100%);
+}
+
+.hero-video-element {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    opacity: 0.8 !important;
+}
+
+.hero-video::after {
+    content: '';
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(75, 0, 130, 0.2)) !important;
+    z-index: 2 !important;
+    pointer-events: none !important;
+    border-radius: 20px !important;
+}
+
+/* Hide old hero elements */
+.new-hero-content,
+.octopus-container,
+.video-windows,
+.hero h1:not(.hero-title),
 .hero-title-line,
 .hero-title-brand,
-h1[class*="hero"],
-.hero-content h1,
-.hero-content .hero-title {
+h1[class*="hero"]:not(.hero-title),
+.hero-content h1:not(.hero-title) {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
