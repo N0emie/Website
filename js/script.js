@@ -416,3 +416,42 @@ function closeTournamentModal() {
         document.body.style.overflow = 'auto';
     }
 }
+
+// Compact Menu Navigation Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    console.log('🎯 Compact menu navigation initialized');
+    
+    // Add smooth scrolling to navigation links
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            // Only handle internal links (starting with #)
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                const targetId = href.substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                } else {
+                    // If target doesn't exist, scroll to top for #home
+                    if (targetId === 'home') {
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            }
+        });
+    });
+    
+    console.log('✅ Navigation links configured');
+    console.log('🎉 Compact menu functionality fully loaded!');
+});

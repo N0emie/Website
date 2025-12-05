@@ -82,17 +82,24 @@
 </head>
 <body class="loading">
     <!-- FIXED ELEMENTS - MOVED TO BODY ROOT TO AVOID TRANSFORM ISSUES -->
-    <!-- Social Media Icons in Top Right Corner -->
-    <div class="social-icons-corner">
-        <a href="https://t.me/dizband" target="_blank" rel="noopener" aria-label="Перейти в Telegram канал Dizband">
-            <img src="assets/webp/telegram.webp" alt="Иконка Telegram" class="social-icon" loading="lazy">
-        </a>
-        <a href="https://youtube.com/@dizband" target="_blank" rel="noopener" aria-label="Перейти на YouTube канал Dizband">
-            <img src="assets/webp/youtube.webp" alt="Иконка YouTube" class="social-icon" loading="lazy">
-        </a>
-        <a href="https://twitch.tv/dizband" target="_blank" rel="noopener" aria-label="Перейти на Twitch канал Dizband">
-            <img src="assets/webp/twitch.webp" alt="Иконка Twitch" class="social-icon" loading="lazy">
-        </a>
+    <!-- Menu Button in Top Right Corner -->
+    <div class="menu-toggle-container">
+        <div class="menu-toggle" id="menuToggle">
+            <span class="menu-text">МЕНЮ</span>
+            <div class="menu-lines">
+                <span class="line line1"></span>
+                <span class="line line2"></span>
+            </div>
+        </div>
+        
+        <!-- Compact Navigation Panel -->
+        <div class="menu-nav-panel" id="menuNavPanel">
+            <a href="#home" class="nav-link">Главная</a>
+            <a href="#services" class="nav-link">Услуги</a>
+            <a href="#tournaments" class="nav-link">Турниры</a>
+            <a href="#about" class="nav-link">О нас</a>
+            <a href="#contacts" class="nav-link">Контакты</a>
+        </div>
     </div>
     
 
