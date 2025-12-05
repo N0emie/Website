@@ -124,8 +124,8 @@
 /* Более специфичные селекторы для перекрытия style.min.css */
 #loading-screen .loading-logo,
 .loading-screen .loading-logo {
-    width: 200px;
-    height: 200px;
+    width: 600px;
+    height: 600px;
     margin-bottom: 60px;
     background: transparent !important;
     background-color: transparent !important;
@@ -136,8 +136,8 @@
 }
 
 .loading-logo {
-    width: 200px;
-    height: 200px;
+    width: 600px;
+    height: 600px;
     margin-bottom: 60px;
     background: transparent !important;
     background-color: transparent !important;
@@ -336,8 +336,8 @@ body.loading .loading-screen * {
 /* Responsive Design */
 @media (max-width: 768px) {
     .loading-logo {
-        width: 150px;
-        height: 150px;
+        width: 450px;
+        height: 450px;
     }
     
     .loading-progress {
@@ -351,8 +351,8 @@ body.loading .loading-screen * {
 
 @media (max-width: 480px) {
     .loading-logo {
-        width: 120px;
-        height: 120px;
+        width: 360px;
+        height: 360px;
     }
     
     .loading-percentage {
