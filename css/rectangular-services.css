@@ -1,0 +1,325 @@
+/* Rectangular Services Section Styles */
+.services-organic {
+    padding: 120px 0;
+    background: #0a0a0a;
+    position: relative;
+    overflow: hidden;
+}
+
+.services-organic .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.services-organic .section-title {
+    text-align: center;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #ffffff;
+    margin-bottom: 120px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 20px rgba(173, 162, 222, 0.5);
+}
+
+.services-organic-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+    align-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Rectangular Service Card */
+.service-organic-card {
+    position: relative;
+    width: 700px;
+    height: 250px;
+    background: linear-gradient(135deg, #ffffff 0%, #adaede 100%);
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 15px 40px rgba(173, 162, 222, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    border: 2px solid #adaede;
+}
+
+.service-organic-card:hover {
+    transform: translateY(-15px) scale(1.03);
+    box-shadow: 0 25px 60px rgba(173, 162, 222, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Alternating layout - left and right with larger spacing */
+.service-organic-card:nth-child(1) {
+    align-self: flex-start;
+    margin-left: 100px;
+}
+
+.service-organic-card:nth-child(2) {
+    align-self: flex-end;
+    margin-right: 120px;
+}
+
+.service-organic-card:nth-child(3) {
+    align-self: flex-start;
+    margin-left: 80px;
+}
+
+.service-organic-card:nth-child(4) {
+    align-self: flex-end;
+    margin-right: 90px;
+}
+
+.service-organic-card:nth-child(5) {
+    align-self: flex-start;
+    margin-left: 110px;
+}
+
+.service-organic-card:nth-child(6) {
+    align-self: flex-end;
+    margin-right: 100px;
+}
+
+/* Content inside rectangular card */
+.organic-content {
+    position: relative;
+    z-index: 2;
+    padding: 40px;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    color: #1a1a2e;
+}
+
+.service-organic-card:hover .organic-content {
+    color: #ffffff;
+}
+
+.organic-icon {
+    width: 80px;
+    height: 80px;
+    margin-right: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: #1a1a2e;
+    font-weight: bold;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.service-organic-card:hover .organic-icon {
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+.organic-text {
+    flex: 1;
+}
+
+.organic-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: 'Orbitron', sans-serif;
+    line-height: 1.2;
+    transition: all 0.3s ease;
+}
+
+.service-organic-card:hover .organic-title {
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+.organic-description {
+    font-size: 1rem;
+    color: #4a4a4a;
+    line-height: 1.5;
+    margin-bottom: 18px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.service-organic-card:hover .organic-description {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.organic-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.organic-feature {
+    background: rgba(26, 26, 46, 0.1);
+    color: #1a1a2e;
+    padding: 6px 15px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(26, 26, 46, 0.2);
+}
+
+.service-organic-card:hover .organic-feature {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Different gradient variations for each card - matching site style */
+.service-organic-card:nth-child(1) {
+    background: linear-gradient(135deg, #ffffff 0%, #adaede 100%);
+}
+
+.service-organic-card:nth-child(1):hover {
+    background: linear-gradient(135deg, #adaede 0%, #8a7bc8 100%);
+}
+
+.service-organic-card:nth-child(2) {
+    background: linear-gradient(135deg, #f8f9ff 0%, #b8a9e8 100%);
+}
+
+.service-organic-card:nth-child(2):hover {
+    background: linear-gradient(135deg, #b8a9e8 0%, #9580d4 100%);
+}
+
+.service-organic-card:nth-child(3) {
+    background: linear-gradient(135deg, #ffffff 0%, #c4b5ed 100%);
+}
+
+.service-organic-card:nth-child(3):hover {
+    background: linear-gradient(135deg, #c4b5ed 0%, #a78bfa 100%);
+}
+
+.service-organic-card:nth-child(4) {
+    background: linear-gradient(135deg, #fafbff 0%, #a5b4fc 100%);
+}
+
+.service-organic-card:nth-child(4):hover {
+    background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 100%);
+}
+
+.service-organic-card:nth-child(5) {
+    background: linear-gradient(135deg, #ffffff 0%, #bfdbfe 100%);
+}
+
+.service-organic-card:nth-child(5):hover {
+    background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 100%);
+}
+
+.service-organic-card:nth-child(6) {
+    background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+}
+
+.service-organic-card:nth-child(6):hover {
+    background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .services-organic-grid {
+        max-width: 800px;
+        gap: 60px;
+    }
+    
+    .service-organic-card {
+        width: 600px;
+        height: 220px;
+    }
+    
+    .service-organic-card:nth-child(odd) {
+        margin-left: 50px;
+    }
+    
+    .service-organic-card:nth-child(even) {
+        margin-right: 50px;
+    }
+}
+
+@media (max-width: 768px) {
+    .services-organic {
+        padding: 80px 0;
+    }
+    
+    .services-organic .section-title {
+        font-size: 2.5rem;
+        margin-bottom: 60px;
+    }
+    
+    .services-organic-grid {
+        max-width: 100%;
+        align-items: center;
+        gap: 40px;
+    }
+    
+    .service-organic-card {
+        width: 450px;
+        height: 180px;
+        align-self: center !important;
+        margin: 0 !important;
+    }
+    
+    .organic-content {
+        padding: 30px;
+    }
+    
+    .organic-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 2.5rem;
+        margin-right: 25px;
+    }
+    
+    .organic-title {
+        font-size: 1.3rem;
+    }
+    
+    .organic-description {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .service-organic-card {
+        width: 300px;
+        height: 120px;
+    }
+    
+    .organic-content {
+        padding: 15px;
+    }
+    
+    .organic-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+        margin-right: 15px;
+    }
+    
+    .organic-title {
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+    
+    .organic-description {
+        font-size: 0.75rem;
+        margin-bottom: 8px;
+    }
+    
+    .organic-feature {
+        font-size: 0.6rem;
+        padding: 2px 8px;
+    }
+}
