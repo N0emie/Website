@@ -65,6 +65,7 @@
     <link rel="stylesheet" href="css/style.css?v=3">
     <link rel="stylesheet" href="css/examp-effects.css">
     <link rel="stylesheet" href="css/rectangular-services.css">
+    <link rel="stylesheet" href="css/service-modal.css">
     
     <!-- Fonts with display=swap for better performance -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -280,7 +281,12 @@
             <h2 class="section-title">УСЛУГИ</h2>
             <div class="services-organic-grid">
                 <!-- Service Card 1: Planning -->
-                <div class="service-organic-card">
+                <div class="service-organic-card service-modal-trigger" 
+                     data-service-id="planning"
+                     data-title="ПЛАНИРОВАНИЕ И КОНЦЕПЦИЯ"
+                     data-subtitle="СТРАТЕГИЯ И КОНЦЕПЦИЯ"
+                     data-image="assets/images/services/planning.jpg"
+                     data-description="Мы создаем детальную концепцию турнира с нуля. Наша команда разрабатывает уникальный формат соревнований, создает подробный регламент и систему проведения. Планируем все этапы турнира: от регистрации участников до церемонии награждения. Учитываем специфику игры, целевую аудиторию и бюджет мероприятия.">
                     <div class="organic-content">
                         <div class="organic-icon">📋</div>
                         <div class="organic-text">
@@ -296,7 +302,12 @@
                 </div>
 
                 <!-- Service Card 2: Technical -->
-                <div class="service-organic-card">
+                <div class="service-organic-card service-modal-trigger"
+                     data-service-id="technical"
+                     data-title="ТЕХНИЧЕСКОЕ ОБЕСПЕЧЕНИЕ"
+                     data-subtitle="ТЕХНОЛОГИИ И ИНФРАСТРУКТУРА"
+                     data-image="assets/images/services/technical.jpg"
+                     data-description="Полное техническое сопровождение турниров любого масштаба. Настраиваем игровые серверы, внедряем античит системы, обеспечиваем стабильное интернет-соединение. Наша техническая команда работает 24/7, предоставляя мгновенную поддержку участникам и решая любые технические вопросы в режиме реального времени.">
                     <div class="organic-content">
                         <div class="organic-icon">⚙️</div>
                         <div class="organic-text">
@@ -312,7 +323,12 @@
                 </div>
 
                 <!-- Service Card 3: Streaming -->
-                <div class="service-organic-card">
+                <div class="service-organic-card service-modal-trigger"
+                     data-service-id="streaming"
+                     data-title="ТРАНСЛЯЦИЯ И СТРИМ"
+                     data-subtitle="МЕДИА И КОНТЕНТ"
+                     data-image="assets/images/services/streaming.jpg"
+                     data-description="Профессиональное производство трансляций с киношным качеством. Многокамерная съемка, профессиональные комментаторы, динамичная графика и спецэффекты. Создаем захватывающий контент для зрителей с использованием современных технологий стриминга и интерактивных элементов.">
                     <div class="organic-content">
                         <div class="organic-icon">📹</div>
                         <div class="organic-text">
@@ -328,7 +344,12 @@
                 </div>
 
                 <!-- Service Card 4: Prize Fund -->
-                <div class="service-organic-card">
+                <div class="service-organic-card service-modal-trigger"
+                     data-service-id="prizes"
+                     data-title="ПРИЗОВОЙ ФОНД"
+                     data-subtitle="НАГРАДЫ И СПОНСОРСТВО"
+                     data-image="assets/images/services/prizes.jpg"
+                     data-description="Формируем привлекательные призовые фонды и находим надежных спонсоров. Организуем справедливое распределение наград, оформляем все юридические аспекты выплат. Работаем с ведущими брендами игровой индустрии для создания уникальных призов и бонусов для участников.">
                     <div class="organic-content">
                         <div class="organic-icon">🏆</div>
                         <div class="organic-text">
@@ -344,7 +365,12 @@
                 </div>
 
                 <!-- Service Card 5: Marketing -->
-                <div class="service-organic-card">
+                <div class="service-organic-card service-modal-trigger"
+                     data-service-id="marketing"
+                     data-title="МАРКЕТИНГ И ПРОДВИЖЕНИЕ"
+                     data-subtitle="РЕКЛАМА И PR"
+                     data-image="assets/images/services/marketing.jpg"
+                     data-description="Комплексное продвижение турниров через все доступные каналы. Работаем с игровыми медиа, влиятельными стримерами и киберспортивными сообществами. Создаем вирусный контент, организуем PR-кампании и привлекаем максимальную аудиторию к вашему мероприятию.">
                     <div class="organic-content">
                         <div class="organic-icon">📢</div>
                         <div class="organic-text">
@@ -360,7 +386,12 @@
                 </div>
 
                 <!-- Service Card 6: Judging -->
-                <div class="service-organic-card">
+                <div class="service-organic-card service-modal-trigger"
+                     data-service-id="judging"
+                     data-title="СУДЕЙСТВО"
+                     data-subtitle="ЧЕСТНОСТЬ И КОНТРОЛЬ"
+                     data-image="assets/images/services/judging.jpg"
+                     data-description="Команда сертифицированных судей с многолетним опытом в киберспорте. Обеспечиваем честность и прозрачность всех игр, быстро разрешаем спорные ситуации. Используем современные системы мониторинга и видеоповторы для принятия справедливых решений.">
                     <div class="organic-content">
                         <div class="organic-icon">⚖️</div>
                         <div class="organic-text">
@@ -916,6 +947,129 @@
                 closeButton.addEventListener('click', closeModal);
             }
         });
+
+        // Service Modal Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('new-service-modal');
+            const modalImage = document.getElementById('new-service-modal-image');
+            const modalTitle = document.getElementById('new-service-modal-title');
+            const modalSubtitle = document.getElementById('new-service-modal-subtitle');
+            const modalText = document.getElementById('new-service-modal-text');
+            const modalClose = document.getElementById('new-service-modal-close');
+            const modalOverlay = document.querySelector('.service-modal-overlay');
+            
+            // Service triggers
+            const serviceTriggers = document.querySelectorAll('.service-modal-trigger');
+            
+            // Fallback images for services
+            const fallbackImages = {
+                'planning': 'assets/images/tournaments/csgo-tournament.jpg',
+                'technical': 'assets/images/tournaments/dota2-championship.jpg',
+                'streaming': 'assets/images/tournaments/valorant-cup.jpg',
+                'prizes': 'assets/images/tournament-cards/volt-energy-cup.jpg',
+                'marketing': 'assets/images/tournament-cards/winline-cs2.jpg',
+                'judging': 'assets/images/tournament-cards/dota2-champions.jpg'
+            };
+            
+            // Open modal function
+            function openServiceModal(serviceData) {
+                const serviceId = serviceData.serviceId;
+                const imageSrc = serviceData.image || fallbackImages[serviceId] || 'assets/webp/69.webp';
+                
+                modalImage.src = imageSrc;
+                modalImage.alt = serviceData.title;
+                modalTitle.textContent = serviceData.title;
+                modalSubtitle.textContent = serviceData.subtitle;
+                modalText.textContent = serviceData.description;
+                
+                // Show modal with animation
+                modal.style.display = 'flex';
+                document.body.classList.add('modal-open');
+                
+                // Trigger animation
+                setTimeout(() => {
+                    modal.classList.add('active');
+                }, 10);
+                
+                // Stop smooth scroll if exists
+                if (window.lenisStop) {
+                    window.lenisStop();
+                }
+            }
+            
+            // Close modal function
+            function closeServiceModal() {
+                modal.classList.remove('active');
+                modal.classList.add('closing');
+                
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    modal.classList.remove('closing');
+                    document.body.classList.remove('modal-open');
+                    
+                    // Resume smooth scroll if exists
+                    if (window.lenisStart) {
+                        window.lenisStart();
+                    }
+                }, 300);
+            }
+            
+            // Add click listeners to service cards
+            serviceTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function() {
+                    const serviceData = {
+                        serviceId: this.dataset.serviceId,
+                        title: this.dataset.title,
+                        subtitle: this.dataset.subtitle,
+                        image: this.dataset.image,
+                        description: this.dataset.description
+                    };
+                    
+                    openServiceModal(serviceData);
+                });
+            });
+            
+            // Close modal events
+            modalClose.addEventListener('click', closeServiceModal);
+            modalOverlay.addEventListener('click', closeServiceModal);
+            
+            // Close on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    closeServiceModal();
+                }
+            });
+            
+            // Prevent modal content clicks from closing modal
+            document.querySelector('.service-modal-container').addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
     </script>
+
+    <!-- Service Modal Template -->
+    <div id="new-service-modal" class="service-modal">
+        <div class="service-modal-overlay"></div>
+        <div class="service-modal-container">
+            <div class="service-modal-main">
+                <div class="service-modal-media">
+                    <img id="new-service-modal-image" src="" alt="" class="service-modal-img">
+                </div>
+                <div class="service-modal-content">
+                    <div class="service-modal-header">
+                        <h2 id="new-service-modal-title" class="service-modal-title"></h2>
+                        <span id="new-service-modal-subtitle" class="service-modal-subtitle"></span>
+                    </div>
+                    <div class="service-modal-description">
+                        <p id="new-service-modal-text" class="service-modal-text"></p>
+                    </div>
+                </div>
+            </div>
+            <button class="service-modal-close" id="new-service-modal-close">
+                <span class="close-icon">✕</span>
+                ЗАКРЫТЬ
+            </button>
+        </div>
+    </div>
 </body>
 </html>
