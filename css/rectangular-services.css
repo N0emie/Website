@@ -1,110 +1,122 @@
 /* Rectangular Services Section Styles */
 .services-organic {
-    padding: 100px 0;
-    background: #000;
+    padding: 120px 0;
+    background: #0a0a0a;
     position: relative;
     overflow: hidden;
 }
 
 .services-organic .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 40px;
 }
 
 .services-organic .section-title {
     text-align: center;
     font-size: 3.5rem;
     font-weight: 900;
-    color: #fff;
-    margin-bottom: 80px;
+    color: #ffffff;
+    margin-bottom: 120px;
     text-transform: uppercase;
     letter-spacing: 3px;
     font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 20px rgba(173, 162, 222, 0.5);
 }
 
 .services-organic-grid {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 80px;
     align-items: center;
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
 /* Rectangular Service Card */
 .service-organic-card {
     position: relative;
-    width: 500px;
-    height: 180px;
-    background: linear-gradient(135deg, #dcb400, #f0d000);
-    border-radius: 20px;
+    width: 700px;
+    height: 250px;
+    background: linear-gradient(135deg, #ffffff 0%, #adaede 100%);
+    border-radius: 25px;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 10px 30px rgba(220, 180, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 15px 40px rgba(173, 162, 222, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     overflow: hidden;
+    border: 2px solid #adaede;
 }
 
 .service-organic-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(220, 180, 0, 0.5);
+    transform: translateY(-15px) scale(1.03);
+    box-shadow: 0 25px 60px rgba(173, 162, 222, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-/* Alternating layout - left and right with some randomness */
+/* Alternating layout - left and right with larger spacing */
 .service-organic-card:nth-child(1) {
     align-self: flex-start;
-    margin-left: 50px;
+    margin-left: 100px;
 }
 
 .service-organic-card:nth-child(2) {
     align-self: flex-end;
-    margin-right: 80px;
+    margin-right: 120px;
 }
 
 .service-organic-card:nth-child(3) {
     align-self: flex-start;
-    margin-left: 20px;
+    margin-left: 80px;
 }
 
 .service-organic-card:nth-child(4) {
     align-self: flex-end;
-    margin-right: 40px;
+    margin-right: 90px;
 }
 
 .service-organic-card:nth-child(5) {
     align-self: flex-start;
-    margin-left: 70px;
+    margin-left: 110px;
 }
 
 .service-organic-card:nth-child(6) {
     align-self: flex-end;
-    margin-right: 60px;
+    margin-right: 100px;
 }
 
 /* Content inside rectangular card */
 .organic-content {
     position: relative;
     z-index: 2;
-    padding: 30px;
+    padding: 40px;
     height: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     text-align: left;
-    color: #000;
+    color: #1a1a2e;
+}
+
+.service-organic-card:hover .organic-content {
+    color: #ffffff;
 }
 
 .organic-icon {
-    width: 60px;
-    height: 60px;
-    margin-right: 25px;
+    width: 80px;
+    height: 80px;
+    margin-right: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
-    color: #000;
+    font-size: 3rem;
+    color: #1a1a2e;
     font-weight: bold;
     flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.service-organic-card:hover .organic-icon {
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
 }
 
 .organic-text {
@@ -112,125 +124,170 @@
 }
 
 .organic-title {
-    font-size: 1.3rem;
+    font-size: 1.6rem;
     font-weight: 700;
-    color: #000;
-    margin-bottom: 10px;
+    color: #1a1a2e;
+    margin-bottom: 15px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     font-family: 'Orbitron', sans-serif;
     line-height: 1.2;
+    transition: all 0.3s ease;
+}
+
+.service-organic-card:hover .organic-title {
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
 }
 
 .organic-description {
-    font-size: 0.9rem;
-    color: #333;
-    line-height: 1.4;
-    margin-bottom: 12px;
+    font-size: 1rem;
+    color: #4a4a4a;
+    line-height: 1.5;
+    margin-bottom: 18px;
     font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.service-organic-card:hover .organic-description {
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .organic-features {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 10px;
 }
 
 .organic-feature {
-    background: rgba(0, 0, 0, 0.1);
-    color: #000;
-    padding: 3px 10px;
-    border-radius: 12px;
-    font-size: 0.7rem;
+    background: rgba(26, 26, 46, 0.1);
+    color: #1a1a2e;
+    padding: 6px 15px;
+    border-radius: 15px;
+    font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(26, 26, 46, 0.2);
 }
 
-/* Different gradient variations for each card */
+.service-organic-card:hover .organic-feature {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Different gradient variations for each card - matching site style */
 .service-organic-card:nth-child(1) {
-    background: linear-gradient(135deg, #dcb400, #f0d000);
+    background: linear-gradient(135deg, #ffffff 0%, #adaede 100%);
+}
+
+.service-organic-card:nth-child(1):hover {
+    background: linear-gradient(135deg, #adaede 0%, #8a7bc8 100%);
 }
 
 .service-organic-card:nth-child(2) {
-    background: linear-gradient(135deg, #e6c200, #dcb400);
+    background: linear-gradient(135deg, #f8f9ff 0%, #b8a9e8 100%);
+}
+
+.service-organic-card:nth-child(2):hover {
+    background: linear-gradient(135deg, #b8a9e8 0%, #9580d4 100%);
 }
 
 .service-organic-card:nth-child(3) {
-    background: linear-gradient(135deg, #f0d000, #e6c200);
+    background: linear-gradient(135deg, #ffffff 0%, #c4b5ed 100%);
+}
+
+.service-organic-card:nth-child(3):hover {
+    background: linear-gradient(135deg, #c4b5ed 0%, #a78bfa 100%);
 }
 
 .service-organic-card:nth-child(4) {
-    background: linear-gradient(135deg, #dcb400, #e6c200);
+    background: linear-gradient(135deg, #fafbff 0%, #a5b4fc 100%);
+}
+
+.service-organic-card:nth-child(4):hover {
+    background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 100%);
 }
 
 .service-organic-card:nth-child(5) {
-    background: linear-gradient(135deg, #e6c200, #f0d000);
+    background: linear-gradient(135deg, #ffffff 0%, #bfdbfe 100%);
+}
+
+.service-organic-card:nth-child(5):hover {
+    background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 100%);
 }
 
 .service-organic-card:nth-child(6) {
-    background: linear-gradient(135deg, #f0d000, #dcb400);
+    background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+}
+
+.service-organic-card:nth-child(6):hover {
+    background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
 }
 
 /* Responsive Design */
 @media (max-width: 1200px) {
     .services-organic-grid {
-        max-width: 600px;
+        max-width: 800px;
+        gap: 60px;
     }
     
     .service-organic-card {
-        width: 450px;
-        height: 160px;
+        width: 600px;
+        height: 220px;
     }
     
     .service-organic-card:nth-child(odd) {
-        margin-left: 30px;
+        margin-left: 50px;
     }
     
     .service-organic-card:nth-child(even) {
-        margin-right: 30px;
+        margin-right: 50px;
     }
 }
 
 @media (max-width: 768px) {
     .services-organic {
-        padding: 60px 0;
+        padding: 80px 0;
     }
     
     .services-organic .section-title {
         font-size: 2.5rem;
-        margin-bottom: 50px;
+        margin-bottom: 60px;
     }
     
     .services-organic-grid {
         max-width: 100%;
         align-items: center;
+        gap: 40px;
     }
     
     .service-organic-card {
-        width: 350px;
-        height: 140px;
+        width: 450px;
+        height: 180px;
         align-self: center !important;
         margin: 0 !important;
     }
     
     .organic-content {
-        padding: 20px;
+        padding: 30px;
     }
     
     .organic-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 2rem;
-        margin-right: 20px;
+        width: 60px;
+        height: 60px;
+        font-size: 2.5rem;
+        margin-right: 25px;
     }
     
     .organic-title {
-        font-size: 1.1rem;
+        font-size: 1.3rem;
     }
     
     .organic-description {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
     }
 }
 
