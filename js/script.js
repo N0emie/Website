@@ -492,3 +492,536 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// ===== 3D SERVICES CARDS FUNCTIONALITY =====
+
+// Scroll Reveal Animation
+function initScrollReveal() {
+    const cards = document.querySelectorAll('.service-3d-card');
+    
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                // Add delay based on card index for staggered animation
+                setTimeout(() => {
+                    entry.target.classList.add('reveal');
+                }, index * 150);
+                
+                // Stop observing once revealed
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+    
+    cards.forEach(card => {
+        observer.observe(card);
+    });
+}
+
+// 3D Tilt Effect
+function init3DTilt() {
+    const cards = document.querySelectorAll('.service-3d-card[data-tilt]');
+    
+    cards.forEach(card => {
+        const cardContent = card.querySelector('.card-content');
+        
+        let isHovering = false;
+        let mouseX = 0;
+        let mouseY = 0;
+        let currentRotateX = 0;
+        let currentRotateY = 0;
+        
+        // Mouse enter
+        card.addEventListener('mouseenter', () => {
+            isHovering = true;
+            cardContent.style.transition = 'transform 0.1s ease-out';
+        });
+        
+        // Mouse leave
+        card.addEventListener('mouseleave', () => {
+            isHovering = false;
+            cardContent.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+            cardContent.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0px)';
+        });
+        
+        // Mouse move
+        card.addEventListener('mousemove', (e) => {
+            if (!isHovering) return;
+            
+            const rect = card.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            // Calculate mouse position relative to card center
+            mouseX = e.clientX - centerX;
+            mouseY = e.clientY - centerY;
+            
+            // Calculate rotation angles (max 15 degrees)
+            const maxRotation = 15;
+            const rotateY = (mouseX / (rect.width / 2)) * maxRotation;
+            const rotateX = -(mouseY / (rect.height / 2)) * maxRotation;
+            
+            // Smooth interpolation for smoother movement
+            currentRotateX += (rotateX - currentRotateX) * 0.1;
+            currentRotateY += (rotateY - currentRotateY) * 0.1;
+            
+            // Apply 3D transform
+            cardContent.style.transform = `
+                rotateX(${currentRotateX}deg) 
+                rotateY(${currentRotateY}deg) 
+                translateZ(20px)
+            `;
+        });
+        
+        // Smooth animation loop for better performance
+        function animateCard() {
+            if (isHovering) {
+                cardContent.style.transform = `
+                    rotateX(${currentRotateX}deg) 
+                    rotateY(${currentRotateY}deg) 
+                    translateZ(20px)
+                `;
+            }
+            requestAnimationFrame(animateCard);
+        }
+        
+        animateCard();
+    });
+}
+
+// Enhanced Glare Effect - DISABLED
+function initGlareEffect() {
+    // Glare effects disabled
+    console.log('🚫 Glare effects disabled');
+}
+
+// Performance optimization: Use RAF for smooth animations
+function optimizeAnimations() {
+    // Reduce motion for users who prefer it
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (prefersReducedMotion) {
+        // Disable complex animations for accessibility
+        const style = document.createElement('style');
+        style.textContent = `
+            .service-3d-card {
+                transition: opacity 0.3s ease !important;
+            }
+            .service-3d-card .card-content {
+                transition: transform 0.3s ease !important;
+            }
+            .card-glare {
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// Initialize all 3D effects
+function init3DServices() {
+    console.log('🎮 Initializing 3D Services...');
+    
+    // Check if services section exists
+    const servicesSection = document.querySelector('.services-3d');
+    if (!servicesSection) {
+        console.log('⚠️ 3D Services section not found');
+        return;
+    }
+    
+    try {
+        initScrollReveal();
+        init3DTilt();
+        initGlareEffect();
+        optimizeAnimations();
+        
+        console.log('✅ 3D Services initialized successfully!');
+    } catch (error) {
+        console.error('❌ Error initializing 3D Services:', error);
+    }
+}
+
+// Initialize 3D services when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init3DServices);
+} else {
+    init3DServices();
+}
+
+// ===== SERVICE MODAL FUNCTIONALITY =====
+
+// Service data for modal content
+const serviceData = {
+    planning: {
+        title: 'ПЛАНИРОВАНИЕ И КОНЦЕПЦИЯ',
+        description: 'Полный цикл разработки концепции турнира от идеи до детального плана реализации. Мы создаем уникальные форматы соревнований, которые запоминаются участникам и зрителям.',
+        features: [
+            'Разработка уникальной концепции турнира',
+            'Создание детального регламента соревнований',
+            'Планирование формата и структуры турнира',
+            'Определение призового фонда и наград',
+            'Составление календаря мероприятий',
+            'Анализ целевой аудитории и конкурентов'
+        ],
+        process: [
+            {
+                title: 'Анализ требований',
+                description: 'Изучаем ваши цели, бюджет и ожидания от турнира'
+            },
+            {
+                title: 'Разработка концепции',
+                description: 'Создаем уникальную идею и формат соревнований'
+            },
+            {
+                title: 'Детальное планирование',
+                description: 'Прорабатываем все аспекты проведения турнира'
+            },
+            {
+                title: 'Согласование',
+                description: 'Представляем финальный план и вносим корректировки'
+            }
+        ]
+    },
+    technical: {
+        title: 'ТЕХНИЧЕСКОЕ ОБЕСПЕЧЕНИЕ',
+        description: 'Профессиональная настройка всей технической инфраструктуры для проведения киберспортивных турниров. Гарантируем стабильную работу серверов и защиту от читеров.',
+        features: [
+            'Настройка и администрирование игровых серверов',
+            'Установка и настройка античит систем',
+            'Техническая поддержка участников 24/7',
+            'Мониторинг производительности серверов',
+            'Резервное копирование и восстановление данных',
+            'Настройка сетевой инфраструктуры'
+        ],
+        process: [
+            {
+                title: 'Анализ требований',
+                description: 'Определяем технические требования для вашего турнира'
+            },
+            {
+                title: 'Подготовка серверов',
+                description: 'Настраиваем и тестируем игровые серверы'
+            },
+            {
+                title: 'Установка защиты',
+                description: 'Внедряем античит системы и настраиваем безопасность'
+            },
+            {
+                title: 'Поддержка',
+                description: 'Обеспечиваем техническую поддержку во время турнира'
+            }
+        ]
+    },
+    streaming: {
+        title: 'ТРАНСЛЯЦИЯ И СТРИМ',
+        description: 'Профессиональная трансляция турниров с качественным видео, экспертными комментариями и красивым графическим оформлением для максимального вовлечения зрителей.',
+        features: [
+            'Многокамерная трансляция в высоком качестве',
+            'Профессиональные комментаторы и аналитики',
+            'Уникальное графическое оформление',
+            'Интерактивные элементы для зрителей',
+            'Трансляция на множество платформ',
+            'Запись и монтаж highlights'
+        ],
+        process: [
+            {
+                title: 'Планирование трансляции',
+                description: 'Разрабатываем концепцию и сценарий трансляции'
+            },
+            {
+                title: 'Подготовка оборудования',
+                description: 'Настраиваем камеры, микрофоны и стриминговое ПО'
+            },
+            {
+                title: 'Создание графики',
+                description: 'Разрабатываем уникальные графические элементы'
+            },
+            {
+                title: 'Проведение трансляции',
+                description: 'Обеспечиваем качественную трансляцию турнира'
+            }
+        ]
+    },
+    prize: {
+        title: 'ПРИЗОВОЙ ФОНД',
+        description: 'Организация призового фонда турнира, поиск спонсоров и партнеров, справедливое распределение наград между победителями и участниками соревнований.',
+        features: [
+            'Формирование призового фонда турнира',
+            'Поиск и привлечение спонсоров',
+            'Организация партнерских программ',
+            'Справедливое распределение призов',
+            'Оформление наградной атрибутики',
+            'Церемония награждения победителей'
+        ],
+        process: [
+            {
+                title: 'Планирование бюджета',
+                description: 'Определяем размер призового фонда и источники финансирования'
+            },
+            {
+                title: 'Поиск спонсоров',
+                description: 'Привлекаем партнеров и спонсоров для увеличения фонда'
+            },
+            {
+                title: 'Подготовка призов',
+                description: 'Организуем призы, кубки и наградную атрибутику'
+            },
+            {
+                title: 'Награждение',
+                description: 'Проводим торжественную церемонию награждения'
+            }
+        ]
+    },
+    marketing: {
+        title: 'МАРКЕТИНГ И ПРОДВИЖЕНИЕ',
+        description: 'Комплексное продвижение турнира в социальных сетях, работа с медиа и блогерами, привлечение максимального количества участников и зрителей.',
+        features: [
+            'Стратегия продвижения в социальных сетях',
+            'Работа с игровыми медиа и блогерами',
+            'Создание рекламных материалов',
+            'PR-кампании и пресс-релизы',
+            'Привлечение участников и зрителей',
+            'Аналитика и отчетность по результатам'
+        ],
+        process: [
+            {
+                title: 'Разработка стратегии',
+                description: 'Создаем план продвижения и определяем каналы'
+            },
+            {
+                title: 'Создание контента',
+                description: 'Разрабатываем рекламные материалы и контент'
+            },
+            {
+                title: 'Запуск кампании',
+                description: 'Запускаем рекламные кампании в различных каналах'
+            },
+            {
+                title: 'Анализ результатов',
+                description: 'Отслеживаем эффективность и корректируем стратегию'
+            }
+        ]
+    },
+    judging: {
+        title: 'СУДЕЙСТВО',
+        description: 'Профессиональные судьи с опытом проведения киберспортивных турниров, контроль честности игры и оперативное разрешение любых спорных ситуаций.',
+        features: [
+            'Команда опытных киберспортивных судей',
+            'Контроль честности и правил игры',
+            'Разрешение спорных ситуаций',
+            'Мониторинг соблюдения регламента',
+            'Взаимодействие с участниками',
+            'Документирование нарушений'
+        ],
+        process: [
+            {
+                title: 'Подбор судей',
+                description: 'Формируем команду квалифицированных судей'
+            },
+            {
+                title: 'Изучение регламента',
+                description: 'Судьи изучают правила и особенности турнира'
+            },
+            {
+                title: 'Контроль игры',
+                description: 'Наблюдаем за ходом матчей и соблюдением правил'
+            },
+            {
+                title: 'Разрешение споров',
+                description: 'Оперативно решаем любые спорные ситуации'
+            }
+        ]
+    }
+};
+
+// Modal functionality
+let currentModal = null;
+let originalCardRect = null;
+
+function openServiceModal(serviceType, cardElement) {
+    console.log('🎮 Opening service modal:', serviceType);
+    
+    const modal = document.getElementById('service-modal');
+    const modalContainer = modal.querySelector('.modal-container');
+    const modalIcon = modal.querySelector('.modal-icon');
+    const modalTitle = modal.querySelector('.modal-title');
+    const modalDescription = modal.querySelector('.modal-description');
+    const modalFeaturesList = modal.querySelector('.modal-features-list');
+    const modalProcessSteps = modal.querySelector('.modal-process-steps');
+    
+    if (!modal || !serviceData[serviceType]) {
+        console.error('❌ Modal or service data not found');
+        return;
+    }
+    
+    const service = serviceData[serviceType];
+    currentModal = modal;
+    
+    // Get card position for morphing animation
+    originalCardRect = cardElement.getBoundingClientRect();
+    
+    // Set initial modal position to match card
+    modalContainer.style.width = originalCardRect.width + 'px';
+    modalContainer.style.height = originalCardRect.height + 'px';
+    modalContainer.style.top = originalCardRect.top + 'px';
+    modalContainer.style.left = originalCardRect.left + 'px';
+    modalContainer.style.transform = 'none';
+    
+    // Copy card icon to modal
+    const cardIcon = cardElement.querySelector('.card-icon');
+    if (cardIcon) {
+        modalIcon.innerHTML = cardIcon.innerHTML;
+    }
+    
+    // Fill modal content
+    modalTitle.textContent = service.title;
+    modalDescription.textContent = service.description;
+    
+    // Fill features list
+    modalFeaturesList.innerHTML = '';
+    service.features.forEach(feature => {
+        const li = document.createElement('li');
+        li.textContent = feature;
+        modalFeaturesList.appendChild(li);
+    });
+    
+    // Fill process steps
+    modalProcessSteps.innerHTML = '';
+    service.process.forEach((step, index) => {
+        const stepDiv = document.createElement('div');
+        stepDiv.className = 'process-step';
+        stepDiv.innerHTML = `
+            <div class="step-number">${index + 1}</div>
+            <div class="step-content">
+                <h4>${step.title}</h4>
+                <p>${step.description}</p>
+            </div>
+        `;
+        modalProcessSteps.appendChild(stepDiv);
+    });
+    
+    // Show modal
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    
+    // Trigger morphing animation
+    requestAnimationFrame(() => {
+        modal.classList.add('active');
+        
+        // Reset modal container to use CSS transitions
+        modalContainer.style.width = '';
+        modalContainer.style.height = '';
+        modalContainer.style.top = '';
+        modalContainer.style.left = '';
+        modalContainer.style.transform = '';
+    });
+}
+
+function closeServiceModal() {
+    if (!currentModal) return;
+    
+    console.log('🎮 Closing service modal');
+    
+    const modalContainer = currentModal.querySelector('.modal-container');
+    
+    // Reverse morphing animation
+    if (originalCardRect) {
+        modalContainer.style.transition = 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+        modalContainer.style.width = originalCardRect.width + 'px';
+        modalContainer.style.height = originalCardRect.height + 'px';
+        modalContainer.style.top = originalCardRect.top + 'px';
+        modalContainer.style.left = originalCardRect.left + 'px';
+        modalContainer.style.transform = 'scale(0.8)';
+    }
+    
+    // Remove active class
+    currentModal.classList.remove('active');
+    
+    // Hide modal after animation
+    setTimeout(() => {
+        if (currentModal) {
+            currentModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Reset styles
+            modalContainer.style.width = '';
+            modalContainer.style.height = '';
+            modalContainer.style.top = '';
+            modalContainer.style.left = '';
+            modalContainer.style.transform = '';
+            modalContainer.style.transition = '';
+        }
+        currentModal = null;
+        originalCardRect = null;
+    }, 600);
+}
+
+// Initialize service modal functionality
+function initServiceModals() {
+    console.log('🎮 Initializing service modals...');
+    
+    // Add click listeners to service cards
+    const serviceCards = document.querySelectorAll('.service-3d-card[data-service]');
+    serviceCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            e.preventDefault();
+            const serviceType = card.getAttribute('data-service');
+            openServiceModal(serviceType, card);
+        });
+        
+        // Add cursor pointer
+        card.style.cursor = 'pointer';
+    });
+    
+    // Add close button listener
+    const closeButton = document.querySelector('#service-modal .modal-close');
+    if (closeButton) {
+        closeButton.addEventListener('click', closeServiceModal);
+    }
+    
+    // Add backdrop click listener
+    const modal = document.getElementById('service-modal');
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal || e.target.classList.contains('modal-backdrop')) {
+                closeServiceModal();
+            }
+        });
+    }
+    
+    // Add escape key listener
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && currentModal) {
+            closeServiceModal();
+        }
+    });
+    
+    // Add CTA button listener
+    const ctaButton = document.querySelector('#service-modal .modal-cta-button');
+    if (ctaButton) {
+        ctaButton.addEventListener('click', () => {
+            // Scroll to contact form
+            closeServiceModal();
+            setTimeout(() => {
+                const contactForm = document.querySelector('footer');
+                if (contactForm) {
+                    contactForm.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 700);
+        });
+    }
+    
+    console.log('✅ Service modals initialized successfully!');
+}
+
+// Initialize service modals when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initServiceModals);
+} else {
+    initServiceModals();
+}
