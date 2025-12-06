@@ -1,5 +1,11 @@
 // Simple and Reliable Loading Screen
 console.log('🔧 Script.js loaded successfully!');
+console.log('🎨 3D Tilt Effect script loaded!');
+
+// Test alert to confirm script loading
+setTimeout(() => {
+    console.log('🚀 Testing 3D Tilt Effect initialization...');
+}, 1000);
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Starting loading screen...');
@@ -1024,4 +1030,87 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initServiceModals);
 } else {
     initServiceModals();
+}
+
+// 3D Tilt Effect for About Images
+function initTiltEffect() {
+    console.log('🎨 Initializing 3D Tilt Effect...');
+    
+    const elements = document.querySelectorAll('[data-tilt]');
+    console.log('Found', elements.length, 'elements with data-tilt attribute');
+    
+    if (elements.length === 0) {
+        console.warn('No elements with data-tilt found!');
+        return;
+    }
+    
+    elements.forEach((element, index) => {
+        console.log(`Setting up tilt for element ${index + 1}:`, element);
+        
+        const inner = element.querySelector('.about-image-inner');
+        if (!inner) {
+            console.warn(`No .about-image-inner found in element ${index + 1}`);
+            return;
+        }
+        
+        console.log(`Found inner element for ${index + 1}:`, inner);
+        
+        // Mouse enter
+        element.addEventListener('mouseenter', function(e) {
+            console.log('Mouse entered element', index + 1);
+            // Оставляем плавный переход для красивой анимации
+        });
+        
+        // Mouse move
+        element.addEventListener('mousemove', function(e) {
+            const rect = element.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            const mouseX = e.clientX - centerX;
+            const mouseY = e.clientY - centerY;
+            
+            const maxTilt = 4;
+            const rotateX = (mouseY / (rect.height / 2)) * -maxTilt;
+            const rotateY = (mouseX / (rect.width / 2)) * maxTilt;
+            
+            // Apply 3D transform
+            const transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(0.95, 0.95, 0.95)`;
+            inner.style.transform = transform;
+            
+            // Update glare effect
+            const glareX = 50 + (mouseX / rect.width) * 50;
+            const glareY = 50 + (mouseY / rect.height) * 50;
+            const distance = Math.sqrt(mouseX * mouseX + mouseY * mouseY);
+            const maxDistance = Math.sqrt(rect.width * rect.width + rect.height * rect.height) / 2;
+            const intensity = Math.max(0, 1 - (distance / maxDistance)) * 0.15;
+            
+            inner.style.setProperty('--glare-x', `${glareX}%`);
+            inner.style.setProperty('--glare-y', `${glareY}%`);
+            inner.style.setProperty('--glare-opacity', intensity);
+        });
+        
+        // Mouse leave
+        element.addEventListener('mouseleave', function(e) {
+            console.log('Mouse left element', index + 1);
+            inner.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            inner.style.setProperty('--glare-opacity', '0');
+        });
+    });
+    
+    console.log('✅ 3D Tilt Effect initialized successfully!');
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM Content Loaded - initializing tilt effect');
+    initTiltEffect();
+});
+
+// Also try to initialize immediately if DOM is already loaded
+if (document.readyState === 'loading') {
+    console.log('📄 Document still loading, waiting for DOMContentLoaded');
+} else {
+    console.log('📄 Document already loaded, initializing tilt effect immediately');
+    initTiltEffect();
 }

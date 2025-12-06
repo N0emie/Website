@@ -1302,6 +1302,45 @@ section {
     border-radius: 10px;
     overflow: hidden;
     position: relative;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+.about-image-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform-origin: center center;
+}
+
+.about-image-inner {
+    --glare-x: 50%;
+    --glare-y: 50%;
+    --glare-opacity: 0;
+}
+
+.about-image-inner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        circle at var(--glare-x, 50%) var(--glare-y, 50%),
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.2) 20%,
+        rgba(255, 255, 255, 0.1) 40%,
+        transparent 70%
+    );
+    opacity: var(--glare-opacity, 0);
+    transition: opacity 0.1s ease;
+    pointer-events: none;
+    border-radius: 10px;
+    z-index: 2;
+    mix-blend-mode: overlay;
 }
 
 .about-image:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
@@ -1316,6 +1355,9 @@ section {
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+    border-radius: 10px;
+    position: relative;
+    z-index: 1;
 }
 
 .image-overlay {
@@ -1327,6 +1369,8 @@ section {
     padding: 20px;
     transform: translateY(100%);
     transition: transform 0.3s ease;
+    z-index: 3;
+    border-radius: 0 0 10px 10px;
 }
 
 .about-image:hover .image-overlay {
@@ -1334,7 +1378,11 @@ section {
 }
 
 .about-image:hover .tournament-photo {
-    transform: scale(1.05);
+    transform: scale(1.02);
+}
+
+.about-image:hover .about-image-inner::after {
+    opacity: 1;
 }
 
 .image-title {
