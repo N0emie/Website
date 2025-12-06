@@ -2616,7 +2616,7 @@ img {
 
 /* Menu Toggle Button - Absolute in Top Right */
 .menu-toggle-container {
-    position: fixed;
+    position: absolute;
     top: 20px;
     right: 20px;
     z-index: 99999;
