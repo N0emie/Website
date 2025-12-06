@@ -52,35 +52,35 @@
     box-shadow: 0 25px 60px rgba(173, 162, 222, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-/* Alternating layout - left and right with larger spacing (увеличено в 2.5 раза) */
+/* Alternating layout - left and right with larger spacing (увеличено в 2.5 раза + 100px) */
 .service-organic-card:nth-child(1) {
     align-self: flex-start;
-    margin-left: 250px;
+    margin-left: 350px;
 }
 
 .service-organic-card:nth-child(2) {
     align-self: flex-end;
-    margin-right: 300px;
+    margin-right: 400px;
 }
 
 .service-organic-card:nth-child(3) {
     align-self: flex-start;
-    margin-left: 200px;
+    margin-left: 300px;
 }
 
 .service-organic-card:nth-child(4) {
     align-self: flex-end;
-    margin-right: 225px;
+    margin-right: 325px;
 }
 
 .service-organic-card:nth-child(5) {
     align-self: flex-start;
-    margin-left: 275px;
+    margin-left: 375px;
 }
 
 .service-organic-card:nth-child(6) {
     align-self: flex-end;
-    margin-right: 250px;
+    margin-right: 350px;
 }
 
 /* Content inside rectangular card */
@@ -240,11 +240,11 @@
     }
     
     .service-organic-card:nth-child(odd) {
-        margin-left: 125px;
+        margin-left: 175px;
     }
     
     .service-organic-card:nth-child(even) {
-        margin-right: 125px;
+        margin-right: 175px;
     }
 }
 
