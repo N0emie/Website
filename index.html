@@ -271,7 +271,7 @@
             <h2 class="section-title">УСЛУГИ</h2>
             <div class="services-3d-grid">
                 <!-- Service Card 1: Planning -->
-                <div class="service-3d-card" data-tilt>
+                <div class="service-3d-card" data-tilt data-service="planning">
                     <div class="card-glare"></div>
                     <div class="card-content">
                         <div class="card-icon">
@@ -294,7 +294,7 @@
                 </div>
 
                 <!-- Service Card 2: Technical -->
-                <div class="service-3d-card" data-tilt>
+                <div class="service-3d-card" data-tilt data-service="technical">
                     <div class="card-glare"></div>
                     <div class="card-content">
                         <div class="card-icon">
@@ -317,7 +317,7 @@
                 </div>
 
                 <!-- Service Card 3: Streaming -->
-                <div class="service-3d-card" data-tilt>
+                <div class="service-3d-card" data-tilt data-service="streaming">
                     <div class="card-glare"></div>
                     <div class="card-content">
                         <div class="card-icon">
@@ -343,7 +343,7 @@
                 </div>
 
                 <!-- Service Card 4: Prize Fund -->
-                <div class="service-3d-card" data-tilt>
+                <div class="service-3d-card" data-tilt data-service="prize">
                     <div class="card-glare"></div>
                     <div class="card-content">
                         <div class="card-icon">
@@ -369,7 +369,7 @@
                 </div>
 
                 <!-- Service Card 5: Marketing -->
-                <div class="service-3d-card" data-tilt>
+                <div class="service-3d-card" data-tilt data-service="marketing">
                     <div class="card-glare"></div>
                     <div class="card-content">
                         <div class="card-icon">
@@ -395,7 +395,7 @@
                 </div>
 
                 <!-- Service Card 6: Judging -->
-                <div class="service-3d-card" data-tilt>
+                <div class="service-3d-card" data-tilt data-service="judging">
                     <div class="card-glare"></div>
                     <div class="card-content">
                         <div class="card-icon">
@@ -691,6 +691,39 @@
             <path d="M12 4L12 20M12 4L6 10M12 4L18 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
     </button>
+
+    <!-- Modal Windows for Services -->
+    <div id="service-modal" class="service-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-container">
+            <button class="modal-close" aria-label="Закрыть">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            
+            <div class="modal-content">
+                <div class="modal-icon"></div>
+                <h2 class="modal-title"></h2>
+                <p class="modal-description"></p>
+                
+                <div class="modal-features">
+                    <h3>Что входит в услугу:</h3>
+                    <ul class="modal-features-list"></ul>
+                </div>
+                
+                <div class="modal-process">
+                    <h3>Процесс работы:</h3>
+                    <div class="modal-process-steps"></div>
+                </div>
+                
+                <div class="modal-cta">
+                    <button class="modal-cta-button">Заказать услугу</button>
+                    <p class="modal-cta-text">Свяжитесь с нами для обсуждения деталей</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="js/script.js?v=3"></script>
     <script>
