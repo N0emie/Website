@@ -1971,15 +1971,16 @@ section {
     grid-column: 1 / -1;
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 16px;
     margin-top: 40px;
+    flex-wrap: wrap;
 }
 
 .social-card {
     background: transparent;
     border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    width: 50px;
+    border-radius: 25px;
+    width: 120px;
     height: 50px;
     display: flex;
     align-items: center;
@@ -2000,7 +2001,7 @@ section {
     background: linear-gradient(135deg, #6600cc, #8833dd);
     opacity: 0;
     transition: opacity 0.4s ease;
-    border-radius: 50%;
+    border-radius: 25px;
 }
 
 .social-card:hover::before {
