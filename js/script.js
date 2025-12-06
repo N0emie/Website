@@ -492,3 +492,220 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// ===== 3D SERVICES CARDS FUNCTIONALITY =====
+
+// Scroll Reveal Animation
+function initScrollReveal() {
+    const cards = document.querySelectorAll('.service-3d-card');
+    
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                // Add delay based on card index for staggered animation
+                setTimeout(() => {
+                    entry.target.classList.add('reveal');
+                }, index * 150);
+                
+                // Stop observing once revealed
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+    
+    cards.forEach(card => {
+        observer.observe(card);
+    });
+}
+
+// 3D Tilt Effect
+function init3DTilt() {
+    const cards = document.querySelectorAll('.service-3d-card[data-tilt]');
+    
+    cards.forEach(card => {
+        const cardContent = card.querySelector('.card-content');
+        const glare = card.querySelector('.card-glare');
+        
+        let isHovering = false;
+        let mouseX = 0;
+        let mouseY = 0;
+        let currentRotateX = 0;
+        let currentRotateY = 0;
+        
+        // Mouse enter
+        card.addEventListener('mouseenter', () => {
+            isHovering = true;
+            cardContent.style.transition = 'transform 0.1s ease-out';
+        });
+        
+        // Mouse leave
+        card.addEventListener('mouseleave', () => {
+            isHovering = false;
+            cardContent.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+            cardContent.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0px)';
+            
+            // Reset glare
+            if (glare) {
+                glare.style.background = `linear-gradient(
+                    135deg,
+                    transparent 40%,
+                    rgba(255, 255, 255, 0.1) 50%,
+                    transparent 60%
+                )`;
+            }
+        });
+        
+        // Mouse move
+        card.addEventListener('mousemove', (e) => {
+            if (!isHovering) return;
+            
+            const rect = card.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            // Calculate mouse position relative to card center
+            mouseX = e.clientX - centerX;
+            mouseY = e.clientY - centerY;
+            
+            // Calculate rotation angles (max 15 degrees)
+            const maxRotation = 15;
+            const rotateY = (mouseX / (rect.width / 2)) * maxRotation;
+            const rotateX = -(mouseY / (rect.height / 2)) * maxRotation;
+            
+            // Smooth interpolation for smoother movement
+            currentRotateX += (rotateX - currentRotateX) * 0.1;
+            currentRotateY += (rotateY - currentRotateY) * 0.1;
+            
+            // Apply 3D transform
+            cardContent.style.transform = `
+                rotateX(${currentRotateX}deg) 
+                rotateY(${currentRotateY}deg) 
+                translateZ(20px)
+            `;
+            
+            // Update glare effect
+            if (glare) {
+                const glareX = ((mouseX / rect.width) + 0.5) * 100;
+                const glareY = ((mouseY / rect.height) + 0.5) * 100;
+                
+                glare.style.background = `
+                    radial-gradient(
+                        circle at ${glareX}% ${glareY}%,
+                        rgba(255, 255, 255, 0.2) 0%,
+                        rgba(255, 255, 255, 0.1) 30%,
+                        transparent 70%
+                    )
+                `;
+            }
+        });
+        
+        // Smooth animation loop for better performance
+        function animateCard() {
+            if (isHovering) {
+                cardContent.style.transform = `
+                    rotateX(${currentRotateX}deg) 
+                    rotateY(${currentRotateY}deg) 
+                    translateZ(20px)
+                `;
+            }
+            requestAnimationFrame(animateCard);
+        }
+        
+        animateCard();
+    });
+}
+
+// Enhanced Glare Effect
+function initGlareEffect() {
+    const cards = document.querySelectorAll('.service-3d-card');
+    
+    cards.forEach(card => {
+        const glare = card.querySelector('.card-glare');
+        if (!glare) return;
+        
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            
+            // Create moving glare effect
+            glare.style.background = `
+                linear-gradient(
+                    ${Math.atan2(y - 50, x - 50) * 180 / Math.PI + 90}deg,
+                    transparent 30%,
+                    rgba(255, 255, 255, 0.15) 50%,
+                    transparent 70%
+                )
+            `;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            glare.style.background = `
+                linear-gradient(
+                    135deg,
+                    transparent 40%,
+                    rgba(255, 255, 255, 0.1) 50%,
+                    transparent 60%
+                )
+            `;
+        });
+    });
+}
+
+// Performance optimization: Use RAF for smooth animations
+function optimizeAnimations() {
+    // Reduce motion for users who prefer it
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (prefersReducedMotion) {
+        // Disable complex animations for accessibility
+        const style = document.createElement('style');
+        style.textContent = `
+            .service-3d-card {
+                transition: opacity 0.3s ease !important;
+            }
+            .service-3d-card .card-content {
+                transition: transform 0.3s ease !important;
+            }
+            .card-glare {
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// Initialize all 3D effects
+function init3DServices() {
+    console.log('🎮 Initializing 3D Services...');
+    
+    // Check if services section exists
+    const servicesSection = document.querySelector('.services-3d');
+    if (!servicesSection) {
+        console.log('⚠️ 3D Services section not found');
+        return;
+    }
+    
+    try {
+        initScrollReveal();
+        init3DTilt();
+        initGlareEffect();
+        optimizeAnimations();
+        
+        console.log('✅ 3D Services initialized successfully!');
+    } catch (error) {
+        console.error('❌ Error initializing 3D Services:', error);
+    }
+}
+
+// Initialize 3D services when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init3DServices);
+} else {
+    init3DServices();
+}

@@ -265,83 +265,157 @@
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="services">
+    <!-- Services Section with 3D Cards -->
+    <section id="services" class="services-3d">
         <div class="container">
             <h2 class="section-title">УСЛУГИ</h2>
-            <div class="services-grid">
-                <!-- First service: image on left, content on right -->
-                <div class="service-card">
-                    <div class="service-image">
-                        <video autoplay muted loop playsinline loading="lazy" preload="none">
-                            <source src="assets/services/technical.mp4" type="video/mp4">
-                        </video>
-                        <div class="service-name">Планирование</div>
-                    </div>
-                    <div class="service-content">
-                        <h3 class="service-title">ПЛАНИРОВАНИЕ И КОНЦЕПЦИЯ</h3>
-                        <p class="service-description">Разработка концепции турнира, планирование формата, создание регламента и системы проведения</p>
-                    </div>
-                </div>
-                <!-- Second service: content on left, image on right -->
-                <div class="service-card">
-                    <div class="service-content">
-                        <h3 class="service-title">ТЕХНИЧЕСКОЕ ОБЕСПЕЧЕНИЕ</h3>
-                        <p class="service-description">Настройка серверов, античит системы, техническая поддержка участников</p>
-                    </div>
-                    <div class="service-image">
-                        <video autoplay muted loop playsinline loading="lazy" preload="none">
-                            <source src="assets/services/technical.mp4" type="video/mp4">
-                        </video>
+            <div class="services-3d-grid">
+                <!-- Service Card 1: Planning -->
+                <div class="service-3d-card" data-tilt>
+                    <div class="card-glare"></div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <div class="icon-planning">
+                                <div class="planning-elements">
+                                    <div class="element element-1"></div>
+                                    <div class="element element-2"></div>
+                                    <div class="element element-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="card-title">ПЛАНИРОВАНИЕ И КОНЦЕПЦИЯ</h3>
+                        <p class="card-description">Разработка концепции турнира, планирование формата, создание регламента и системы проведения</p>
+                        <div class="card-features">
+                            <span class="feature">Концепция</span>
+                            <span class="feature">Регламент</span>
+                            <span class="feature">Формат</span>
+                        </div>
                     </div>
                 </div>
-                <!-- Third service: image on left, content on right -->
-                <div class="service-card">
-                    <div class="service-image">
-                        <video autoplay muted loop playsinline loading="lazy" preload="none">
-                            <source src="assets/services/stream.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                    <div class="service-content">
-                        <h3 class="service-title">ТРАНСЛЯЦИЯ И СТРИМ</h3>
-                        <p class="service-description">Профессиональная трансляция турниров, комментаторы, графическое оформление</p>
-                    </div>
-                </div>
-                <!-- Fourth service: content on left, image on right -->
-                <div class="service-card">
-                    <div class="service-content">
-                        <h3 class="service-title">ПРИЗОВОЙ ФОНД</h3>
-                        <p class="service-description">Организация призового фонда, поиск спонсоров, распределение наград</p>
-                    </div>
-                    <div class="service-image">
-                        <video autoplay muted loop playsinline loading="lazy" preload="none">
-                            <source src="assets/services/prize.mp4" type="video/mp4">
-                        </video>
-                    </div>
-                </div>
-                <!-- Fifth service: image on left, content on right -->
-                <div class="service-card">
-                    <div class="service-image">
-                        <video autoplay muted loop playsinline loading="lazy" preload="none">
-                            <source src="assets/services/prize.mp4" type="video/mp4">
-                        </video>
-                        <div class="service-name">Маркетинг</div>
-                    </div>
-                    <div class="service-content">
-                        <h3 class="service-title">МАРКЕТИНГ И ПРОДВИЖЕНИЕ</h3>
-                        <p class="service-description">Продвижение турнира, работа с медиа, привлечение аудитории и участников</p>
+
+                <!-- Service Card 2: Technical -->
+                <div class="service-3d-card" data-tilt>
+                    <div class="card-glare"></div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <div class="icon-technical">
+                                <div class="server-rack">
+                                    <div class="server server-1"></div>
+                                    <div class="server server-2"></div>
+                                    <div class="server server-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="card-title">ТЕХНИЧЕСКОЕ ОБЕСПЕЧЕНИЕ</h3>
+                        <p class="card-description">Настройка серверов, античит системы, техническая поддержка участников</p>
+                        <div class="card-features">
+                            <span class="feature">Серверы</span>
+                            <span class="feature">Античит</span>
+                            <span class="feature">Поддержка</span>
+                        </div>
                     </div>
                 </div>
-                <!-- Sixth service: content on left, image on right -->
-                <div class="service-card">
-                    <div class="service-content">
-                        <h3 class="service-title">СУДЕЙСТВО</h3>
-                        <p class="service-description">Профессиональные судьи, контроль честности игры, разрешение спорных ситуаций</p>
+
+                <!-- Service Card 3: Streaming -->
+                <div class="service-3d-card" data-tilt>
+                    <div class="card-glare"></div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <div class="icon-streaming">
+                                <div class="camera-setup">
+                                    <div class="camera"></div>
+                                    <div class="stream-waves">
+                                        <div class="wave wave-1"></div>
+                                        <div class="wave wave-2"></div>
+                                        <div class="wave wave-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="card-title">ТРАНСЛЯЦИЯ И СТРИМ</h3>
+                        <p class="card-description">Профессиональная трансляция турниров, комментаторы, графическое оформление</p>
+                        <div class="card-features">
+                            <span class="feature">Трансляция</span>
+                            <span class="feature">Комментаторы</span>
+                            <span class="feature">Графика</span>
+                        </div>
                     </div>
-                    <div class="service-image">
-                        <video autoplay muted loop playsinline loading="lazy" preload="none">
-                            <source src="assets/services/stream.mp4" type="video/mp4">
-                        </video>
-                        <div class="service-name">Судейство</div>
+                </div>
+
+                <!-- Service Card 4: Prize Fund -->
+                <div class="service-3d-card" data-tilt>
+                    <div class="card-glare"></div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <div class="icon-prize">
+                                <div class="trophy-setup">
+                                    <div class="trophy"></div>
+                                    <div class="prize-coins">
+                                        <div class="coin coin-1"></div>
+                                        <div class="coin coin-2"></div>
+                                        <div class="coin coin-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="card-title">ПРИЗОВОЙ ФОНД</h3>
+                        <p class="card-description">Организация призового фонда, поиск спонсоров, распределение наград</p>
+                        <div class="card-features">
+                            <span class="feature">Призы</span>
+                            <span class="feature">Спонсоры</span>
+                            <span class="feature">Награды</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Card 5: Marketing -->
+                <div class="service-3d-card" data-tilt>
+                    <div class="card-glare"></div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <div class="icon-marketing">
+                                <div class="marketing-elements">
+                                    <div class="megaphone"></div>
+                                    <div class="social-bubbles">
+                                        <div class="bubble bubble-1"></div>
+                                        <div class="bubble bubble-2"></div>
+                                        <div class="bubble bubble-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="card-title">МАРКЕТИНГ И ПРОДВИЖЕНИЕ</h3>
+                        <p class="card-description">Продвижение турнира, работа с медиа, привлечение аудитории и участников</p>
+                        <div class="card-features">
+                            <span class="feature">Продвижение</span>
+                            <span class="feature">Медиа</span>
+                            <span class="feature">Аудитория</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Card 6: Judging -->
+                <div class="service-3d-card" data-tilt>
+                    <div class="card-glare"></div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <div class="icon-judging">
+                                <div class="judge-elements">
+                                    <div class="gavel"></div>
+                                    <div class="balance-scale">
+                                        <div class="scale-left"></div>
+                                        <div class="scale-right"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="card-title">СУДЕЙСТВО</h3>
+                        <p class="card-description">Профессиональные судьи, контроль честности игры, разрешение спорных ситуаций</p>
+                        <div class="card-features">
+                            <span class="feature">Судьи</span>
+                            <span class="feature">Честность</span>
+                            <span class="feature">Контроль</span>
+                        </div>
                     </div>
                 </div>
             </div>
