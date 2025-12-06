@@ -454,4 +454,41 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('✅ Navigation links configured');
     console.log('🎉 Compact menu functionality fully loaded!');
+
+    // Contact Form Handler
+    const contactForm = document.getElementById('contactForm');
+    const successMessage = document.querySelector('.form-success-message');
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(contactForm);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                website: formData.get('website'),
+                message: formData.get('message')
+            };
+            
+            console.log('📧 Form submitted:', data);
+            
+            // Show success message
+            if (successMessage) {
+                successMessage.classList.add('show');
+                setTimeout(() => {
+                    successMessage.classList.remove('show');
+                }, 5000);
+            }
+            
+            // Reset form
+            contactForm.reset();
+            
+            // Here you would typically send the data to your server
+            // For now, we'll just log it
+            console.log('✅ Contact form processed successfully');
+        });
+    }
 });
