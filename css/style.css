@@ -1969,23 +1969,24 @@ section {
 /* Social Links - WLT Style */
 .footer-social {
     grid-column: 1 / -1;
-    display: flex;
-    justify-content: center;
-    gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
     margin-top: 40px;
-    flex-wrap: wrap;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .social-card {
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 25px;
-    width: 120px;
-    height: 50px;
+    background: rgba(40, 40, 40, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
     backdrop-filter: blur(10px);
     position: relative;
     overflow: hidden;
@@ -2000,8 +2001,8 @@ section {
     bottom: 0;
     background: linear-gradient(135deg, #6600cc, #8833dd);
     opacity: 0;
-    transition: opacity 0.4s ease;
-    border-radius: 25px;
+    transition: opacity 0.3s ease;
+    border-radius: 12px;
 }
 
 .social-card:hover::before {
@@ -2010,32 +2011,57 @@ section {
 
 .social-card:hover {
     border-color: #6600cc;
-    transform: translateY(-5px) scale(1.1);
-    box-shadow: 0 10px 30px rgba(102, 0, 204, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 0, 204, 0.3);
 }
 
 .social-card a {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9);
     text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
-    transition: all 0.4s ease;
+    transition: all 0.3s ease;
     position: relative;
     z-index: 2;
 }
 
 .social-card:hover a {
     color: #ffffff;
-    transform: scale(1.1);
 }
 
 .social-card svg {
-    width: 20px;
-    height: 20px;
-    transition: all 0.4s ease;
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s ease;
+}
+
+/* Mobile responsiveness for social cards */
+@media (max-width: 768px) {
+    .footer-social {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        max-width: 400px;
+    }
+    
+    .social-card {
+        height: 50px;
+    }
+    
+    .social-card svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-social {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        max-width: 280px;
+    }
 }
 
 .footer-bottom {
