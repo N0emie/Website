@@ -40,15 +40,14 @@
     -webkit-backdrop-filter: blur(10px);
 }
 
-/* Modal Container */
+/* Modal Container with Custom Shape */
 .service-modal-container {
     position: relative;
     margin: auto;
     width: min(1000px, 90vw);
-    height: 80vh;
-    background: #181818;
-    border-radius: 32px;
-    overflow: hidden;
+    height: calc(80vh + 60px); /* Extra height for close button area */
+    background: transparent;
+    overflow: visible;
     display: flex;
     flex-direction: column;
     transform: scale(0);
@@ -62,11 +61,47 @@
     opacity: 1;
 }
 
+/* Main modal content area */
+.service-modal-main {
+    background: #181818;
+    border-radius: 32px;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Custom notch/cutout for close button */
+.service-modal-main::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+    height: 60px;
+    background: #181818;
+    border-radius: 0 0 20px 20px;
+    clip-path: polygon(
+        0% 0%, 
+        35% 0%, 
+        40% 100%, 
+        60% 100%, 
+        65% 0%, 
+        100% 0%, 
+        100% 100%, 
+        0% 100%
+    );
+}
+
 /* Modal Media Section (Top 60-65%) */
 .service-modal-media {
     height: 65%;
     overflow: hidden;
     border-radius: 32px 32px 0 0;
+    position: relative;
+    z-index: 2;
 }
 
 .service-modal-img {
@@ -122,16 +157,15 @@
     margin: 0;
 }
 
-/* Close Button with Tail/Arrow */
+/* Close Button integrated into modal */
 .service-modal-close {
     position: absolute;
-    bottom: -25px;
+    bottom: -15px;
     left: 50%;
     transform: translateX(-50%);
-    background: #2a2a2a;
+    background: transparent;
     color: #ffffff;
     border: none;
-    border-radius: 8px;
     padding: 12px 20px;
     font-family: 'Roboto', sans-serif;
     font-size: 13px;
@@ -143,35 +177,14 @@
     align-items: center;
     gap: 10px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     z-index: 10;
     min-width: 120px;
     justify-content: center;
 }
 
-/* Tail/Arrow pointing up to modal */
-.service-modal-close::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 8px solid #2a2a2a;
-    transition: border-bottom-color 0.3s ease;
-}
-
 .service-modal-close:hover {
-    background: #404040;
-    transform: translateX(-50%) translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-}
-
-.service-modal-close:hover::before {
-    border-bottom-color: #404040;
+    color: #cccccc;
+    transform: translateX(-50%) translateY(-1px);
 }
 
 .close-icon {
@@ -211,17 +224,24 @@
     }
     
     .service-modal-close {
-        bottom: -20px;
+        bottom: -12px;
         padding: 10px 18px;
         font-size: 12px;
         min-width: 100px;
     }
     
-    .service-modal-close::before {
-        top: -6px;
-        border-left-width: 6px;
-        border-right-width: 6px;
-        border-bottom-width: 6px;
+    .service-modal-container {
+        height: calc(85vh + 50px);
+    }
+    
+    .service-modal-main {
+        height: 85vh;
+    }
+    
+    .service-modal-main::after {
+        width: 140px;
+        height: 50px;
+        bottom: -25px;
     }
 }
 
@@ -255,17 +275,24 @@
     }
     
     .service-modal-close {
-        bottom: -18px;
+        bottom: -10px;
         padding: 8px 16px;
         font-size: 11px;
         min-width: 90px;
     }
     
-    .service-modal-close::before {
-        top: -5px;
-        border-left-width: 5px;
-        border-right-width: 5px;
-        border-bottom-width: 5px;
+    .service-modal-container {
+        height: calc(90vh + 45px);
+    }
+    
+    .service-modal-main {
+        height: 90vh;
+    }
+    
+    .service-modal-main::after {
+        width: 120px;
+        height: 45px;
+        bottom: -22px;
     }
 }
 
