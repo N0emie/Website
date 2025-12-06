@@ -1,7 +1,7 @@
 /* Rectangular Services Section Styles */
 .services-organic {
     padding: 120px 0;
-    background: #0a0a0a;
+    background: transparent;
     position: relative;
     overflow: hidden;
 }
@@ -27,7 +27,7 @@
 .services-organic-grid {
     display: flex;
     flex-direction: column;
-    gap: 80px;
+    gap: 220px;
     align-items: center;
     max-width: 1000px;
     margin: 0 auto;
@@ -52,35 +52,35 @@
     box-shadow: 0 25px 60px rgba(173, 162, 222, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-/* Alternating layout - left and right with larger spacing */
+/* Alternating layout - left and right with larger spacing (увеличено в 2.5 раза + 200px) */
 .service-organic-card:nth-child(1) {
     align-self: flex-start;
-    margin-left: 100px;
+    margin-left: 450px;
 }
 
 .service-organic-card:nth-child(2) {
     align-self: flex-end;
-    margin-right: 120px;
+    margin-right: 500px;
 }
 
 .service-organic-card:nth-child(3) {
     align-self: flex-start;
-    margin-left: 80px;
+    margin-left: 400px;
 }
 
 .service-organic-card:nth-child(4) {
     align-self: flex-end;
-    margin-right: 90px;
+    margin-right: 425px;
 }
 
 .service-organic-card:nth-child(5) {
     align-self: flex-start;
-    margin-left: 110px;
+    margin-left: 475px;
 }
 
 .service-organic-card:nth-child(6) {
     align-self: flex-end;
-    margin-right: 100px;
+    margin-right: 450px;
 }
 
 /* Content inside rectangular card */
@@ -231,7 +231,7 @@
 @media (max-width: 1200px) {
     .services-organic-grid {
         max-width: 800px;
-        gap: 60px;
+        gap: 160px;
     }
     
     .service-organic-card {
@@ -240,11 +240,11 @@
     }
     
     .service-organic-card:nth-child(odd) {
-        margin-left: 50px;
+        margin-left: 225px;
     }
     
     .service-organic-card:nth-child(even) {
-        margin-right: 50px;
+        margin-right: 225px;
     }
 }
 
