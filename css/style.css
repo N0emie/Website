@@ -1976,39 +1976,65 @@ section {
 }
 
 .social-card {
-    background: rgba(10, 10, 10, 0.8);
-    border: 1px solid rgba(102, 0, 204, 0.3);
-    border-radius: 16px;
-    width: 60px;
-    height: 60px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.social-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #6600cc, #8833dd);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    border-radius: 50%;
+}
+
+.social-card:hover::before {
+    opacity: 1;
 }
 
 .social-card:hover {
-    background: rgba(102, 0, 204, 0.2);
     border-color: #6600cc;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(102, 0, 204, 0.3);
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 10px 30px rgba(102, 0, 204, 0.4);
 }
 
 .social-card a {
-    color: #ffffff;
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
-    transition: color 0.3s ease;
+    transition: all 0.4s ease;
+    position: relative;
+    z-index: 2;
 }
 
 .social-card:hover a {
     color: #ffffff;
+    transform: scale(1.1);
+}
+
+.social-card svg {
+    width: 20px;
+    height: 20px;
+    transition: all 0.4s ease;
 }
 
 .footer-bottom {
@@ -2047,8 +2073,9 @@ section {
 }
 
 .social-card svg {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
+    transition: all 0.4s ease;
 }
 
 /* Tournament Modal Styles */
