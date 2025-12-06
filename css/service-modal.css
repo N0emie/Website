@@ -1,0 +1,256 @@
+/* Service Modal Styles - WLT Design */
+
+/* Make service cards clickable */
+.service-modal-trigger {
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-modal-trigger:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal Overlay */
+.service-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.service-modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.service-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Modal Container */
+.service-modal-container {
+    position: relative;
+    margin: auto;
+    width: min(1000px, 90vw);
+    height: 80vh;
+    background: #181818;
+    border-radius: 32px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transform: scale(0.8);
+    transition: transform 0.4s ease;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.service-modal.active .service-modal-container {
+    transform: scale(1);
+}
+
+/* Modal Media Section (Top 60-65%) */
+.service-modal-media {
+    height: 65%;
+    overflow: hidden;
+    border-radius: 32px 32px 0 0;
+}
+
+.service-modal-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Modal Content Section (Bottom 35-40%) */
+.service-modal-content {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    gap: 30px;
+}
+
+.service-modal-header {
+    flex: 0 0 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.service-modal-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.service-modal-subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ff6b35;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.service-modal-description {
+    flex: 1;
+}
+
+.service-modal-text {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #cccccc;
+    margin: 0;
+}
+
+/* Close Button (Unique "Tablet" Style) */
+.service-modal-close {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 24px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.service-modal-close:hover {
+    background: #333333;
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.close-icon {
+    font-size: 12px;
+    line-height: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .service-modal-container {
+        width: 95vw;
+        height: 85vh;
+        border-radius: 20px;
+    }
+    
+    .service-modal-media {
+        border-radius: 20px 20px 0 0;
+    }
+    
+    .service-modal-content {
+        padding: 30px 20px;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .service-modal-header {
+        flex: none;
+    }
+    
+    .service-modal-title {
+        font-size: 20px;
+    }
+    
+    .service-modal-text {
+        font-size: 14px;
+    }
+    
+    .service-modal-close {
+        bottom: 15px;
+        padding: 10px 20px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .service-modal-container {
+        width: 98vw;
+        height: 90vh;
+        border-radius: 16px;
+    }
+    
+    .service-modal-media {
+        border-radius: 16px 16px 0 0;
+        height: 60%;
+    }
+    
+    .service-modal-content {
+        padding: 20px 15px;
+    }
+    
+    .service-modal-title {
+        font-size: 18px;
+    }
+    
+    .service-modal-subtitle {
+        font-size: 12px;
+    }
+    
+    .service-modal-text {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Animation for modal appearance */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes modalFadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+.service-modal.closing .service-modal-container {
+    animation: modalFadeOut 0.3s ease forwards;
+}
