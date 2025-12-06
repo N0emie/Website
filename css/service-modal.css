@@ -40,12 +40,12 @@
     -webkit-backdrop-filter: blur(10px);
 }
 
-/* Modal Container with Custom Shape */
+/* Modal Container - Simple Rectangle */
 .service-modal-container {
     position: relative;
     margin: auto;
     width: min(1000px, 90vw);
-    height: calc(80vh + 60px); /* Extra height for close button area */
+    height: 80vh;
     background: transparent;
     overflow: visible;
     display: flex;
@@ -53,7 +53,7 @@
     transform: scale(0);
     opacity: 0;
     transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    margin-bottom: 60px; /* Space for close button */
 }
 
 .service-modal.active .service-modal-container {
@@ -65,34 +65,12 @@
 .service-modal-main {
     background: #181818;
     border-radius: 32px;
-    height: 80vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     position: relative;
-}
-
-/* Custom notch/cutout for close button */
-.service-modal-main::after {
-    content: '';
-    position: absolute;
-    bottom: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 160px;
-    height: 60px;
-    background: #181818;
-    border-radius: 0 0 20px 20px;
-    clip-path: polygon(
-        0% 0%, 
-        35% 0%, 
-        40% 100%, 
-        60% 100%, 
-        65% 0%, 
-        100% 0%, 
-        100% 100%, 
-        0% 100%
-    );
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
 }
 
 /* Modal Media Section (Top 60-65%) */
@@ -157,15 +135,16 @@
     margin: 0;
 }
 
-/* Close Button integrated into modal */
+/* Close Button as separate rounded rectangle */
 .service-modal-close {
     position: absolute;
-    bottom: -15px;
+    bottom: -50px;
     left: 50%;
     transform: translateX(-50%);
-    background: transparent;
+    background: #2a2a2a;
     color: #ffffff;
     border: none;
+    border-radius: 8px;
     padding: 12px 20px;
     font-family: 'Roboto', sans-serif;
     font-size: 13px;
@@ -180,11 +159,13 @@
     z-index: 10;
     min-width: 120px;
     justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .service-modal-close:hover {
-    color: #cccccc;
-    transform: translateX(-50%) translateY(-1px);
+    background: #404040;
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 .close-icon {
@@ -224,24 +205,15 @@
     }
     
     .service-modal-close {
-        bottom: -12px;
+        bottom: -45px;
         padding: 10px 18px;
         font-size: 12px;
         min-width: 100px;
     }
     
     .service-modal-container {
-        height: calc(85vh + 50px);
-    }
-    
-    .service-modal-main {
         height: 85vh;
-    }
-    
-    .service-modal-main::after {
-        width: 140px;
-        height: 50px;
-        bottom: -25px;
+        margin-bottom: 50px;
     }
 }
 
@@ -275,24 +247,15 @@
     }
     
     .service-modal-close {
-        bottom: -10px;
+        bottom: -40px;
         padding: 8px 16px;
         font-size: 11px;
         min-width: 90px;
     }
     
     .service-modal-container {
-        height: calc(90vh + 45px);
-    }
-    
-    .service-modal-main {
         height: 90vh;
-    }
-    
-    .service-modal-main::after {
-        width: 120px;
-        height: 45px;
-        bottom: -22px;
+        margin-bottom: 45px;
     }
 }
 
