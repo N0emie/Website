@@ -1,0 +1,41 @@
+/* Pinnacle Font Family */
+
+@font-face {
+    font-family: 'Pinnacle';
+    src: url('../fonts/Web/Pinnacle-Regular.woff2') format('woff2'),
+         url('../fonts/Web/Pinnacle-Regular.woff') format('woff'),
+         url('../fonts/Web/Pinnacle-Regular.eot') format('embedded-opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pinnacle';
+    src: url('../fonts/Web/Pinnacle-Medium.woff2') format('woff2'),
+         url('../fonts/Web/Pinnacle-Medium.woff') format('woff'),
+         url('../fonts/Web/Pinnacle-Medium.eot') format('embedded-opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pinnacle';
+    src: url('../fonts/Web/Pinnacle-Bold.woff2') format('woff2'),
+         url('../fonts/Web/Pinnacle-Bold.woff') format('woff'),
+         url('../fonts/Web/Pinnacle-Bold.eot') format('embedded-opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pinnacle';
+    src: url('../fonts/Web/Pinnacle-ExtraBold.woff2') format('woff2'),
+         url('../fonts/Web/Pinnacle-ExtraBold.woff') format('woff'),
+         url('../fonts/Web/Pinnacle-ExtraBold.eot') format('embedded-opentype');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
