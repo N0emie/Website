@@ -53,7 +53,7 @@
     transform: scale(0);
     opacity: 0;
     transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    margin-bottom: 60px; /* Space for close button */
+    margin-bottom: 80px; /* Space for the integrated close button */
 }
 
 .service-modal.active .service-modal-container {
@@ -135,37 +135,38 @@
     margin: 0;
 }
 
-/* Close Button as separate rounded rectangle */
+/* Close Button as integrated tab that extends beyond modal */
 .service-modal-close {
     position: absolute;
-    bottom: -50px;
+    bottom: -35px;
     left: 50%;
     transform: translateX(-50%);
-    background: #2a2a2a;
+    background: #181818;
     color: #ffffff;
     border: none;
-    border-radius: 8px;
-    padding: 12px 20px;
+    border-radius: 0 0 8px 8px;
+    padding: 20px 34px 14px 34px;
     font-family: 'Roboto', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     cursor: pointer;
     display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.3s ease;
-    z-index: 10;
-    min-width: 120px;
+    align-items: flex-end;
+    gap: 8px;
+    transition: none;
+    z-index: 5;
+    min-width: 196px;
     justify-content: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    outline: none;
 }
 
 .service-modal-close:hover {
-    background: #404040;
-    transform: translateX(-50%) translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    background: #181818;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .close-icon {
@@ -205,15 +206,16 @@
     }
     
     .service-modal-close {
-        bottom: -45px;
-        padding: 10px 18px;
-        font-size: 12px;
-        min-width: 100px;
+        bottom: -30px;
+        padding: 18px 28px 12px 28px;
+        font-size: 11px;
+        min-width: 168px;
+        border-radius: 0 0 6px 6px;
     }
     
     .service-modal-container {
         height: 85vh;
-        margin-bottom: 50px;
+        margin-bottom: 80px;
     }
 }
 
@@ -247,15 +249,16 @@
     }
     
     .service-modal-close {
-        bottom: -40px;
-        padding: 8px 16px;
-        font-size: 11px;
-        min-width: 90px;
+        bottom: -25px;
+        padding: 16px 24px 10px 24px;
+        font-size: 10px;
+        min-width: 140px;
+        border-radius: 0 0 5px 5px;
     }
     
     .service-modal-container {
         height: 90vh;
-        margin-bottom: 45px;
+        margin-bottom: 70px;
     }
 }
 
