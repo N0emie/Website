@@ -27,7 +27,7 @@
 .services-organic-grid {
     display: flex;
     flex-direction: column;
-    gap: 220px;
+    gap: 80px;
     align-items: center;
     max-width: 1000px;
     margin: 0 auto;
@@ -64,35 +64,35 @@
     box-shadow: 0 25px 60px rgba(173, 162, 222, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-/* Alternating layout - left and right with larger spacing (увеличено в 2.5 раза + 200px) */
+/* Alternating layout - left and right with reasonable spacing */
 .service-organic-card:nth-child(1) {
     align-self: flex-start;
-    margin-left: 450px;
+    margin-left: 50px;
 }
 
 .service-organic-card:nth-child(2) {
     align-self: flex-end;
-    margin-right: 500px;
+    margin-right: 50px;
 }
 
 .service-organic-card:nth-child(3) {
     align-self: flex-start;
-    margin-left: 400px;
+    margin-left: 50px;
 }
 
 .service-organic-card:nth-child(4) {
     align-self: flex-end;
-    margin-right: 425px;
+    margin-right: 50px;
 }
 
 .service-organic-card:nth-child(5) {
     align-self: flex-start;
-    margin-left: 475px;
+    margin-left: 50px;
 }
 
 .service-organic-card:nth-child(6) {
     align-self: flex-end;
-    margin-right: 450px;
+    margin-right: 50px;
 }
 
 /* Content inside rectangular card */
