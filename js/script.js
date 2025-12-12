@@ -1130,14 +1130,6 @@ function initServiceCardsTilt() {
     serviceCards.forEach((card, index) => {
         console.log(`Setting up tilt for service card ${index + 1}:`, card);
 
-        const cardInner = card.querySelector('.card-inner');
-        if (!cardInner) {
-            console.warn(`No .card-inner found in service card ${index + 1}`);
-            return;
-        }
-
-        console.log(`Found card-inner element for service card ${index + 1}:`, cardInner);
-
         let isHovering = false;
         let mouseX = 0;
         let mouseY = 0;
@@ -1148,7 +1140,7 @@ function initServiceCardsTilt() {
         card.addEventListener('mouseenter', () => {
             console.log('Mouse entered service card', index + 1);
             isHovering = true;
-            cardInner.style.transition = 'transform 0.1s ease-out';
+            card.style.transition = 'transform 0.1s ease-out';
         });
 
         // Mouse move
@@ -1170,24 +1162,24 @@ function initServiceCardsTilt() {
             currentRotateX += (rotateX - currentRotateX) * 0.1;
             currentRotateY += (rotateY - currentRotateY) * 0.1;
 
-            // Apply 3D transform
+            // Apply 3D transform to the entire card
             const transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(10px)`;
-            cardInner.style.transform = transform;
+            card.style.transform = transform;
         });
 
         // Mouse leave
         card.addEventListener('mouseleave', function(e) {
             console.log('Mouse left service card', index + 1);
             isHovering = false;
-            cardInner.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
-            cardInner.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+            card.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
         });
 
         // Smooth animation loop for better performance
         function animateServiceCard() {
             if (isHovering) {
                 const transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(10px)`;
-                cardInner.style.transform = transform;
+                card.style.transform = transform;
             }
             requestAnimationFrame(animateServiceCard);
         }

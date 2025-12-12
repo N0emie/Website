@@ -59,8 +59,8 @@
     transform-style: preserve-3d;
 }
 
+/* Hover effect is now handled by JavaScript 3D tilt */
 .service-organic-card:hover {
-    transform: translateY(-15px) scale(1.03);
     box-shadow: 0 25px 60px rgba(173, 162, 222, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
