@@ -1114,3 +1114,92 @@ if (document.readyState === 'loading') {
     console.log('📄 Document already loaded, initializing tilt effect immediately');
     initTiltEffect();
 }
+
+// ===== 3D TILT EFFECT FOR SERVICE CARDS =====
+function initServiceCardsTilt() {
+    console.log('🎨 Initializing 3D Tilt Effect for Service Cards...');
+
+    const serviceCards = document.querySelectorAll('.service-organic-card[data-tilt]');
+    console.log('Found', serviceCards.length, 'service cards with data-tilt attribute');
+
+    if (serviceCards.length === 0) {
+        console.warn('No service cards with data-tilt found!');
+        return;
+    }
+
+    serviceCards.forEach((card, index) => {
+        console.log(`Setting up tilt for service card ${index + 1}:`, card);
+
+        let isHovering = false;
+        let mouseX = 0;
+        let mouseY = 0;
+        let currentRotateX = 0;
+        let currentRotateY = 0;
+
+        // Mouse enter
+        card.addEventListener('mouseenter', () => {
+            console.log('Mouse entered service card', index + 1);
+            isHovering = true;
+            card.style.transition = 'transform 0.1s ease-out';
+        });
+
+        // Mouse move
+        card.addEventListener('mousemove', function(e) {
+            if (!isHovering) return;
+
+            const rect = card.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            mouseX = e.clientX - centerX;
+            mouseY = e.clientY - centerY;
+
+            const maxTilt = 8; // Более выраженный эффект для карточек услуг
+            const rotateX = (mouseY / (rect.height / 2)) * -maxTilt;
+            const rotateY = (mouseX / (rect.width / 2)) * maxTilt;
+
+            // Smooth interpolation for smoother movement
+            currentRotateX += (rotateX - currentRotateX) * 0.1;
+            currentRotateY += (rotateY - currentRotateY) * 0.1;
+
+            // Apply 3D transform to the entire card
+            const transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(10px)`;
+            card.style.transform = transform;
+        });
+
+        // Mouse leave
+        card.addEventListener('mouseleave', function(e) {
+            console.log('Mouse left service card', index + 1);
+            isHovering = false;
+            card.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+        });
+
+        // Smooth animation loop for better performance
+        function animateServiceCard() {
+            if (isHovering) {
+                const transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateZ(10px)`;
+                card.style.transform = transform;
+            }
+            requestAnimationFrame(animateServiceCard);
+        }
+
+        animateServiceCard();
+    });
+
+    console.log('✅ 3D Tilt Effect for Service Cards initialized successfully!');
+}
+
+// Initialize service cards tilt effect when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM Content Loaded - initializing service cards tilt effect');
+    initServiceCardsTilt();
+});
+
+// Also try to initialize immediately if DOM is already loaded
+if (document.readyState === 'loading') {
+    console.log('📄 Document still loading, waiting for DOMContentLoaded for service cards');
+} else {
+    console.log('📄 Document already loaded, initializing service cards tilt effect immediately');
+    initServiceCardsTilt();
+}
