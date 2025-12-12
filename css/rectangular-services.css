@@ -45,6 +45,18 @@
     box-shadow: 0 15px 40px rgba(173, 162, 222, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     overflow: hidden;
     border: 2px solid #adaede;
+    /* 3D Transform Support */
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+/* 3D Inner Container */
+.service-organic-card .card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 0.3s ease;
+    transform-style: preserve-3d;
 }
 
 .service-organic-card:hover {
