@@ -2189,6 +2189,7 @@ section {
 
 .tournament-modal.active {
     opacity: 1;
+    pointer-events: all;
 }
 
 .modal-overlay {
@@ -3203,6 +3204,8 @@ body:not(.loading) .examp-gif {
 
 .tournament-modal.active {
     display: flex;
+    opacity: 1;
+    pointer-events: all;
 }
 
 .modal-overlay {
