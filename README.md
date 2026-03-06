@@ -45,7 +45,7 @@ website/
    ```
 
 ## Контакты
-- **Telegram**: [@dizband](https://t.me/dizband)
+- **Telegram**: [@Dark0mie](https://t.me/Darkomie)
 - **Email**: [hello@dizband.media](mailto:hello@dizband.media)
 - **YouTube**: [@dizband](https://youtube.com/@dizband)
 - **Twitch**: [dizband](https://twitch.tv/dizband)
