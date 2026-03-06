@@ -1130,6 +1130,12 @@ function initServiceCardsTilt() {
     serviceCards.forEach((card, index) => {
         console.log(`Setting up tilt for service card ${index + 1}:`, card);
 
+        // Caption under the card (title + short subtitle)
+        const title = card.dataset.title || '';
+        const subtitle = card.dataset.subtitle || '';
+        const subtitleShort = subtitle.split(' ').slice(0, 4).join(' ');
+        card.dataset.caption = subtitleShort ? `${title}\n${subtitleShort}` : title;
+
         let isHovering = false;
         let mouseX = 0;
         let mouseY = 0;
