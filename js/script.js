@@ -1,107 +1,20 @@
-// Simple and Reliable Loading Screen
+// Premium preloader lifecycle
+(function () {
+    const MIN_VISIBLE_MS = 3500;
+    const FADE_DURATION_MS = 320;
+    const CMS_WAIT_MAX_MS = 1400;
 
-// Test alert to confirm script loading
-setTimeout(() => {
-}, 1000);
-
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // Get loading screen elements
     const loadingScreen = document.getElementById('loading-screen');
-    const progressBar = document.querySelector('.loading-progress-fill');
-    const progressText = document.querySelector('.loading-percentage');
-    const loadingVideo = document.querySelector('.loading-logo video');
     const body = document.body;
     const html = document.documentElement;
-    
-    // Force video to play
-    if (loadingVideo) {
-        loadingVideo.play().then(() => {
-        }).catch(error => {
-            console.warn('⚠️ Video autoplay failed:', error);
-            // Try to play on user interaction
-            document.addEventListener('click', () => {
-                loadingVideo.play().catch(e => console.warn('Video play failed:', e));
-            }, { once: true });
-        });
-    }
-    
-    if (!loadingScreen || !progressBar || !progressText) {
-        console.error('❌ Loading screen elements not found!');
-        body.classList.remove('loading');
-        html.classList.remove('loading');
-        return;
-    }
-    
-    // Simple progress animation - guaranteed to reach 100%
-    function startProgressAnimation() {
-        const totalDuration = 4000; // 4 seconds total
-        const startTime = Date.now();
-        let animationId;
-        
-        function updateProgress() {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min((elapsed / totalDuration) * 100, 100);
-            
-            // Update UI
-            progressBar.style.width = progress + '%';
-            progressText.textContent = Math.floor(progress) + '%';
-            
-            
-            // Continue animation until 100%
-            if (progress < 100) {
-                animationId = requestAnimationFrame(updateProgress);
-            } else {
-                // Reached 100% - wait a moment then hide loading screen
-                setTimeout(hideLoadingScreen, 300);
-            }
-        }
-        
-        // Start the animation
-        animationId = requestAnimationFrame(updateProgress);
-        
-        // Safety fallback - force completion after 5 seconds
-        setTimeout(() => {
-            if (body.classList.contains('loading')) {
-                cancelAnimationFrame(animationId);
-                progressBar.style.width = '100%';
-                progressText.textContent = '100%';
-                setTimeout(hideLoadingScreen, 300);
-            }
-        }, 5000);
-    }
-    
-    // Hide loading screen and show content
-    function hideLoadingScreen() {
-        
-        // Remove loading class from html and body
-        body.classList.remove('loading');
-        html.classList.remove('loading');
-        
-        // Add fade out animation to loading screen
-        loadingScreen.classList.add('fade-out');
-        
-        // Force show all content immediately
-        const contentElements = document.querySelectorAll('.social-icons-corner, .hero-logo-corner, .hero-lisa, .main-content, .examp-background, .examp-fog-left, .examp-fog-right, .examp-crystal, .examp-dota-logo, .examp-gif');
-        contentElements.forEach(el => {
-            el.style.opacity = '1';
-            el.style.visibility = 'visible';
-            el.style.pointerEvents = 'auto';
-        });
-        
-        // Remove loading screen from DOM after fade animation
-        setTimeout(() => {
-            loadingScreen.style.display = 'none';
-            
-            // Initialize lazy loading for videos
-            setupLazyVideoLoading();
-        }, 500);
-    }
-    
-    // Setup lazy loading for videos
+    let minTimeElapsed = false;
+    let pageLoaded = document.readyState === 'complete';
+    let cmsReady = !window.__cmsContentReadyPromise;
+    let hidden = false;
+
     function setupLazyVideoLoading() {
         const lazyVideos = document.querySelectorAll('video[preload="none"]');
-        
+
         if ('IntersectionObserver' in window) {
             const videoObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -115,17 +28,61 @@ document.addEventListener('DOMContentLoaded', function() {
             }, {
                 rootMargin: '50px'
             });
-            
+
             lazyVideos.forEach(video => {
                 videoObserver.observe(video);
             });
         }
     }
-    
-    // Start the loading animation
-    startProgressAnimation();
-});
 
+    function hideLoader() {
+        if (hidden) return;
+        hidden = true;
+
+        body.classList.remove('loading');
+        html.classList.remove('loading');
+
+        if (!loadingScreen) {
+            setupLazyVideoLoading();
+            return;
+        }
+
+        loadingScreen.classList.add('is-hidden');
+        loadingScreen.setAttribute('aria-hidden', 'true');
+
+        setTimeout(() => {
+            loadingScreen.style.display = 'none';
+            setupLazyVideoLoading();
+        }, FADE_DURATION_MS);
+    }
+
+    function scheduleHide() {
+        if (!minTimeElapsed || !pageLoaded || !cmsReady) return;
+        hideLoader();
+    }
+
+    window.setTimeout(() => {
+        minTimeElapsed = true;
+        scheduleHide();
+    }, MIN_VISIBLE_MS);
+
+    if (!pageLoaded) {
+        window.addEventListener('load', () => {
+            pageLoaded = true;
+            scheduleHide();
+        }, { once: true });
+    }
+
+    if (window.__cmsContentReadyPromise && typeof window.__cmsContentReadyPromise.then === 'function') {
+        Promise.race([
+            window.__cmsContentReadyPromise,
+            new Promise((resolve) => setTimeout(resolve, CMS_WAIT_MAX_MS))
+        ]).finally(() => {
+            cmsReady = true;
+            scheduleHide();
+        });
+    }
+})();
 // Tournament Carousel Drag-and-Drop Navigation
 document.addEventListener('DOMContentLoaded', function() {
     const carousel = document.getElementById('tournaments-carousel');
@@ -241,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Here you would typically send the data to your server
         // For now, we'll just show a success message
-        alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
+        alert('РЎРїР°СЃРёР±Рѕ Р·Р° Р·Р°СЏРІРєСѓ! РњС‹ СЃРІСЏР¶РµРјСЃСЏ СЃ РІР°РјРё РІ Р±Р»РёР¶Р°Р№С€РµРµ РІСЂРµРјСЏ.');
         
         // Reset form
         contactForm.reset();
@@ -331,7 +288,7 @@ function showTournamentModal(title, description, index) {
     // Use existing modal from HTML
     const modal = document.getElementById('tournament-modal');
     if (!modal) {
-        console.error('❌ Tournament modal not found in HTML');
+        console.error('вќЊ Tournament modal not found in HTML');
         return;
     }
 
@@ -357,28 +314,28 @@ function showTournamentModal(title, description, index) {
     // Tournament data based on index
     const tournamentData = [
         {
-            prizePool: '5,000,000₽',
+            prizePool: '5,000,000в‚Ѕ',
             format: 'Online',
-            date: 'Декабрь 2025',
-            teams: '16 команд'
+            date: 'Р”РµРєР°Р±СЂСЊ 2025',
+            teams: '16 РєРѕРјР°РЅРґ'
         },
         {
-            prizePool: '1,200,000₽',
+            prizePool: '1,200,000в‚Ѕ',
             format: 'Offline',
-            date: 'Январь 2026',
-            teams: '8 команд'
+            date: 'РЇРЅРІР°СЂСЊ 2026',
+            teams: '8 РєРѕРјР°РЅРґ'
         },
         {
-            prizePool: '800,000₽',
+            prizePool: '800,000в‚Ѕ',
             format: 'Offline',
-            date: 'Февраль 2026',
-            teams: '12 команд'
+            date: 'Р¤РµРІСЂР°Р»СЊ 2026',
+            teams: '12 РєРѕРјР°РЅРґ'
         },
         {
-            prizePool: '300,000₽',
+            prizePool: '300,000в‚Ѕ',
             format: 'Online',
-            date: 'Март 2026',
-            teams: '32 команды'
+            date: 'РњР°СЂС‚ 2026',
+            teams: '32 РєРѕРјР°РЅРґС‹'
         }
     ];
 
@@ -444,6 +401,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const bumpNav = document.getElementById('bumpNav');
     const bumpToggle = document.getElementById('bumpNavToggle');
     const bumpItems = bumpNav ? Array.from(bumpNav.querySelectorAll('.bump-nav__item')) : [];
+    const heroOrderButton = document.querySelector('.hero-button[data-target]');
+
+    function scrollToTarget(targetSelector) {
+        if (!targetSelector || !targetSelector.startsWith('#')) return;
+        const targetEl = document.querySelector(targetSelector);
+        if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
 
     function closeCapsuleMenu() {
         if (document.body.classList.contains('menu-fixed-open')) return;
@@ -700,10 +666,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const target = item.getAttribute('data-target');
                 if (target && target.startsWith('#')) {
-                    const targetEl = document.querySelector(target);
-                    if (targetEl) {
-                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
+                    scrollToTarget(target);
                 }
             });
         });
@@ -727,6 +690,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (e.key === 'Escape') {
                 setBumpOpen(false);
             }
+        });
+    }
+
+    if (heroOrderButton) {
+        heroOrderButton.addEventListener('click', () => {
+            scrollToTarget(heroOrderButton.getAttribute('data-target'));
         });
     }
     
@@ -946,7 +915,7 @@ function init3DServices() {
         optimizeAnimations();
         
     } catch (error) {
-        console.error('❌ Error initializing 3D Services:', error);
+        console.error('вќЊ Error initializing 3D Services:', error);
     }
 }
 
@@ -962,182 +931,182 @@ if (document.readyState === 'loading') {
 // Service data for modal content
 const serviceData = {
     planning: {
-        title: 'ПЛАНИРОВАНИЕ И КОНЦЕПЦИЯ',
-        description: 'Полный цикл разработки концепции турнира от идеи до детального плана реализации. Мы создаем уникальные форматы соревнований, которые запоминаются участникам и зрителям.',
+        title: 'РџР›РђРќРР РћР’РђРќРР• Р РљРћРќР¦Р•РџР¦РРЇ',
+        description: 'РџРѕР»РЅС‹Р№ С†РёРєР» СЂР°Р·СЂР°Р±РѕС‚РєРё РєРѕРЅС†РµРїС†РёРё С‚СѓСЂРЅРёСЂР° РѕС‚ РёРґРµРё РґРѕ РґРµС‚Р°Р»СЊРЅРѕРіРѕ РїР»Р°РЅР° СЂРµР°Р»РёР·Р°С†РёРё. РњС‹ СЃРѕР·РґР°РµРј СѓРЅРёРєР°Р»СЊРЅС‹Рµ С„РѕСЂРјР°С‚С‹ СЃРѕСЂРµРІРЅРѕРІР°РЅРёР№, РєРѕС‚РѕСЂС‹Рµ Р·Р°РїРѕРјРёРЅР°СЋС‚СЃСЏ СѓС‡Р°СЃС‚РЅРёРєР°Рј Рё Р·СЂРёС‚РµР»СЏРј.',
         features: [
-            'Разработка уникальной концепции турнира',
-            'Создание детального регламента соревнований',
-            'Планирование формата и структуры турнира',
-            'Определение призового фонда и наград',
-            'Составление календаря мероприятий',
-            'Анализ целевой аудитории и конкурентов'
+            'Р Р°Р·СЂР°Р±РѕС‚РєР° СѓРЅРёРєР°Р»СЊРЅРѕР№ РєРѕРЅС†РµРїС†РёРё С‚СѓСЂРЅРёСЂР°',
+            'РЎРѕР·РґР°РЅРёРµ РґРµС‚Р°Р»СЊРЅРѕРіРѕ СЂРµРіР»Р°РјРµРЅС‚Р° СЃРѕСЂРµРІРЅРѕРІР°РЅРёР№',
+            'РџР»Р°РЅРёСЂРѕРІР°РЅРёРµ С„РѕСЂРјР°С‚Р° Рё СЃС‚СЂСѓРєС‚СѓСЂС‹ С‚СѓСЂРЅРёСЂР°',
+            'РћРїСЂРµРґРµР»РµРЅРёРµ РїСЂРёР·РѕРІРѕРіРѕ С„РѕРЅРґР° Рё РЅР°РіСЂР°Рґ',
+            'РЎРѕСЃС‚Р°РІР»РµРЅРёРµ РєР°Р»РµРЅРґР°СЂСЏ РјРµСЂРѕРїСЂРёСЏС‚РёР№',
+            'РђРЅР°Р»РёР· С†РµР»РµРІРѕР№ Р°СѓРґРёС‚РѕСЂРёРё Рё РєРѕРЅРєСѓСЂРµРЅС‚РѕРІ'
         ],
         process: [
             {
-                title: 'Анализ требований',
-                description: 'Изучаем ваши цели, бюджет и ожидания от турнира'
+                title: 'РђРЅР°Р»РёР· С‚СЂРµР±РѕРІР°РЅРёР№',
+                description: 'РР·СѓС‡Р°РµРј РІР°С€Рё С†РµР»Рё, Р±СЋРґР¶РµС‚ Рё РѕР¶РёРґР°РЅРёСЏ РѕС‚ С‚СѓСЂРЅРёСЂР°'
             },
             {
-                title: 'Разработка концепции',
-                description: 'Создаем уникальную идею и формат соревнований'
+                title: 'Р Р°Р·СЂР°Р±РѕС‚РєР° РєРѕРЅС†РµРїС†РёРё',
+                description: 'РЎРѕР·РґР°РµРј СѓРЅРёРєР°Р»СЊРЅСѓСЋ РёРґРµСЋ Рё С„РѕСЂРјР°С‚ СЃРѕСЂРµРІРЅРѕРІР°РЅРёР№'
             },
             {
-                title: 'Детальное планирование',
-                description: 'Прорабатываем все аспекты проведения турнира'
+                title: 'Р”РµС‚Р°Р»СЊРЅРѕРµ РїР»Р°РЅРёСЂРѕРІР°РЅРёРµ',
+                description: 'РџСЂРѕСЂР°Р±Р°С‚С‹РІР°РµРј РІСЃРµ Р°СЃРїРµРєС‚С‹ РїСЂРѕРІРµРґРµРЅРёСЏ С‚СѓСЂРЅРёСЂР°'
             },
             {
-                title: 'Согласование',
-                description: 'Представляем финальный план и вносим корректировки'
+                title: 'РЎРѕРіР»Р°СЃРѕРІР°РЅРёРµ',
+                description: 'РџСЂРµРґСЃС‚Р°РІР»СЏРµРј С„РёРЅР°Р»СЊРЅС‹Р№ РїР»Р°РЅ Рё РІРЅРѕСЃРёРј РєРѕСЂСЂРµРєС‚РёСЂРѕРІРєРё'
             }
         ]
     },
     technical: {
-        title: 'ТЕХНИЧЕСКОЕ ОБЕСПЕЧЕНИЕ',
-        description: 'Профессиональная настройка всей технической инфраструктуры для проведения киберспортивных турниров. Гарантируем стабильную работу серверов и защиту от читеров.',
+        title: 'РўР•РҐРќРР§Р•РЎРљРћР• РћР‘Р•РЎРџР•Р§Р•РќРР•',
+        description: 'РџСЂРѕС„РµСЃСЃРёРѕРЅР°Р»СЊРЅР°СЏ РЅР°СЃС‚СЂРѕР№РєР° РІСЃРµР№ С‚РµС…РЅРёС‡РµСЃРєРѕР№ РёРЅС„СЂР°СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР»СЏ РїСЂРѕРІРµРґРµРЅРёСЏ РєРёР±РµСЂСЃРїРѕСЂС‚РёРІРЅС‹С… С‚СѓСЂРЅРёСЂРѕРІ. Р“Р°СЂР°РЅС‚РёСЂСѓРµРј СЃС‚Р°Р±РёР»СЊРЅСѓСЋ СЂР°Р±РѕС‚Сѓ СЃРµСЂРІРµСЂРѕРІ Рё Р·Р°С‰РёС‚Сѓ РѕС‚ С‡РёС‚РµСЂРѕРІ.',
         features: [
-            'Настройка и администрирование игровых серверов',
-            'Установка и настройка античит систем',
-            'Техническая поддержка участников 24/7',
-            'Мониторинг производительности серверов',
-            'Резервное копирование и восстановление данных',
-            'Настройка сетевой инфраструктуры'
+            'РќР°СЃС‚СЂРѕР№РєР° Рё Р°РґРјРёРЅРёСЃС‚СЂРёСЂРѕРІР°РЅРёРµ РёРіСЂРѕРІС‹С… СЃРµСЂРІРµСЂРѕРІ',
+            'РЈСЃС‚Р°РЅРѕРІРєР° Рё РЅР°СЃС‚СЂРѕР№РєР° Р°РЅС‚РёС‡РёС‚ СЃРёСЃС‚РµРј',
+            'РўРµС…РЅРёС‡РµСЃРєР°СЏ РїРѕРґРґРµСЂР¶РєР° СѓС‡Р°СЃС‚РЅРёРєРѕРІ 24/7',
+            'РњРѕРЅРёС‚РѕСЂРёРЅРі РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё СЃРµСЂРІРµСЂРѕРІ',
+            'Р РµР·РµСЂРІРЅРѕРµ РєРѕРїРёСЂРѕРІР°РЅРёРµ Рё РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С…',
+            'РќР°СЃС‚СЂРѕР№РєР° СЃРµС‚РµРІРѕР№ РёРЅС„СЂР°СЃС‚СЂСѓРєС‚СѓСЂС‹'
         ],
         process: [
             {
-                title: 'Анализ требований',
-                description: 'Определяем технические требования для вашего турнира'
+                title: 'РђРЅР°Р»РёР· С‚СЂРµР±РѕРІР°РЅРёР№',
+                description: 'РћРїСЂРµРґРµР»СЏРµРј С‚РµС…РЅРёС‡РµСЃРєРёРµ С‚СЂРµР±РѕРІР°РЅРёСЏ РґР»СЏ РІР°С€РµРіРѕ С‚СѓСЂРЅРёСЂР°'
             },
             {
-                title: 'Подготовка серверов',
-                description: 'Настраиваем и тестируем игровые серверы'
+                title: 'РџРѕРґРіРѕС‚РѕРІРєР° СЃРµСЂРІРµСЂРѕРІ',
+                description: 'РќР°СЃС‚СЂР°РёРІР°РµРј Рё С‚РµСЃС‚РёСЂСѓРµРј РёРіСЂРѕРІС‹Рµ СЃРµСЂРІРµСЂС‹'
             },
             {
-                title: 'Установка защиты',
-                description: 'Внедряем античит системы и настраиваем безопасность'
+                title: 'РЈСЃС‚Р°РЅРѕРІРєР° Р·Р°С‰РёС‚С‹',
+                description: 'Р’РЅРµРґСЂСЏРµРј Р°РЅС‚РёС‡РёС‚ СЃРёСЃС‚РµРјС‹ Рё РЅР°СЃС‚СЂР°РёРІР°РµРј Р±РµР·РѕРїР°СЃРЅРѕСЃС‚СЊ'
             },
             {
-                title: 'Поддержка',
-                description: 'Обеспечиваем техническую поддержку во время турнира'
+                title: 'РџРѕРґРґРµСЂР¶РєР°',
+                description: 'РћР±РµСЃРїРµС‡РёРІР°РµРј С‚РµС…РЅРёС‡РµСЃРєСѓСЋ РїРѕРґРґРµСЂР¶РєСѓ РІРѕ РІСЂРµРјСЏ С‚СѓСЂРЅРёСЂР°'
             }
         ]
     },
     streaming: {
-        title: 'ТРАНСЛЯЦИЯ И СТРИМ',
-        description: 'Профессиональная трансляция турниров с качественным видео, экспертными комментариями и красивым графическим оформлением для максимального вовлечения зрителей.',
+        title: 'РўР РђРќРЎР›РЇР¦РРЇ Р РЎРўР РРњ',
+        description: 'РџСЂРѕС„РµСЃСЃРёРѕРЅР°Р»СЊРЅР°СЏ С‚СЂР°РЅСЃР»СЏС†РёСЏ С‚СѓСЂРЅРёСЂРѕРІ СЃ РєР°С‡РµСЃС‚РІРµРЅРЅС‹Рј РІРёРґРµРѕ, СЌРєСЃРїРµСЂС‚РЅС‹РјРё РєРѕРјРјРµРЅС‚Р°СЂРёСЏРјРё Рё РєСЂР°СЃРёРІС‹Рј РіСЂР°С„РёС‡РµСЃРєРёРј РѕС„РѕСЂРјР»РµРЅРёРµРј РґР»СЏ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ РІРѕРІР»РµС‡РµРЅРёСЏ Р·СЂРёС‚РµР»РµР№.',
         features: [
-            'Многокамерная трансляция в высоком качестве',
-            'Профессиональные комментаторы и аналитики',
-            'Уникальное графическое оформление',
-            'Интерактивные элементы для зрителей',
-            'Трансляция на множество платформ',
-            'Запись и монтаж highlights'
+            'РњРЅРѕРіРѕРєР°РјРµСЂРЅР°СЏ С‚СЂР°РЅСЃР»СЏС†РёСЏ РІ РІС‹СЃРѕРєРѕРј РєР°С‡РµСЃС‚РІРµ',
+            'РџСЂРѕС„РµСЃСЃРёРѕРЅР°Р»СЊРЅС‹Рµ РєРѕРјРјРµРЅС‚Р°С‚РѕСЂС‹ Рё Р°РЅР°Р»РёС‚РёРєРё',
+            'РЈРЅРёРєР°Р»СЊРЅРѕРµ РіСЂР°С„РёС‡РµСЃРєРѕРµ РѕС„РѕСЂРјР»РµРЅРёРµ',
+            'РРЅС‚РµСЂР°РєС‚РёРІРЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ РґР»СЏ Р·СЂРёС‚РµР»РµР№',
+            'РўСЂР°РЅСЃР»СЏС†РёСЏ РЅР° РјРЅРѕР¶РµСЃС‚РІРѕ РїР»Р°С‚С„РѕСЂРј',
+            'Р—Р°РїРёСЃСЊ Рё РјРѕРЅС‚Р°Р¶ highlights'
         ],
         process: [
             {
-                title: 'Планирование трансляции',
-                description: 'Разрабатываем концепцию и сценарий трансляции'
+                title: 'РџР»Р°РЅРёСЂРѕРІР°РЅРёРµ С‚СЂР°РЅСЃР»СЏС†РёРё',
+                description: 'Р Р°Р·СЂР°Р±Р°С‚С‹РІР°РµРј РєРѕРЅС†РµРїС†РёСЋ Рё СЃС†РµРЅР°СЂРёР№ С‚СЂР°РЅСЃР»СЏС†РёРё'
             },
             {
-                title: 'Подготовка оборудования',
-                description: 'Настраиваем камеры, микрофоны и стриминговое ПО'
+                title: 'РџРѕРґРіРѕС‚РѕРІРєР° РѕР±РѕСЂСѓРґРѕРІР°РЅРёСЏ',
+                description: 'РќР°СЃС‚СЂР°РёРІР°РµРј РєР°РјРµСЂС‹, РјРёРєСЂРѕС„РѕРЅС‹ Рё СЃС‚СЂРёРјРёРЅРіРѕРІРѕРµ РџРћ'
             },
             {
-                title: 'Создание графики',
-                description: 'Разрабатываем уникальные графические элементы'
+                title: 'РЎРѕР·РґР°РЅРёРµ РіСЂР°С„РёРєРё',
+                description: 'Р Р°Р·СЂР°Р±Р°С‚С‹РІР°РµРј СѓРЅРёРєР°Р»СЊРЅС‹Рµ РіСЂР°С„РёС‡РµСЃРєРёРµ СЌР»РµРјРµРЅС‚С‹'
             },
             {
-                title: 'Проведение трансляции',
-                description: 'Обеспечиваем качественную трансляцию турнира'
+                title: 'РџСЂРѕРІРµРґРµРЅРёРµ С‚СЂР°РЅСЃР»СЏС†РёРё',
+                description: 'РћР±РµСЃРїРµС‡РёРІР°РµРј РєР°С‡РµСЃС‚РІРµРЅРЅСѓСЋ С‚СЂР°РЅСЃР»СЏС†РёСЋ С‚СѓСЂРЅРёСЂР°'
             }
         ]
     },
     prize: {
-        title: 'ПРИЗОВОЙ ФОНД',
-        description: 'Организация призового фонда турнира, поиск спонсоров и партнеров, справедливое распределение наград между победителями и участниками соревнований.',
+        title: 'РџР РР—РћР’РћР™ Р¤РћРќР”',
+        description: 'РћСЂРіР°РЅРёР·Р°С†РёСЏ РїСЂРёР·РѕРІРѕРіРѕ С„РѕРЅРґР° С‚СѓСЂРЅРёСЂР°, РїРѕРёСЃРє СЃРїРѕРЅСЃРѕСЂРѕРІ Рё РїР°СЂС‚РЅРµСЂРѕРІ, СЃРїСЂР°РІРµРґР»РёРІРѕРµ СЂР°СЃРїСЂРµРґРµР»РµРЅРёРµ РЅР°РіСЂР°Рґ РјРµР¶РґСѓ РїРѕР±РµРґРёС‚РµР»СЏРјРё Рё СѓС‡Р°СЃС‚РЅРёРєР°РјРё СЃРѕСЂРµРІРЅРѕРІР°РЅРёР№.',
         features: [
-            'Формирование призового фонда турнира',
-            'Поиск и привлечение спонсоров',
-            'Организация партнерских программ',
-            'Справедливое распределение призов',
-            'Оформление наградной атрибутики',
-            'Церемония награждения победителей'
+            'Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ РїСЂРёР·РѕРІРѕРіРѕ С„РѕРЅРґР° С‚СѓСЂРЅРёСЂР°',
+            'РџРѕРёСЃРє Рё РїСЂРёРІР»РµС‡РµРЅРёРµ СЃРїРѕРЅСЃРѕСЂРѕРІ',
+            'РћСЂРіР°РЅРёР·Р°С†РёСЏ РїР°СЂС‚РЅРµСЂСЃРєРёС… РїСЂРѕРіСЂР°РјРј',
+            'РЎРїСЂР°РІРµРґР»РёРІРѕРµ СЂР°СЃРїСЂРµРґРµР»РµРЅРёРµ РїСЂРёР·РѕРІ',
+            'РћС„РѕСЂРјР»РµРЅРёРµ РЅР°РіСЂР°РґРЅРѕР№ Р°С‚СЂРёР±СѓС‚РёРєРё',
+            'Р¦РµСЂРµРјРѕРЅРёСЏ РЅР°РіСЂР°Р¶РґРµРЅРёСЏ РїРѕР±РµРґРёС‚РµР»РµР№'
         ],
         process: [
             {
-                title: 'Планирование бюджета',
-                description: 'Определяем размер призового фонда и источники финансирования'
+                title: 'РџР»Р°РЅРёСЂРѕРІР°РЅРёРµ Р±СЋРґР¶РµС‚Р°',
+                description: 'РћРїСЂРµРґРµР»СЏРµРј СЂР°Р·РјРµСЂ РїСЂРёР·РѕРІРѕРіРѕ С„РѕРЅРґР° Рё РёСЃС‚РѕС‡РЅРёРєРё С„РёРЅР°РЅСЃРёСЂРѕРІР°РЅРёСЏ'
             },
             {
-                title: 'Поиск спонсоров',
-                description: 'Привлекаем партнеров и спонсоров для увеличения фонда'
+                title: 'РџРѕРёСЃРє СЃРїРѕРЅСЃРѕСЂРѕРІ',
+                description: 'РџСЂРёРІР»РµРєР°РµРј РїР°СЂС‚РЅРµСЂРѕРІ Рё СЃРїРѕРЅСЃРѕСЂРѕРІ РґР»СЏ СѓРІРµР»РёС‡РµРЅРёСЏ С„РѕРЅРґР°'
             },
             {
-                title: 'Подготовка призов',
-                description: 'Организуем призы, кубки и наградную атрибутику'
+                title: 'РџРѕРґРіРѕС‚РѕРІРєР° РїСЂРёР·РѕРІ',
+                description: 'РћСЂРіР°РЅРёР·СѓРµРј РїСЂРёР·С‹, РєСѓР±РєРё Рё РЅР°РіСЂР°РґРЅСѓСЋ Р°С‚СЂРёР±СѓС‚РёРєСѓ'
             },
             {
-                title: 'Награждение',
-                description: 'Проводим торжественную церемонию награждения'
+                title: 'РќР°РіСЂР°Р¶РґРµРЅРёРµ',
+                description: 'РџСЂРѕРІРѕРґРёРј С‚РѕСЂР¶РµСЃС‚РІРµРЅРЅСѓСЋ С†РµСЂРµРјРѕРЅРёСЋ РЅР°РіСЂР°Р¶РґРµРЅРёСЏ'
             }
         ]
     },
     marketing: {
-        title: 'МАРКЕТИНГ И ПРОДВИЖЕНИЕ',
-        description: 'Комплексное продвижение турнира в социальных сетях, работа с медиа и блогерами, привлечение максимального количества участников и зрителей.',
+        title: 'РњРђР РљР•РўРРќР“ Р РџР РћР”Р’РР–Р•РќРР•',
+        description: 'РљРѕРјРїР»РµРєСЃРЅРѕРµ РїСЂРѕРґРІРёР¶РµРЅРёРµ С‚СѓСЂРЅРёСЂР° РІ СЃРѕС†РёР°Р»СЊРЅС‹С… СЃРµС‚СЏС…, СЂР°Р±РѕС‚Р° СЃ РјРµРґРёР° Рё Р±Р»РѕРіРµСЂР°РјРё, РїСЂРёРІР»РµС‡РµРЅРёРµ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ РєРѕР»РёС‡РµСЃС‚РІР° СѓС‡Р°СЃС‚РЅРёРєРѕРІ Рё Р·СЂРёС‚РµР»РµР№.',
         features: [
-            'Стратегия продвижения в социальных сетях',
-            'Работа с игровыми медиа и блогерами',
-            'Создание рекламных материалов',
-            'PR-кампании и пресс-релизы',
-            'Привлечение участников и зрителей',
-            'Аналитика и отчетность по результатам'
+            'РЎС‚СЂР°С‚РµРіРёСЏ РїСЂРѕРґРІРёР¶РµРЅРёСЏ РІ СЃРѕС†РёР°Р»СЊРЅС‹С… СЃРµС‚СЏС…',
+            'Р Р°Р±РѕС‚Р° СЃ РёРіСЂРѕРІС‹РјРё РјРµРґРёР° Рё Р±Р»РѕРіРµСЂР°РјРё',
+            'РЎРѕР·РґР°РЅРёРµ СЂРµРєР»Р°РјРЅС‹С… РјР°С‚РµСЂРёР°Р»РѕРІ',
+            'PR-РєР°РјРїР°РЅРёРё Рё РїСЂРµСЃСЃ-СЂРµР»РёР·С‹',
+            'РџСЂРёРІР»РµС‡РµРЅРёРµ СѓС‡Р°СЃС‚РЅРёРєРѕРІ Рё Р·СЂРёС‚РµР»РµР№',
+            'РђРЅР°Р»РёС‚РёРєР° Рё РѕС‚С‡РµС‚РЅРѕСЃС‚СЊ РїРѕ СЂРµР·СѓР»СЊС‚Р°С‚Р°Рј'
         ],
         process: [
             {
-                title: 'Разработка стратегии',
-                description: 'Создаем план продвижения и определяем каналы'
+                title: 'Р Р°Р·СЂР°Р±РѕС‚РєР° СЃС‚СЂР°С‚РµРіРёРё',
+                description: 'РЎРѕР·РґР°РµРј РїР»Р°РЅ РїСЂРѕРґРІРёР¶РµРЅРёСЏ Рё РѕРїСЂРµРґРµР»СЏРµРј РєР°РЅР°Р»С‹'
             },
             {
-                title: 'Создание контента',
-                description: 'Разрабатываем рекламные материалы и контент'
+                title: 'РЎРѕР·РґР°РЅРёРµ РєРѕРЅС‚РµРЅС‚Р°',
+                description: 'Р Р°Р·СЂР°Р±Р°С‚С‹РІР°РµРј СЂРµРєР»Р°РјРЅС‹Рµ РјР°С‚РµСЂРёР°Р»С‹ Рё РєРѕРЅС‚РµРЅС‚'
             },
             {
-                title: 'Запуск кампании',
-                description: 'Запускаем рекламные кампании в различных каналах'
+                title: 'Р—Р°РїСѓСЃРє РєР°РјРїР°РЅРёРё',
+                description: 'Р—Р°РїСѓСЃРєР°РµРј СЂРµРєР»Р°РјРЅС‹Рµ РєР°РјРїР°РЅРёРё РІ СЂР°Р·Р»РёС‡РЅС‹С… РєР°РЅР°Р»Р°С…'
             },
             {
-                title: 'Анализ результатов',
-                description: 'Отслеживаем эффективность и корректируем стратегию'
+                title: 'РђРЅР°Р»РёР· СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ',
+                description: 'РћС‚СЃР»РµР¶РёРІР°РµРј СЌС„С„РµРєС‚РёРІРЅРѕСЃС‚СЊ Рё РєРѕСЂСЂРµРєС‚РёСЂСѓРµРј СЃС‚СЂР°С‚РµРіРёСЋ'
             }
         ]
     },
     judging: {
-        title: 'СУДЕЙСТВО',
-        description: 'Профессиональные судьи с опытом проведения киберспортивных турниров, контроль честности игры и оперативное разрешение любых спорных ситуаций.',
+        title: 'РЎРЈР”Р•Р™РЎРўР’Рћ',
+        description: 'РџСЂРѕС„РµСЃСЃРёРѕРЅР°Р»СЊРЅС‹Рµ СЃСѓРґСЊРё СЃ РѕРїС‹С‚РѕРј РїСЂРѕРІРµРґРµРЅРёСЏ РєРёР±РµСЂСЃРїРѕСЂС‚РёРІРЅС‹С… С‚СѓСЂРЅРёСЂРѕРІ, РєРѕРЅС‚СЂРѕР»СЊ С‡РµСЃС‚РЅРѕСЃС‚Рё РёРіСЂС‹ Рё РѕРїРµСЂР°С‚РёРІРЅРѕРµ СЂР°Р·СЂРµС€РµРЅРёРµ Р»СЋР±С‹С… СЃРїРѕСЂРЅС‹С… СЃРёС‚СѓР°С†РёР№.',
         features: [
-            'Команда опытных киберспортивных судей',
-            'Контроль честности и правил игры',
-            'Разрешение спорных ситуаций',
-            'Мониторинг соблюдения регламента',
-            'Взаимодействие с участниками',
-            'Документирование нарушений'
+            'РљРѕРјР°РЅРґР° РѕРїС‹С‚РЅС‹С… РєРёР±РµСЂСЃРїРѕСЂС‚РёРІРЅС‹С… СЃСѓРґРµР№',
+            'РљРѕРЅС‚СЂРѕР»СЊ С‡РµСЃС‚РЅРѕСЃС‚Рё Рё РїСЂР°РІРёР» РёРіСЂС‹',
+            'Р Р°Р·СЂРµС€РµРЅРёРµ СЃРїРѕСЂРЅС‹С… СЃРёС‚СѓР°С†РёР№',
+            'РњРѕРЅРёС‚РѕСЂРёРЅРі СЃРѕР±Р»СЋРґРµРЅРёСЏ СЂРµРіР»Р°РјРµРЅС‚Р°',
+            'Р’Р·Р°РёРјРѕРґРµР№СЃС‚РІРёРµ СЃ СѓС‡Р°СЃС‚РЅРёРєР°РјРё',
+            'Р”РѕРєСѓРјРµРЅС‚РёСЂРѕРІР°РЅРёРµ РЅР°СЂСѓС€РµРЅРёР№'
         ],
         process: [
             {
-                title: 'Подбор судей',
-                description: 'Формируем команду квалифицированных судей'
+                title: 'РџРѕРґР±РѕСЂ СЃСѓРґРµР№',
+                description: 'Р¤РѕСЂРјРёСЂСѓРµРј РєРѕРјР°РЅРґСѓ РєРІР°Р»РёС„РёС†РёСЂРѕРІР°РЅРЅС‹С… СЃСѓРґРµР№'
             },
             {
-                title: 'Изучение регламента',
-                description: 'Судьи изучают правила и особенности турнира'
+                title: 'РР·СѓС‡РµРЅРёРµ СЂРµРіР»Р°РјРµРЅС‚Р°',
+                description: 'РЎСѓРґСЊРё РёР·СѓС‡Р°СЋС‚ РїСЂР°РІРёР»Р° Рё РѕСЃРѕР±РµРЅРЅРѕСЃС‚Рё С‚СѓСЂРЅРёСЂР°'
             },
             {
-                title: 'Контроль игры',
-                description: 'Наблюдаем за ходом матчей и соблюдением правил'
+                title: 'РљРѕРЅС‚СЂРѕР»СЊ РёРіСЂС‹',
+                description: 'РќР°Р±Р»СЋРґР°РµРј Р·Р° С…РѕРґРѕРј РјР°С‚С‡РµР№ Рё СЃРѕР±Р»СЋРґРµРЅРёРµРј РїСЂР°РІРёР»'
             },
             {
-                title: 'Разрешение споров',
-                description: 'Оперативно решаем любые спорные ситуации'
+                title: 'Р Р°Р·СЂРµС€РµРЅРёРµ СЃРїРѕСЂРѕРІ',
+                description: 'РћРїРµСЂР°С‚РёРІРЅРѕ СЂРµС€Р°РµРј Р»СЋР±С‹Рµ СЃРїРѕСЂРЅС‹Рµ СЃРёС‚СѓР°С†РёРё'
             }
         ]
     }
@@ -1158,7 +1127,7 @@ function openServiceModal(serviceType, cardElement) {
     const modalProcessSteps = modal.querySelector('.modal-process-steps');
     
     if (!modal || !serviceData[serviceType]) {
-        console.error('❌ Modal or service data not found');
+        console.error('вќЊ Modal or service data not found');
         return;
     }
     
@@ -1347,7 +1316,7 @@ function initTiltEffect() {
         
         // Mouse enter
         element.addEventListener('mouseenter', function(e) {
-            // Оставляем плавный переход для красивой анимации
+            // РћСЃС‚Р°РІР»СЏРµРј РїР»Р°РІРЅС‹Р№ РїРµСЂРµС…РѕРґ РґР»СЏ РєСЂР°СЃРёРІРѕР№ Р°РЅРёРјР°С†РёРё
         });
         
         // Mouse move
@@ -1440,7 +1409,7 @@ function initServiceCardsTilt() {
             mouseX = e.clientX - centerX;
             mouseY = e.clientY - centerY;
 
-            const maxTilt = 8; // Более выраженный эффект для карточек услуг
+            const maxTilt = 8; // Р‘РѕР»РµРµ РІС‹СЂР°Р¶РµРЅРЅС‹Р№ СЌС„С„РµРєС‚ РґР»СЏ РєР°СЂС‚РѕС‡РµРє СѓСЃР»СѓРі
             const rotateX = (mouseY / (rect.height / 2)) * -maxTilt;
             const rotateY = (mouseX / (rect.width / 2)) * maxTilt;
 

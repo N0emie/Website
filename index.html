@@ -21,7 +21,6 @@
     
     <!-- Preload Critical Resources -->
     <link rel="preload" href="/assets/webp/69.webp" as="image" type="image/webp">
-    <link rel="preload" href="/assets/video/new_loading_logo_final.webm" as="video" type="video/webm">
     <link rel="preload" href="/css/style.css" as="style">
     <link rel="preload" href="/css/loading.css" as="style">
     
@@ -90,7 +89,7 @@
             <button class="bump-nav__item" type="button" data-target="#about" aria-label="О нас">
                 <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"></circle><path d="M6.5 20a5.5 5.5 0 0 1 11 0"></path></svg>
             </button>
-            <button class="bump-nav__item" type="button" data-target="#contacts" aria-label="Контакты">
+            <button class="bump-nav__item" type="button" data-target="#proposal-submit-section" aria-label="Контакты">
                 <svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2"></rect><path d="m4.5 8 7.5 5 7.5-5"></path></svg>
             </button>
             <button class="bump-nav__item" type="button" data-href="/admin/login" aria-label="Вход в админку">
@@ -130,21 +129,15 @@
 
     
     <!-- Loading Screen - Completely Separate -->
-    <div id="loading-screen" class="loading-screen">
+    <div id="loading-screen" class="loading-screen" role="status" aria-live="polite" aria-label="Loading site content">
         <!-- Контейнер для анимированных точек как на основном сайте -->
         <div id="loadingFloatingDots" class="loading-floating-dots"></div>
         
         <div class="loading-container">
-            <div class="loading-logo">
-                <video autoplay muted loop playsinline preload="auto">
-                    <source src="assets/video/new_loading_logo_final.webm" type="video/webm">
-                    <img src="assets/webp/69.webp" alt="Dizband Logo">
-                </video>
+            <div class="loading-badge">
+                <span class="loading-text">LOADING</span>
+                <span class="loading-stick" aria-hidden="true"></span>
             </div>
-            <div class="loading-progress">
-                <div class="loading-progress-fill"></div>
-            </div>
-            <div class="loading-percentage">0%</div>
         </div>
     </div>
 
@@ -190,7 +183,7 @@
         
         <div class="hero-content">
             <h1 class="hero-title">ДОБРО ПОЖАЛОВАТЬ В DIZBAND — ПРОВОДНИК В МИР КИБЕРСПОРТА ДЛЯ БРЕНДОВ</h1>
-            <button class="hero-button">ЗАКАЗАТЬ ТУРНИР</button>
+            <button class="hero-button" type="button" data-target="#proposal-submit-section">ЗАКАЗАТЬ ТУРНИР</button>
         </div>
         <div class="hero-video">
             <video autoplay muted loop playsinline class="hero-video-element">
@@ -564,7 +557,7 @@
                 </div>
 
                 <!-- Contact Form Card -->
-                <div class="bento-card form-card">
+                <div id="proposal-submit-section" class="bento-card form-card">
                     <form class="bento-form" id="bentoContactForm">
                         <div class="bento-form-group">
                             <label for="bento-name">ИМЯ</label>
