@@ -1,0 +1,1572 @@
+/* ===== SERVICE MODAL WINDOWS ===== */
+.service-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.service-modal.active {
+    display: flex;
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.service-modal.active .modal-backdrop {
+    opacity: 1;
+}
+
+/* Modal Container - This is what morphs from card position */
+.modal-container {
+    position: absolute;
+    background: rgba(15, 15, 25, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    
+    /* Wavy border shape */
+    border-radius: 40px;
+    clip-path: polygon(
+        8% 0%, 
+        92% 0%, 
+        100% 8%, 
+        100% 25%, 
+        95% 35%, 
+        100% 45%, 
+        100% 65%, 
+        95% 75%, 
+        100% 85%, 
+        100% 92%, 
+        92% 100%, 
+        8% 100%, 
+        0% 92%, 
+        0% 85%, 
+        5% 75%, 
+        0% 65%, 
+        0% 45%, 
+        5% 35%, 
+        0% 25%, 
+        0% 8%
+    );
+    
+    /* Initial state - will be set by JavaScript to match card position */
+    width: 380px;
+    height: 480px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    
+    /* Morphing animation */
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.service-modal.active .modal-container {
+    /* Final state - full screen modal */
+    width: 90vw;
+    max-width: 800px;
+    height: 90vh;
+    max-height: 700px;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Modal Close Button */
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.service-modal.active .modal-close {
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 0.3s;
+}
+
+.service-modal .modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+/* Modal Content */
+.service-modal .modal-content {
+    padding: 60px 40px 40px;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.service-modal.active .modal-content {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.4s;
+}
+
+/* Tournament modal redesign (split like service windows) */
+#tournament-modal .modal-content {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    width: min(1100px, 92vw);
+    min-height: min(620px, 86vh);
+    max-height: min(620px, 86vh);
+    padding: 0;
+    border-radius: 28px;
+    border: 1px solid rgba(172, 182, 255, 0.32);
+    background: linear-gradient(145deg, rgba(14, 18, 38, 0.96), rgba(8, 11, 24, 0.95));
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55);
+    overflow: hidden;
+}
+
+#tournament-modal .modal-header {
+    display: contents;
+}
+
+#tournament-modal .modal-image {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    width: 100%;
+    height: 100%;
+    min-height: min(620px, 86vh);
+    background: #05070f;
+    position: relative;
+}
+
+#tournament-modal .modal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#tournament-modal .modal-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(130deg, rgba(7, 10, 20, 0.08), rgba(7, 10, 20, 0.55));
+    pointer-events: none;
+}
+
+#tournament-modal .modal-info {
+    grid-column: 2;
+    grid-row: 1;
+    padding: 42px 36px 8px;
+}
+
+#tournament-modal #modal-tournament-title {
+    margin: 0;
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.45rem, 1.7vw, 2rem);
+    letter-spacing: 1.2px;
+    line-height: 1.22;
+    text-transform: uppercase;
+    color: #f4f6ff;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+}
+
+#tournament-modal .modal-subtitle {
+    margin: 10px 0 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #b6c2ff;
+    font-weight: 500;
+}
+
+#tournament-modal .modal-tags {
+    margin-top: 16px;
+    gap: 10px;
+}
+
+#tournament-modal .modal-body {
+    grid-column: 2;
+    grid-row: 2;
+    display: block;
+    padding: 0 36px 10px;
+}
+
+#tournament-modal .modal-description h3 {
+    display: none;
+}
+
+#tournament-modal #modal-tournament-description {
+    margin: 0;
+    padding-top: 16px;
+    border-top: 1px solid rgba(160, 174, 255, 0.28);
+    color: rgba(232, 236, 255, 0.88);
+    font-size: 1rem;
+    line-height: 1.65;
+}
+
+#tournament-modal .modal-details {
+    margin-top: 22px;
+}
+
+#tournament-modal .detail-item {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(160, 174, 255, 0.16);
+}
+
+#tournament-modal .detail-label {
+    color: rgba(214, 223, 255, 0.86);
+}
+
+#tournament-modal .detail-value {
+    color: #45f2ff;
+}
+
+#tournament-modal .modal-footer {
+    grid-column: 2;
+    grid-row: 3;
+    padding: 0 36px 24px;
+    justify-content: flex-start;
+}
+
+#tournament-modal .modal-btn {
+    display: none;
+}
+
+#tournament-modal .modal-close {
+    top: 18px;
+    right: 18px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(182, 194, 255, 0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #edf0ff;
+    background: rgba(11, 14, 30, 0.75);
+    z-index: 3;
+}
+
+#tournament-modal .modal-close:hover {
+    background: rgba(28, 36, 72, 0.92);
+    border-color: rgba(203, 210, 255, 0.7);
+    transform: scale(1.06);
+}
+
+@media (max-width: 900px) {
+    #tournament-modal .modal-content {
+        grid-template-columns: 1fr;
+        max-height: min(700px, 90vh);
+        min-height: min(700px, 90vh);
+        overflow-y: auto;
+    }
+
+    #tournament-modal .modal-image {
+        grid-column: 1;
+        grid-row: 1;
+        min-height: 42vh;
+    }
+
+    #tournament-modal .modal-info {
+        grid-column: 1;
+        grid-row: 2;
+        padding: 28px 22px 12px;
+    }
+
+    #tournament-modal .modal-body {
+        grid-column: 1;
+        grid-row: 3;
+        padding: 0 22px 20px;
+    }
+}
+
+/* Tournament modal: force same visual language as Services modal */
+#tournament-modal .modal-content {
+    width: min(1100px, 92vw) !important;
+    min-height: min(620px, 86vh) !important;
+    max-height: min(620px, 86vh) !important;
+    border-radius: 28px !important;
+    background: linear-gradient(145deg, rgba(14, 18, 38, 0.96), rgba(8, 11, 24, 0.95)) !important;
+    border: 1px solid rgba(172, 182, 255, 0.32) !important;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55) !important;
+}
+
+#tournament-modal .modal-image {
+    background: #05070f !important;
+}
+
+#tournament-modal .modal-info {
+    padding: 42px 36px 14px !important;
+}
+
+#tournament-modal #modal-tournament-title {
+    font-family: "Orbitron", sans-serif !important;
+    font-size: clamp(1.45rem, 1.7vw, 2rem) !important;
+    line-height: 1.22 !important;
+    letter-spacing: 1.2px !important;
+    color: #f4f6ff !important;
+    text-transform: uppercase !important;
+    margin: 0 !important;
+}
+
+#tournament-modal .modal-subtitle {
+    color: #b6c2ff !important;
+    font-family: "Roboto", sans-serif !important;
+    font-size: 0.82rem !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+    margin: 10px 0 0 !important;
+}
+
+#tournament-modal .modal-tags {
+    display: none !important;
+}
+
+#tournament-modal .modal-body {
+    padding: 0 36px 24px !important;
+}
+
+#tournament-modal .modal-description {
+    margin: 0 !important;
+    padding-top: 18px !important;
+    position: relative !important;
+}
+
+#tournament-modal .modal-description::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 72px !important;
+    height: 2px !important;
+    border-radius: 999px !important;
+    background: linear-gradient(90deg, rgba(160, 174, 255, 0.95), rgba(116, 145, 255, 0.3)) !important;
+}
+
+#tournament-modal .modal-description h3 {
+    display: none !important;
+}
+
+#tournament-modal #modal-tournament-description {
+    color: rgba(232, 236, 255, 0.88) !important;
+    font-family: "Roboto", sans-serif !important;
+    font-size: 1rem !important;
+    line-height: 1.65 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    padding: 0 !important;
+}
+
+#tournament-modal .modal-details {
+    display: none !important;
+}
+
+#tournament-modal .modal-footer {
+    display: none !important;
+}
+
+@media (max-width: 900px) {
+    #tournament-modal .modal-content {
+        min-height: min(700px, 90vh) !important;
+        max-height: min(700px, 90vh) !important;
+    }
+
+    #tournament-modal .modal-info {
+        padding: 28px 22px 12px !important;
+    }
+
+    #tournament-modal .modal-body {
+        padding: 0 22px 22px !important;
+    }
+}
+
+/* Modal Icon */
+.modal-icon {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.service-modal.active .modal-icon {
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 0.5s;
+}
+
+/* Modal Title */
+.modal-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.service-modal.active .modal-title {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.6s;
+}
+
+/* FINAL override: tournament modal should match Services modal visual */
+#tournament-modal .modal-content {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: 1.1fr 1fr !important;
+    width: min(1100px, 92vw) !important;
+    min-height: min(620px, 86vh) !important;
+    max-height: min(620px, 86vh) !important;
+    padding: 0 !important;
+    border-radius: 28px !important;
+    border: 1px solid rgba(172, 182, 255, 0.32) !important;
+    background: linear-gradient(145deg, rgba(14, 18, 38, 0.96), rgba(8, 11, 24, 0.95)) !important;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55) !important;
+    overflow: hidden !important;
+}
+
+#tournament-modal .modal-header {
+    display: contents !important;
+}
+
+#tournament-modal .modal-image {
+    grid-column: 1 !important;
+    grid-row: 1 / span 3 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: min(620px, 86vh) !important;
+    background: #05070f !important;
+    position: relative !important;
+}
+
+#tournament-modal .modal-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+#tournament-modal .modal-image::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background: linear-gradient(130deg, rgba(7, 10, 20, 0.1), rgba(7, 10, 20, 0.55)) !important;
+    pointer-events: none !important;
+}
+
+#tournament-modal .modal-info {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    padding: 36px 40px 8px !important;
+}
+
+#tournament-modal #modal-tournament-title {
+    margin: 0 !important;
+    font-family: "Orbitron", sans-serif !important;
+    font-size: clamp(1.45rem, 1.7vw, 2rem) !important;
+    line-height: 1.22 !important;
+    letter-spacing: 1.2px !important;
+    text-transform: uppercase !important;
+    color: #f4f6ff !important;
+    background: none !important;
+    -webkit-text-fill-color: currentColor !important;
+}
+
+#tournament-modal .modal-subtitle {
+    margin: 10px 0 0 !important;
+    color: #b6c2ff !important;
+    font-family: "Roboto", sans-serif !important;
+    font-size: 0.82rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    font-weight: 500 !important;
+}
+
+#tournament-modal .modal-tags {
+    display: none !important;
+}
+
+#tournament-modal .modal-description h3,
+#tournament-modal .modal-footer {
+    display: none !important;
+}
+
+#tournament-modal .modal-body {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    display: block !important;
+    padding: 0 40px 34px !important;
+    overflow: auto !important;
+}
+
+#tournament-modal .modal-description {
+    margin: 0 !important;
+    padding-top: 18px !important;
+    position: relative !important;
+}
+
+#tournament-modal .modal-description::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 72px !important;
+    height: 2px !important;
+    border-radius: 999px !important;
+    background: linear-gradient(90deg, rgba(160, 174, 255, 0.95), rgba(116, 145, 255, 0.3)) !important;
+}
+
+#tournament-modal #modal-tournament-description {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    color: rgba(232, 236, 255, 0.88) !important;
+    font-size: 1rem !important;
+    line-height: 1.65 !important;
+}
+
+#tournament-modal .modal-details {
+    display: block !important;
+    margin-top: 20px !important;
+    padding: 18px 22px 12px !important;
+    border-radius: 24px !important;
+    border: 1px solid rgba(112, 129, 223, 0.18) !important;
+    background: linear-gradient(165deg, rgba(10, 18, 40, 0.86), rgba(5, 11, 28, 0.72)) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+#tournament-modal .modal-details::before,
+#tournament-modal .modal-details::after {
+    content: "" !important;
+    position: absolute !important;
+    right: -58px !important;
+    width: 138px !important;
+    border-radius: 999px !important;
+    pointer-events: none !important;
+}
+
+#tournament-modal .modal-details::before {
+    top: 28px !important;
+    height: 56px !important;
+    background: linear-gradient(90deg, rgba(22, 36, 82, 0), rgba(24, 42, 95, 0.62)) !important;
+}
+
+#tournament-modal .modal-details::after {
+    top: 72px !important;
+    height: 40px !important;
+    background: linear-gradient(90deg, rgba(19, 33, 74, 0), rgba(20, 37, 84, 0.52)) !important;
+}
+
+#tournament-modal .modal-details h3 {
+    margin: 0 0 14px !important;
+    color: #45f2ff !important;
+    font-family: "Roboto", sans-serif !important;
+    font-size: clamp(1.7rem, 1.85vw, 2.05rem) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    white-space: nowrap !important;
+}
+
+#tournament-modal .detail-item {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 14px !important;
+    padding: 11px 0 !important;
+    border-bottom: 1px solid rgba(160, 174, 255, 0.16) !important;
+}
+
+#tournament-modal .detail-label {
+    color: rgba(214, 223, 255, 0.9) !important;
+    font-family: "Roboto", sans-serif !important;
+    font-size: 1.05rem !important;
+    font-weight: 600 !important;
+}
+
+#tournament-modal .detail-value {
+    color: #45f2ff !important;
+    font-family: "Roboto", sans-serif !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    text-transform: none !important;
+}
+
+#tournament-modal .modal-close {
+    top: 18px !important;
+    right: 18px !important;
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 50% !important;
+    border: 1px solid rgba(182, 194, 255, 0.35) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #edf0ff !important;
+    background: rgba(11, 14, 30, 0.75) !important;
+    z-index: 4 !important;
+}
+
+#tournament-modal .modal-close:hover {
+    background: rgba(28, 36, 72, 0.92) !important;
+    border-color: rgba(203, 210, 255, 0.7) !important;
+    transform: scale(1.06) !important;
+}
+
+@media (max-width: 900px) {
+    #tournament-modal .modal-content {
+        grid-template-columns: 1fr !important;
+        min-height: min(700px, 90vh) !important;
+        max-height: min(700px, 90vh) !important;
+        overflow-y: auto !important;
+    }
+
+    #tournament-modal .modal-image {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+        min-height: 42vh !important;
+    }
+
+    #tournament-modal .modal-info {
+        grid-column: 1 !important;
+        grid-row: 2 !important;
+        padding: 28px 22px 12px !important;
+    }
+
+    #tournament-modal .modal-body {
+        grid-column: 1 !important;
+        grid-row: 3 !important;
+        padding: 0 22px 22px !important;
+    }
+}
+
+/* Modal Description */
+.modal-description {
+    font-size: 1.1rem;
+    color: #a1a1aa;
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.service-modal.active .modal-description {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.7s;
+}
+
+/* Modal Features Section */
+.modal-features {
+    margin-bottom: 40px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.service-modal.active .modal-features {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.8s;
+}
+
+.modal-features h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.modal-features-list {
+    list-style: none;
+    padding: 0;
+}
+
+.modal-features-list li {
+    padding: 8px 0;
+    color: #a1a1aa;
+    position: relative;
+    padding-left: 25px;
+}
+
+.modal-features-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #6366f1;
+    font-weight: bold;
+}
+
+/* Modal Process Section */
+.modal-process {
+    margin-bottom: 40px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.service-modal.active .modal-process {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.9s;
+}
+
+.modal-process h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.modal-process-steps {
+    display: grid;
+    gap: 15px;
+}
+
+.process-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.step-number {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.step-content h4 {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.step-content p {
+    color: #a1a1aa;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Modal CTA Section */
+.modal-cta {
+    text-align: center;
+    margin-top: auto;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.service-modal.active .modal-cta {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 1s;
+}
+
+.modal-cta-button {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: #ffffff;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.modal-cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+}
+
+.modal-cta-text {
+    color: #a1a1aa;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Responsive Design for Modals */
+@media (max-width: 768px) {
+    .modal-container {
+        width: 95vw;
+        height: 95vh;
+    }
+    
+    .service-modal.active .modal-container {
+        width: 95vw;
+        height: 95vh;
+    }
+    
+    .modal-content {
+        padding: 50px 20px 20px;
+    }
+    
+    .modal-title {
+        font-size: 2rem;
+    }
+    
+    .modal-description {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 40px 15px 15px;
+    }
+    
+    .modal-title {
+        font-size: 1.5rem;
+    }
+    
+    .modal-icon {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 20px;
+    }
+}
+
+/* FINAL tournament modal sizing/layout fix */
+#tournament-modal .modal-content {
+    width: min(1520px, 97vw) !important;
+    min-height: min(640px, 80vh) !important;
+    max-height: min(640px, 80vh) !important;
+    grid-template-columns: 1.12fr 1fr !important;
+}
+
+#tournament-modal .modal-info {
+    padding: 38px 44px 8px !important;
+}
+
+#tournament-modal .modal-body {
+    padding: 0 44px 30px !important;
+    overflow-y: auto !important;
+}
+
+/* remove inner "window" for details, keep clean text lines */
+#tournament-modal .modal-details {
+    margin-top: 24px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+#tournament-modal .modal-details::before,
+#tournament-modal .modal-details::after {
+    display: none !important;
+}
+
+/* force visible close button */
+#tournament-modal .modal-close {
+    position: absolute !important;
+    top: 18px !important;
+    right: 18px !important;
+    width: 46px !important;
+    height: 46px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+    border: 1px solid rgba(182, 194, 255, 0.45) !important;
+    background: rgba(8, 12, 28, 0.88) !important;
+    color: #eef2ff !important;
+    font-size: 28px !important;
+    line-height: 1 !important;
+    z-index: 30 !important;
+    cursor: pointer !important;
+}
+
+#tournament-modal .modal-close:hover {
+    background: rgba(23, 33, 67, 0.96) !important;
+}
+
+@media (max-width: 1100px) {
+    #tournament-modal .modal-content {
+        width: min(98vw, 980px) !important;
+        min-height: min(700px, 88vh) !important;
+        max-height: min(700px, 88vh) !important;
+        grid-template-columns: 1fr !important;
+    }
+
+    #tournament-modal .modal-image {
+        min-height: 38vh !important;
+    }
+}
+
+/* ===== Tournament modal redesign from scratch ===== */
+#tournament-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 11000 !important;
+}
+
+#tournament-modal .modal-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    background:
+        radial-gradient(circle at 16% 18%, rgba(110, 136, 255, 0.16), transparent 34%),
+        rgba(5, 8, 20, 0.78) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+#tournament-modal .modal-content {
+    position: relative !important;
+    margin: auto !important;
+    width: min(1560px, 96vw) !important;
+    min-height: min(680px, 86vh) !important;
+    max-height: min(680px, 86vh) !important;
+    padding: 0 !important;
+    border-radius: 30px !important;
+    border: 1px solid rgba(162, 181, 255, 0.34) !important;
+    background: linear-gradient(138deg, rgba(13, 19, 42, 0.97), rgba(8, 12, 28, 0.95)) !important;
+    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.58) !important;
+    overflow: hidden !important;
+    display: grid !important;
+    grid-template-columns: 1.06fr 0.94fr !important;
+}
+
+#tournament-modal .modal-header {
+    display: contents !important;
+}
+
+#tournament-modal .modal-image {
+    grid-column: 1 !important;
+    grid-row: 1 / span 3 !important;
+    position: relative !important;
+    background: #04060f !important;
+}
+
+#tournament-modal .modal-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+#tournament-modal .modal-image::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background: linear-gradient(120deg, rgba(7, 10, 22, 0.16), rgba(7, 10, 22, 0.56)) !important;
+    pointer-events: none !important;
+}
+
+#tournament-modal .modal-info {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    padding: 38px 42px 6px !important;
+}
+
+#tournament-modal #modal-tournament-title {
+    margin: 0 !important;
+    color: #f4f7ff !important;
+    font-family: "Orbitron", sans-serif !important;
+    font-size: clamp(2.1rem, 2.55vw, 3.25rem) !important;
+    line-height: 1.07 !important;
+    letter-spacing: 0.8px !important;
+    text-transform: uppercase !important;
+}
+
+#tournament-modal .modal-subtitle {
+    margin: 14px 0 0 !important;
+    color: #b8c6ff !important;
+    font-family: "Roboto", sans-serif !important;
+    font-size: 1.15rem !important;
+    letter-spacing: 2.2px !important;
+    text-transform: uppercase !important;
+}
+
+#tournament-modal .modal-tags,
+#tournament-modal .modal-description h3,
+#tournament-modal .modal-footer {
+    display: none !important;
+}
+
+#tournament-modal .modal-body {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    padding: 6px 42px 34px !important;
+    overflow-y: auto !important;
+}
+
+#tournament-modal .modal-description {
+    margin: 0 !important;
+    padding-top: 18px !important;
+    position: relative !important;
+}
+
+#tournament-modal .modal-description::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 78px !important;
+    height: 2px !important;
+    border-radius: 999px !important;
+    background: linear-gradient(90deg, rgba(155, 171, 255, 0.98), rgba(116, 145, 255, 0.28)) !important;
+}
+
+#tournament-modal #modal-tournament-description {
+    margin: 0 !important;
+    color: rgba(230, 236, 255, 0.9) !important;
+    font-family: "Roboto", sans-serif !important;
+    font-size: 1.25rem !important;
+    line-height: 1.56 !important;
+}
+
+#tournament-modal .modal-details {
+    margin-top: 24px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+
+#tournament-modal .modal-details h3 {
+    margin: 0 0 14px !important;
+    color: #41f2ff !important;
+    font-size: clamp(2.2rem, 2.6vw, 3rem) !important;
+    line-height: 1.02 !important;
+    font-weight: 700 !important;
+    font-family: "Roboto", sans-serif !important;
+}
+
+#tournament-modal .detail-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+    padding: 12px 0 !important;
+    border-bottom: 1px solid rgba(150, 172, 255, 0.18) !important;
+}
+
+#tournament-modal .detail-label {
+    color: rgba(217, 228, 255, 0.94) !important;
+    font-family: "Roboto", sans-serif !important;
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+}
+
+#tournament-modal .detail-value {
+    color: #41f2ff !important;
+    font-family: "Roboto", sans-serif !important;
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+}
+
+#tournament-modal .modal-close {
+    position: absolute !important;
+    top: 18px !important;
+    right: 18px !important;
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 50% !important;
+    border: 1px solid rgba(178, 194, 255, 0.56) !important;
+    background: rgba(10, 14, 32, 0.84) !important;
+    color: #eff3ff !important;
+    font-size: 30px !important;
+    line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    z-index: 35 !important;
+}
+
+#tournament-modal .modal-close:hover {
+    background: rgba(24, 34, 68, 0.97) !important;
+    transform: scale(1.05) !important;
+}
+
+@media (max-width: 1100px) {
+    #tournament-modal .modal-content {
+        width: min(98vw, 980px) !important;
+        min-height: min(780px, 90vh) !important;
+        max-height: min(780px, 90vh) !important;
+        grid-template-columns: 1fr !important;
+    }
+
+    #tournament-modal .modal-image {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+        min-height: 40vh !important;
+    }
+
+    #tournament-modal .modal-info {
+        grid-column: 1 !important;
+        grid-row: 2 !important;
+        padding: 28px 24px 8px !important;
+    }
+
+    #tournament-modal .modal-body {
+        grid-column: 1 !important;
+        grid-row: 3 !important;
+        padding: 0 24px 24px !important;
+    }
+
+    #tournament-modal #modal-tournament-description,
+    #tournament-modal .detail-label,
+    #tournament-modal .detail-value {
+        font-size: 1.05rem !important;
+    }
+
+    #tournament-modal .modal-details h3 {
+        font-size: 2rem !important;
+    }
+}
+
+/* Legacy top-right menu: visible menu button + expandable panel */
+.menu-toggle-container.legacy-menu-mode {
+    position: fixed !important;
+    top: 18px !important;
+    right: 18px !important;
+    transform: none !important;
+    z-index: 100002 !important;
+}
+
+.menu-toggle-container.legacy-menu-mode .menu-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    min-height: 46px !important;
+    padding: 0 14px !important;
+    border-radius: 999px !important;
+    border: 1px solid rgba(140, 161, 230, 0.42) !important;
+    background: rgba(9, 13, 28, 0.92) !important;
+    color: #eef3ff !important;
+    box-shadow: 0 10px 26px rgba(4, 8, 20, 0.44) !important;
+    cursor: pointer !important;
+}
+
+.menu-toggle-container.legacy-menu-mode .menu-lines {
+    width: 18px;
+    height: 12px;
+    position: relative;
+}
+
+.menu-toggle-container.legacy-menu-mode .menu-lines .line {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+}
+
+.menu-toggle-container.legacy-menu-mode .menu-lines .line1 { top: 1px; }
+.menu-toggle-container.legacy-menu-mode .menu-lines .line2 { top: 9px; }
+
+.menu-toggle-container.legacy-menu-mode .menu-nav-panel {
+    position: absolute !important;
+    top: calc(100% + 10px) !important;
+    right: 0 !important;
+    min-width: 260px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 10px !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(140, 161, 230, 0.35) !important;
+    background: rgba(8, 13, 27, 0.95) !important;
+    box-shadow: 0 16px 30px rgba(3, 7, 17, 0.56) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(-4px) !important;
+    pointer-events: none !important;
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease !important;
+}
+
+.menu-toggle-container.legacy-menu-mode .menu-nav-panel.is-open {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+}
+
+.menu-toggle-container.legacy-menu-mode .menu-nav-panel .nav-link {
+    display: block !important;
+    padding: 8px 10px !important;
+    border-radius: 10px !important;
+    color: #eaf0ff !important;
+}
+
+/* Restore stable top-right menu button + panel (pre-break version) */
+.menu-toggle-container {
+    position: fixed !important;
+    top: 18px !important;
+    right: 18px !important;
+    z-index: 100002 !important;
+    transform: none !important;
+}
+
+.menu-toggle-container .menu-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    padding: 8px 16px !important;
+    background: linear-gradient(135deg, #ffffff 0%, #adaede 100%) !important;
+    border: 1px solid rgba(173, 162, 222, 0.55) !important;
+    border-radius: 14px !important;
+    color: #0f1633 !important;
+    box-shadow: 0 8px 24px rgba(80, 78, 138, 0.28) !important;
+}
+
+.menu-toggle-container .menu-toggle:hover {
+    background: linear-gradient(135deg, #adaede 0%, #8a7bc8 100%) !important;
+    color: #ffffff !important;
+}
+
+.menu-toggle-container .menu-text {
+    font-family: "Orbitron", monospace !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+}
+
+.menu-toggle-container .menu-lines {
+    width: 18px;
+    height: 12px;
+    position: relative;
+}
+
+.menu-toggle-container .menu-lines .line {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+}
+
+.menu-toggle-container .menu-lines .line1 { top: 1px; }
+.menu-toggle-container .menu-lines .line2 { top: 9px; }
+
+.menu-toggle-container .menu-nav-panel {
+    position: absolute !important;
+    top: 0 !important;
+    right: calc(100% + 10px) !important;
+    min-width: 420px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 8px 10px !important;
+    border-radius: 16px !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+    border: 1px solid rgba(173, 162, 222, 0.4) !important;
+    box-shadow: 0 8px 24px rgba(80, 78, 138, 0.2) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateX(8px) !important;
+    pointer-events: none !important;
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease !important;
+}
+
+.menu-toggle-container:hover .menu-nav-panel,
+.menu-toggle-container:focus-within .menu-nav-panel,
+.menu-toggle-container .menu-nav-panel.is-open {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(0) !important;
+    pointer-events: auto !important;
+}
+
+.menu-toggle-container .menu-nav-panel .nav-link {
+    color: #0f1633 !important;
+    padding: 8px 10px !important;
+    border-radius: 10px !important;
+    white-space: nowrap !important;
+}
+
+.menu-toggle-container .menu-nav-panel .nav-link:hover {
+    background: rgba(173, 162, 222, 0.2) !important;
+    color: #0f1633 !important;
+}
+
+/* Force show top-right menu (override hidden bump-nav mode) */
+.menu-toggle-container {
+    display: block !important;
+}
+
+.menu-toggle-container .menu-toggle {
+    display: inline-flex !important;
+}
+
+/* Restore final capsule menu (preferred version) */
+.menu-toggle-container,
+.menu-toggle-container .capsule,
+.menu-toggle-container .capsule__toggle,
+.menu-toggle-container .capsule__links {
+    display: revert !important;
+}
+
+.menu-toggle-container {
+    position: fixed !important;
+    top: 18px !important;
+    right: 18px !important;
+    transform: none !important;
+    z-index: 100003 !important;
+    --collapsed: 132px !important;
+    --expanded: 680px !important;
+    --capsule-height: 48px !important;
+}
+
+.menu-toggle-container .capsule {
+    width: var(--expanded) !important;
+    max-width: calc(100vw - 24px) !important;
+    height: var(--capsule-height) !important;
+    padding: 0 8px 0 10px !important;
+    border: 1px solid rgba(128, 153, 230, 0.48) !important;
+    border-radius: 999px !important;
+    background: rgba(8, 12, 25, 0.9) !important;
+    box-shadow: 0 10px 28px rgba(4, 7, 17, 0.5) !important;
+    clip-path: inset(0 0 0 calc(100% - var(--collapsed)) round 999px) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    overflow: hidden !important;
+}
+
+.menu-toggle-container .capsule.is-open {
+    clip-path: inset(0 0 0 0 round 999px) !important;
+}
+
+.menu-toggle-container .capsule__toggle {
+    margin-left: auto !important;
+    height: 36px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    padding: 0 10px !important;
+    background: transparent !important;
+    color: #f2f6ff !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    cursor: pointer !important;
+}
+
+.menu-toggle-container .menu-text {
+    width: auto !important;
+    min-width: 0 !important;
+    height: 28px !important;
+    padding: 0 12px !important;
+    border-radius: 999px !important;
+    background: linear-gradient(135deg, #9f8be0 0%, #8f7ad8 100%) !important;
+    color: #ffffff !important;
+    font-family: "Orbitron", monospace !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.8px !important;
+    text-transform: uppercase !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    margin-right: 0 !important;
+}
+
+.menu-toggle-container .capsule__burger {
+    width: 18px !important;
+    height: 12px !important;
+    position: relative !important;
+}
+
+.menu-toggle-container .capsule__burger span {
+    position: absolute !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 2px !important;
+    border-radius: 999px !important;
+    background: #e8efff !important;
+}
+
+.menu-toggle-container .capsule__burger span:nth-child(1) { top: 1px !important; }
+.menu-toggle-container .capsule__burger span:nth-child(2) { top: 9px !important; }
+
+.menu-toggle-container .capsule__links {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 0 !important;
+    max-width: 0 !important;
+    margin-right: 0 !important;
+    opacity: 0 !important;
+    transform: translateX(6px) !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+}
+
+.menu-toggle-container .capsule.is-open .capsule__links {
+    width: max-content !important;
+    max-width: calc(100% - 138px) !important;
+    margin-right: 4px !important;
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+    pointer-events: auto !important;
+}
+
+.menu-toggle-container .capsule__links .nav-link {
+    color: #e9f1ff !important;
+    background: transparent !important;
+    border-radius: 10px !important;
+    padding: 8px 10px !important;
+    white-space: nowrap !important;
+}
+
+/* Final navbar look (matches approved screenshot state) */
+@media (min-width: 1100px) {
+    body.menu-fixed-open .menu-toggle-container {
+        top: 12px !important;
+        right: 14px !important;
+        z-index: 100010 !important;
+    }
+
+    body.menu-fixed-open .menu-toggle-container .capsule {
+        width: min(760px, calc(100vw - 28px)) !important;
+        height: 44px !important;
+        clip-path: inset(0 0 0 0 round 999px) !important;
+        border-radius: 999px !important;
+        border: 1px solid rgba(118, 146, 228, 0.45) !important;
+        background: rgba(6, 10, 24, 0.9) !important;
+        box-shadow: 0 10px 24px rgba(2, 6, 18, 0.52) !important;
+        padding: 0 10px 0 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+    }
+
+    body.menu-fixed-open .menu-toggle-container .capsule__links {
+        width: auto !important;
+        max-width: calc(100% - 54px) !important;
+        margin-right: 0 !important;
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: auto !important;
+        overflow: visible !important;
+        gap: 8px !important;
+        position: relative !important;
+        padding-left: 22px !important;
+    }
+
+    body.menu-fixed-open .menu-toggle-container .capsule__links::before {
+        content: "" !important;
+        position: absolute !important;
+        left: 0 !important;
+        top: 50% !important;
+        width: 12px !important;
+        height: 12px !important;
+        border-radius: 50% !important;
+        transform: translateY(-50%) !important;
+        background: #8f7ad8 !important;
+        box-shadow: 0 0 12px rgba(143, 122, 216, 0.55) !important;
+    }
+
+    body.menu-fixed-open .menu-toggle-container .capsule__links .nav-link {
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        color: #ecf2ff !important;
+        padding: 7px 10px !important;
+    }
+
+    body.menu-fixed-open .menu-toggle-container .capsule__toggle {
+        width: 44px !important;
+        min-width: 44px !important;
+        height: 32px !important;
+        margin-left: auto !important;
+        padding: 0 !important;
+        border-radius: 999px !important;
+        background: transparent !important;
+        border-left: 1px solid rgba(132, 152, 214, 0.42) !important;
+        justify-content: center !important;
+    }
+
+    body.menu-fixed-open .menu-toggle-container .menu-text {
+        display: none !important;
+    }
+
+    body.menu-fixed-open .menu-toggle-container .capsule__burger {
+        width: 16px !important;
+        height: 12px !important;
+    }
+
+    body.menu-fixed-open .menu-toggle-container .capsule__burger span {
+        background: #e8efff !important;
+    }
+
+    body.menu-fixed-open .menu-toggle-container .capsule__burger span:nth-child(1) {
+        top: 1px !important;
+    }
+
+    body.menu-fixed-open .menu-toggle-container .capsule__burger span:nth-child(2) {
+        top: 9px !important;
+    }
+}

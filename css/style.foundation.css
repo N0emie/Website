@@ -1,0 +1,728 @@
+/* Font Face */
+@font-face {
+    font-family: 'PINNACLE';
+    src: url('../assets/fonts/fonts/Web/Pinnacle-Light.woff2') format('woff2'),
+         url('../assets/fonts/fonts/Web/Pinnacle-Light.woff') format('woff'),
+         url('../assets/fonts/fonts/OTF/Pinnacle-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Lenis Smooth Scroll Styles */
+html.lenis {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+html {
+    scroll-behavior: auto; /* Отключаем стандартный smooth scroll в пользу Lenis */
+    background-color: #0a0a0a;
+    overflow-x: visible; /* Увеличиваем область видимости GIF элементов */
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: transparent; /* Allow animated background to show through */
+    color: #ffffff;
+    overflow-x: visible; /* Увеличиваем область видимости GIF элементов */
+    line-height: 1.6;
+    position: relative;
+}
+
+/* Advanced Cyberpunk Background - DISABLED for EXAMP effects */
+.cyberpunk-background {
+    display: none; /* Отключено для показа EXAMP фона */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: 
+        radial-gradient(ellipse at top, #1a0033 0%, #0a0a0a 50%),
+        radial-gradient(ellipse at bottom, #330066 0%, #000000 50%),
+        linear-gradient(135deg, #0a0a0a 0%, #1a0033 25%, #330066 50%, #1a0033 75%, #0a0a0a 100%);
+    overflow: hidden;
+}
+
+/* Layer 1: Cyber Grid - DISABLED for EXAMP effects */
+.cyber-grid {
+    display: none; /* Отключено для показа EXAMP фона */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(138, 43, 226, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(138, 43, 226, 0.3) 1px, transparent 1px),
+        linear-gradient(rgba(75, 0, 130, 0.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(75, 0, 130, 0.2) 1px, transparent 1px);
+    background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+    animation: gridMove 20s linear infinite, gridPulse 4s ease-in-out infinite alternate;
+}
+
+/* Layer 2: Circuit Patterns - DISABLED for EXAMP effects */
+.circuit-patterns {
+    display: none; /* Отключено для показа EXAMP фона */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(138, 43, 226, 0.4) 2px, transparent 2px),
+        radial-gradient(circle at 80% 80%, rgba(75, 0, 130, 0.4) 2px, transparent 2px),
+        radial-gradient(circle at 40% 60%, rgba(147, 0, 211, 0.3) 1px, transparent 1px);
+    background-size: 150px 150px, 200px 200px, 80px 80px;
+    animation: circuitFlow 15s linear infinite;
+}
+
+.circuit-patterns::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(45deg, transparent 48%, rgba(138, 43, 226, 0.6) 49%, rgba(138, 43, 226, 0.6) 51%, transparent 52%),
+        linear-gradient(-45deg, transparent 48%, rgba(75, 0, 130, 0.4) 49%, rgba(75, 0, 130, 0.4) 51%, transparent 52%);
+    background-size: 300px 300px, 250px 250px;
+    animation: circuitPulse 8s ease-in-out infinite;
+}
+
+/* Layer 3: Holographic Elements */
+.holographic-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.holographic-elements::before {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 10%;
+    width: 200px;
+    height: 300px;
+    background: linear-gradient(45deg, 
+        transparent 0%, 
+        rgba(138, 43, 226, 0.1) 25%, 
+        rgba(75, 0, 130, 0.2) 50%, 
+        rgba(147, 0, 211, 0.1) 75%, 
+        transparent 100%);
+    clip-path: polygon(0% 0%, 100% 20%, 80% 100%, 20% 80%);
+    animation: hologramFlicker 6s ease-in-out infinite, hologramRotate 20s linear infinite;
+    filter: blur(1px);
+}
+
+.holographic-elements::after {
+    content: '';
+    position: absolute;
+    bottom: 20%;
+    right: 15%;
+    width: 250px;
+    height: 200px;
+    background: linear-gradient(135deg, 
+        transparent 0%, 
+        rgba(147, 0, 211, 0.15) 30%, 
+        rgba(138, 43, 226, 0.2) 60%, 
+        transparent 100%);
+    clip-path: polygon(20% 0%, 100% 0%, 80% 100%, 0% 80%);
+    animation: hologramFlicker 8s ease-in-out infinite reverse, hologramFloat 12s ease-in-out infinite;
+    filter: blur(2px);
+}
+
+/* Layer 4: Data Streams */
+.data-streams {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(90deg, transparent 0%, rgba(138, 43, 226, 0.8) 1%, transparent 2%),
+        linear-gradient(180deg, transparent 0%, rgba(75, 0, 130, 0.6) 1%, transparent 2%),
+        linear-gradient(45deg, transparent 0%, rgba(147, 0, 211, 0.4) 1%, transparent 2%);
+    background-size: 300px 100%, 100% 400px, 200px 200px;
+    animation: dataFlow 10s linear infinite;
+}
+
+/* Layer 5: Neon Particles */
+.neon-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(2px 2px at 10% 20%, rgba(138, 43, 226, 1), transparent),
+        radial-gradient(2px 2px at 30% 70%, rgba(75, 0, 130, 1), transparent),
+        radial-gradient(1px 1px at 60% 30%, rgba(147, 0, 211, 1), transparent),
+        radial-gradient(1px 1px at 80% 80%, rgba(138, 43, 226, 0.8), transparent),
+        radial-gradient(3px 3px at 90% 10%, rgba(75, 0, 130, 0.6), transparent);
+    background-size: 400px 400px, 350px 350px, 300px 300px, 250px 250px, 200px 200px;
+    animation: particleSwarm 25s linear infinite;
+}
+
+/* Layer 6: Glitch Effects */
+.glitch-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(90deg, transparent 98%, rgba(138, 43, 226, 0.8) 99%, transparent 100%),
+        linear-gradient(180deg, transparent 98%, rgba(75, 0, 130, 0.6) 99%, transparent 100%);
+    background-size: 100px 100%, 100% 150px;
+    animation: glitchScan 3s steps(10) infinite;
+    opacity: 0.7;
+}
+
+.glitch-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(138, 43, 226, 0.1);
+    animation: glitchFlash 0.3s steps(2) infinite;
+}
+
+/* Layer 7: Energy Pulses */
+.energy-pulses {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    transform: translate(-50%, -50%);
+}
+
+.energy-pulses::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid rgba(138, 43, 226, 0.6);
+    border-radius: 50%;
+    animation: energyPulse 4s ease-out infinite;
+}
+
+.energy-pulses::after {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    width: 50%;
+    height: 50%;
+    border: 1px solid rgba(147, 0, 211, 0.8);
+    border-radius: 50%;
+    animation: energyPulse 4s ease-out infinite 2s;
+}
+
+/* Layer 8: Enhanced Floating Code */
+.floating-code {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: rgba(138, 43, 226, 0.4);
+    overflow: hidden;
+}
+
+.floating-code::before {
+    content: 'function initTournament() { const players = await fetchPlayers(); const matches = generateBracket(players); return { status: "ACTIVE", tournament_id: generateUUID(), prize_pool: 5000000, game: "DOTA2" }; } class CyberSportManager { constructor() { this.tournaments = []; this.players = new Map(); } async createTournament(config) { const tournament = new Tournament(config); await tournament.initialize(); this.tournaments.push(tournament); return tournament.id; } } const DIZBAND_API = { endpoint: "https://api.dizband.media", version: "v2.1", auth: process.env.API_KEY };';
+    position: absolute;
+    top: 5%;
+    left: -200%;
+    white-space: nowrap;
+    animation: codeScroll 35s linear infinite;
+    font-size: 10px;
+}
+
+.floating-code::after {
+    content: 'SELECT * FROM tournaments WHERE status = "ACTIVE" AND prize_pool > 1000000; UPDATE players SET rank = "PRO" WHERE wins > 100; INSERT INTO matches (tournament_id, player1, player2, scheduled_time) VALUES (?, ?, ?, NOW()); CREATE TABLE esports_events ( id INT PRIMARY KEY, name VARCHAR(255), game ENUM("CS2", "DOTA2", "VALORANT"), prize_pool DECIMAL(10,2), status ENUM("UPCOMING", "LIVE", "COMPLETED") ); GRANT ALL PRIVILEGES ON dizcorp_db.* TO "tournament_admin"@"localhost";';
+    position: absolute;
+    bottom: 15%;
+    right: -200%;
+    white-space: nowrap;
+    color: rgba(75, 0, 130, 0.5);
+    animation: codeScroll 40s linear infinite reverse;
+    font-size: 9px;
+}
+
+/* Layer 9: Geometric Shapes */
+.geometric-shapes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.geometric-shapes::before {
+    content: '';
+    position: absolute;
+    top: 30%;
+    right: 20%;
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(45deg, 
+        transparent 0%, 
+        rgba(138, 43, 226, 0.2) 50%, 
+        transparent 100%);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    animation: shapeRotate 15s linear infinite, shapePulse 5s ease-in-out infinite alternate;
+}
+
+.geometric-shapes::after {
+    content: '';
+    position: absolute;
+    bottom: 30%;
+    left: 25%;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, 
+        transparent 0%, 
+        rgba(147, 0, 211, 0.3) 50%, 
+        transparent 100%);
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    animation: shapeRotate 18s linear infinite reverse, shapePulse 6s ease-in-out infinite;
+}
+
+/* Layer 10: Scan Lines */
+.scan-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        transparent 50%, 
+        rgba(138, 43, 226, 0.1) 50%, 
+        rgba(138, 43, 226, 0.1) 51%, 
+        transparent 51%
+    );
+    background-size: 100% 4px;
+    animation: scanMove 2s linear infinite;
+    pointer-events: none;
+}
+
+/* Layer 11: Static Code Elements */
+.static-code-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Courier New', monospace;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.static-code-elements::before {
+    content: '#!/bin/bash\n# Dizcorp Tournament System\necho "Initializing tournament..."\nfor player in "${players[@]}"; do\n  validate_player "$player"\n  register_player "$player"\ndone\n\n// Tournament API\nconst express = require("express");\nconst app = express();\n\napp.post("/api/tournament", async (req, res) => {\n  const { name, game, prize } = req.body;\n  const tournament = await createTournament({\n    name, game, prize_pool: prize\n  });\n  res.json({ success: true, id: tournament.id });\n});';
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    font-size: 8px;
+    color: rgba(138, 43, 226, 0.2);
+    white-space: pre-line;
+    line-height: 1.2;
+    animation: staticCodeGlow 8s ease-in-out infinite alternate;
+}
+
+.static-code-elements::after {
+    content: 'import { Tournament, Player, Match } from "./esports";\n\ninterface TournamentConfig {\n  name: string;\n  game: "CS2" | "DOTA2" | "VALORANT";\n  maxPlayers: number;\n  prizePool: number;\n}\n\nclass DizcorpManager {\n  private tournaments: Map<string, Tournament>;\n  \n  constructor() {\n    this.tournaments = new Map();\n  }\n  \n  async createTournament(config: TournamentConfig) {\n    const tournament = new Tournament(config);\n    await tournament.validate();\n    this.tournaments.set(tournament.id, tournament);\n    return tournament;\n  }\n}';
+    position: absolute;
+    bottom: 15%;
+    right: 5%;
+    font-size: 7px;
+    color: rgba(75, 0, 130, 0.25);
+    white-space: pre-line;
+    line-height: 1.3;
+    animation: staticCodeGlow 10s ease-in-out infinite alternate reverse;
+}
+
+/* Layer 12: Terminal Commands */
+.terminal-commands {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Courier New', monospace;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.terminal-commands::before {
+    content: '$ sudo systemctl start dizcorp-tournament\n$ docker-compose up -d tournament-api\n$ kubectl apply -f tournament-deployment.yaml\n$ npm run build:production\n$ pm2 start ecosystem.config.js\n$ tail -f /var/log/tournament.log\n[INFO] Tournament system initialized\n[INFO] Database connection established\n[INFO] Redis cache connected\n[INFO] WebSocket server started on port 3001\n$ curl -X POST https://api.dizcorp.media/tournaments\n$ ssh tournament@prod-server-01\n$ htop | grep tournament\n$ netstat -tulpn | grep :3000';
+    position: absolute;
+    top: 25%;
+    left: 2%;
+    font-size: 7px;
+    color: rgba(0, 255, 0, 0.15);
+    white-space: pre-line;
+    line-height: 1.4;
+    animation: terminalBlink 12s ease-in-out infinite;
+}
+
+.terminal-commands::after {
+    content: 'root@dizcorp-server:~# ps aux | grep tournament\nroot      1234  0.5  2.1 456789 87654 ?  Sl 10:30  0:15 node tournament-api\nroot      5678  0.2  1.8 234567 65432 ?  S  10:31  0:08 python3 match-scheduler.py\nroot      9012  0.1  0.9 123456 32109 ?  S  10:32  0:03 redis-server\n\nroot@dizcorp-server:~# systemctl status tournament\n● tournament.service - Dizcorp Tournament System\n   Loaded: loaded (/etc/systemd/system/tournament.service)\n   Active: active (running) since Mon 2025-09-29 10:30:15 UTC\n   Main PID: 1234 (node)\n   Memory: 87.6M\n   CGroup: /system.slice/tournament.service\n           └─1234 node tournament-api';
+    position: absolute;
+    bottom: 25%;
+    right: 2%;
+    font-size: 6px;
+    color: rgba(0, 255, 0, 0.12);
+    white-space: pre-line;
+    line-height: 1.5;
+    animation: terminalBlink 15s ease-in-out infinite reverse;
+}
+
+/* Layer 13: System Messages */
+.system-messages {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Courier New', monospace;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.system-messages::before {
+    content: '[2025-09-29 10:30:15] SYSTEM: Tournament API initialized\n[2025-09-29 10:30:16] DATABASE: Connection pool established (32 connections)\n[2025-09-29 10:30:17] CACHE: Redis cluster connected (3 nodes)\n[2025-09-29 10:30:18] WEBSOCKET: Server listening on port 3001\n[2025-09-29 10:30:19] SCHEDULER: Match scheduler started\n[2025-09-29 10:30:20] SECURITY: SSL certificates validated\n[2025-09-29 10:30:21] MONITORING: Prometheus metrics enabled\n[2025-09-29 10:30:22] READY: Dizcorp Tournament System online';
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 6px;
+    color: rgba(255, 255, 0, 0.1);
+    white-space: pre-line;
+    line-height: 1.6;
+    text-align: center;
+    animation: systemPulse 18s ease-in-out infinite;
+}
+
+.system-messages::after {
+    content: 'DIZBAND NEURAL NETWORK STATUS:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓\n\nPLAYER ANALYSIS: ████████████████ 100%\nMATCH PREDICTION: ████████████████ 100%\nTOURNAMENT OPTIMIZATION: ████████████████ 100%\nANTI-CHEAT DETECTION: ████████████████ 100%\n\nSTATUS: ALL SYSTEMS OPERATIONAL\nUPTIME: 99.99%\nACTIVE TOURNAMENTS: 47\nONLINE PLAYERS: 12,847';
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 5px;
+    color: rgba(0, 255, 255, 0.08);
+    white-space: pre-line;
+    line-height: 1.8;
+    text-align: center;
+    animation: systemPulse 20s ease-in-out infinite reverse;
+}
+
+/* Cyberpunk Animations */
+@keyframes gridMove {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(100px, 100px);
+    }
+}
+
+@keyframes gridPulse {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 0.6;
+    }
+}
+
+@keyframes circuitFlow {
+    0% {
+        background-position: 0% 0%, 0% 0%, 0% 0%;
+    }
+    100% {
+        background-position: 150px 150px, 200px 200px, 80px 80px;
+    }
+}
+
+@keyframes circuitPulse {
+    0%, 100% {
+        opacity: 0.4;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes hologramFlicker {
+    0%, 100% {
+        opacity: 0.3;
+        filter: blur(1px) hue-rotate(0deg);
+    }
+    25% {
+        opacity: 0.7;
+        filter: blur(2px) hue-rotate(90deg);
+    }
+    50% {
+        opacity: 0.5;
+        filter: blur(1.5px) hue-rotate(180deg);
+    }
+    75% {
+        opacity: 0.8;
+        filter: blur(0.5px) hue-rotate(270deg);
+    }
+}
+
+@keyframes hologramRotate {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    100% {
+        transform: rotate(360deg) scale(1.1);
+    }
+}
+
+@keyframes hologramFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes dataFlow {
+    0% {
+        background-position: 0% 0%, 0% 0%, 0% 0%;
+    }
+    100% {
+        background-position: 300px 0%, 0% 400px, 200px 200px;
+    }
+}
+
+@keyframes particleSwarm {
+    0% {
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+    100% {
+        background-position: 400px 400px, -350px 350px, 300px -300px, -250px -250px, 200px 200px;
+    }
+}
+
+@keyframes glitchScan {
+    0% {
+        background-position: 0% 0%, 0% 0%;
+        transform: translateX(0);
+    }
+    10% {
+        transform: translateX(-2px);
+    }
+    20% {
+        transform: translateX(2px);
+    }
+    30% {
+        transform: translateX(-1px);
+    }
+    40% {
+        transform: translateX(1px);
+    }
+    50% {
+        background-position: 50px 0%, 0% 75px;
+        transform: translateX(0);
+    }
+    100% {
+        background-position: 100px 0%, 0% 150px;
+        transform: translateX(0);
+    }
+}
+
+@keyframes glitchFlash {
+    0%, 90% {
+        opacity: 0;
+    }
+    95% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes energyPulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(2);
+        opacity: 0.4;
+    }
+    100% {
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+@keyframes codeScroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(100vw);
+    }
+}
+
+@keyframes shapeRotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes shapePulse {
+    0% {
+        opacity: 0.2;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+}
+
+@keyframes scanMove {
+    0% {
+        transform: translateY(-100vh);
+    }
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+@keyframes staticCodeGlow {
+    0% {
+        opacity: 0.1;
+        text-shadow: 0 0 5px rgba(138, 43, 226, 0.3);
+    }
+    50% {
+        opacity: 0.3;
+        text-shadow: 0 0 10px rgba(138, 43, 226, 0.5), 0 0 20px rgba(138, 43, 226, 0.3);
+    }
+    100% {
+        opacity: 0.2;
+        text-shadow: 0 0 8px rgba(138, 43, 226, 0.4);
+    }
+}
+
+@keyframes terminalBlink {
+    0%, 90% {
+        opacity: 0.1;
+        text-shadow: 0 0 3px rgba(0, 255, 0, 0.2);
+    }
+    95% {
+        opacity: 0.25;
+        text-shadow: 0 0 8px rgba(0, 255, 0, 0.4), 0 0 15px rgba(0, 255, 0, 0.2);
+    }
+    100% {
+        opacity: 0.15;
+        text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+    }
+}
+
+@keyframes systemPulse {
+    0% {
+        opacity: 0.05;
+        text-shadow: 0 0 2px rgba(255, 255, 0, 0.1);
+        transform: translateX(-50%) scale(0.98);
+    }
+    50% {
+        opacity: 0.15;
+        text-shadow: 0 0 6px rgba(255, 255, 0, 0.3), 0 0 12px rgba(255, 255, 0, 0.1);
+        transform: translateX(-50%) scale(1.02);
+    }
+    100% {
+        opacity: 0.08;
+        text-shadow: 0 0 4px rgba(255, 255, 0, 0.2);
+        transform: translateX(-50%) scale(1);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+html.loading,
+body.loading {
+    overflow: hidden !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+html.loading::-webkit-scrollbar,
+body.loading::-webkit-scrollbar {
+    display: none !important;
+}
+
+html.loading {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+
+.main-content {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    /* backdrop-filter: blur(3px); - ОТКЛЮЧЕНО для показа EXAMP фона */
+    /* background: rgba(0, 0, 0, 0.15); - ОТКЛЮЧЕНО для показа EXAMP фона */
+}
+
+.main-content.loaded {
+    opacity: 1;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
