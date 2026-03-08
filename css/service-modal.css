@@ -189,3 +189,81 @@ body.modal-open {
         line-height: 1.56;
     }
 }
+
+/* Tournament modal: reuse same shell, wider layout */
+#tournament-modal .tournament-modal-container {
+    width: min(1480px, 96vw);
+    min-height: min(700px, 88vh);
+}
+
+#tournament-modal .service-modal-main {
+    min-height: min(700px, 88vh);
+    grid-template-columns: 1.06fr 0.94fr;
+}
+
+#tournament-modal .service-modal-content {
+    justify-content: flex-start;
+    gap: 18px;
+}
+
+#tournament-modal .service-modal-title {
+    font-size: clamp(2rem, 2.3vw, 3rem);
+    line-height: 1.08;
+}
+
+#tournament-modal .service-modal-subtitle {
+    font-size: 1rem;
+}
+
+#tournament-modal .service-modal-text {
+    font-size: 1.15rem;
+}
+
+#tournament-modal .tournament-modal-details {
+    margin-top: 6px;
+}
+
+#tournament-modal .tournament-modal-details h3 {
+    margin: 0 0 12px;
+    color: #45f2ff;
+    font-size: clamp(1.9rem, 2.1vw, 2.4rem);
+    line-height: 1.1;
+    font-family: "Roboto", sans-serif;
+}
+
+#tournament-modal .detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(160, 174, 255, 0.2);
+}
+
+#tournament-modal .detail-label {
+    color: rgba(214, 223, 255, 0.92);
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+#tournament-modal .detail-value {
+    color: #45f2ff;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+@media (max-width: 1100px) {
+    #tournament-modal .tournament-modal-container {
+        width: min(98vw, 980px);
+        min-height: min(780px, 90vh);
+    }
+
+    #tournament-modal .service-modal-main {
+        min-height: min(780px, 90vh);
+        grid-template-columns: 1fr;
+    }
+
+    #tournament-modal .service-modal-media {
+        min-height: 40vh;
+    }
+}

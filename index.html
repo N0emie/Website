@@ -14,16 +14,15 @@
     
     <!-- Resource Hints for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="//youtube.com">
     <link rel="dns-prefetch" href="//twitch.tv">
     <link rel="dns-prefetch" href="//t.me">
     
     <!-- Preload Critical Resources -->
     <link rel="preload" href="/assets/webp/69.webp" as="image" type="image/webp">
-    <link rel="preload" href="/assets/video/new_loading_logo_final.webm" as="video" type="video/webm">
     <link rel="preload" href="/css/style.css" as="style">
     <link rel="preload" href="/css/loading.css" as="style">
-    <link rel="preload" href="/js/script.min.js" as="script">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -46,19 +45,6 @@
         html { visibility: hidden; opacity: 0; }
         html.loaded { visibility: visible; opacity: 1; transition: opacity 0.3s ease-in-out; }
     </style>
-    
-    <!-- Resource hints for better performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://t.me">
-    <link rel="dns-prefetch" href="https://youtube.com">
-    <link rel="dns-prefetch" href="https://twitch.tv">
-    
-    <!-- Preload critical resources -->
-    <link rel="preload" href="assets/webp/69.webp" as="image">
-    <link rel="preload" href="assets/webp/telegram.webp" as="image">
-    <link rel="preload" href="assets/webp/youtube.webp" as="image">
-    <link rel="preload" href="assets/webp/twitch.webp" as="image">
     
     <!-- Critical CSS -->
     <link rel="stylesheet" href="css/loading.css">
@@ -84,25 +70,33 @@
 </head>
 <body class="loading">
     <!-- FIXED ELEMENTS - MOVED TO BODY ROOT TO AVOID TRANSFORM ISSUES -->
-    <!-- Menu Button in Top Right Corner -->
-    <div class="menu-toggle-container">
-        <div class="menu-toggle" id="menuToggle">
-            <span class="menu-text">МЕНЮ</span>
-            <div class="menu-lines">
-                <span class="line line1"></span>
-                <span class="line line2"></span>
-            </div>
+    <!-- Top-right icon menu -->
+    <nav class="bump-nav is-collapsed" id="bumpNav" aria-label="Быстрое меню">
+        <button class="bump-nav__toggle" id="bumpNavToggle" type="button" aria-expanded="false" aria-label="Открыть меню">
+            <span class="bump-nav__toggle-line"></span>
+            <span class="bump-nav__toggle-line"></span>
+        </button>
+        <div class="bump-nav__items" role="group" aria-label="Разделы">
+            <button class="bump-nav__item is-active" type="button" data-target="#home" aria-label="Главная">
+                <svg viewBox="0 0 24 24"><path d="M3 11.5L12 4l9 7.5"></path><path d="M6.5 10.5V20h11V10.5"></path></svg>
+            </button>
+            <button class="bump-nav__item" type="button" data-target="#services" aria-label="Услуги">
+                <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"></rect><path d="M8 9h8M8 13h5"></path></svg>
+            </button>
+            <button class="bump-nav__item" type="button" data-target="#tournaments" aria-label="Турниры">
+                <svg viewBox="0 0 24 24"><path d="M7 4h10v3a4 4 0 0 1-4 4h-2a4 4 0 0 1-4-4V4Z"></path><path d="M10 11v3.5A2.5 2.5 0 0 0 12.5 17H13"></path><path d="M9 20h6"></path></svg>
+            </button>
+            <button class="bump-nav__item" type="button" data-target="#about" aria-label="О нас">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"></circle><path d="M6.5 20a5.5 5.5 0 0 1 11 0"></path></svg>
+            </button>
+            <button class="bump-nav__item" type="button" data-target="#proposal-submit-section" aria-label="Контакты">
+                <svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2"></rect><path d="m4.5 8 7.5 5 7.5-5"></path></svg>
+            </button>
+            <button class="bump-nav__item" type="button" data-href="/admin/login" aria-label="Вход в админку">
+                <svg viewBox="0 0 24 24"><circle cx="8.5" cy="12" r="3"></circle><path d="M11.5 12H21"></path><path d="M18 12v2.5"></path><path d="M15.5 12v2"></path></svg>
+            </button>
         </div>
-        
-        <!-- Compact Navigation Panel -->
-        <div class="menu-nav-panel" id="menuNavPanel">
-            <a href="#home" class="nav-link">Главная</a>
-            <a href="#services" class="nav-link">Услуги</a>
-            <a href="#tournaments" class="nav-link">Турниры</a>
-            <a href="#about" class="nav-link">О нас</a>
-            <a href="#contacts" class="nav-link">Контакты</a>
-        </div>
-    </div>
+    </nav>
     
 
     
@@ -130,26 +124,20 @@
     <!-- <img src="assets/1012 (1)(1).gif" alt="" class="examp-gif examp-gif-3"> -->
 
 
-    <img src="assets/webp/pers.webp" alt="Персонаж игры" class="examp-gif examp-gif-pers" loading="lazy">
+    
     
 
     
     <!-- Loading Screen - Completely Separate -->
-    <div id="loading-screen" class="loading-screen">
+    <div id="loading-screen" class="loading-screen" role="status" aria-live="polite" aria-label="Loading site content">
         <!-- Контейнер для анимированных точек как на основном сайте -->
         <div id="loadingFloatingDots" class="loading-floating-dots"></div>
         
         <div class="loading-container">
-            <div class="loading-logo">
-                <video autoplay muted loop playsinline preload="auto">
-                    <source src="assets/video/new_loading_logo_final.webm" type="video/webm">
-                    <img src="assets/webp/69.webp" alt="Dizband Logo">
-                </video>
+            <div class="loading-badge">
+                <span class="loading-text">LOADING</span>
+                <span class="loading-stick" aria-hidden="true"></span>
             </div>
-            <div class="loading-progress">
-                <div class="loading-progress-fill"></div>
-            </div>
-            <div class="loading-percentage">0%</div>
         </div>
     </div>
 
@@ -195,7 +183,7 @@
         
         <div class="hero-content">
             <h1 class="hero-title">ДОБРО ПОЖАЛОВАТЬ В DIZBAND — ПРОВОДНИК В МИР КИБЕРСПОРТА ДЛЯ БРЕНДОВ</h1>
-            <button class="hero-button">ЗАКАЗАТЬ ТУРНИР</button>
+            <button class="hero-button" type="button" data-target="#proposal-submit-section">ЗАКАЗАТЬ ТУРНИР</button>
         </div>
         <div class="hero-video">
             <video autoplay muted loop playsinline class="hero-video-element">
@@ -223,7 +211,7 @@
                 <div class="about-images">
                     <div class="about-image" data-tilt>
                         <div class="about-image-inner">
-                            <img src="assets/images/tournaments/csgo-tournament.jpg" alt="Турнир CS:GO" class="tournament-photo">
+                            <img src="assets/images/tournaments/csgo-tournament.jpg" alt="Турнир CS:GO" class="tournament-photo" loading="lazy" decoding="async">
                             <div class="image-overlay">
                                 <span class="image-title">Турнир CS:GO</span>
                             </div>
@@ -231,7 +219,7 @@
                     </div>
                     <div class="about-image" data-tilt>
                         <div class="about-image-inner">
-                            <img src="assets/images/tournaments/dota2-championship.jpg" alt="Dota 2 Championship" class="tournament-photo">
+                            <img src="assets/images/tournaments/dota2-championship.jpg" alt="Dota 2 Championship" class="tournament-photo" loading="lazy" decoding="async">
                             <div class="image-overlay">
                                 <span class="image-title">Dota 2 Championship</span>
                             </div>
@@ -239,7 +227,7 @@
                     </div>
                     <div class="about-image" data-tilt>
                         <div class="about-image-inner">
-                            <img src="assets/images/tournaments/valorant-cup.jpg" alt="Valorant Cup" class="tournament-photo">
+                            <img src="assets/images/tournaments/valorant-cup.jpg" alt="Valorant Cup" class="tournament-photo" loading="lazy" decoding="async">
                             <div class="image-overlay">
                                 <span class="image-title">Valorant Cup</span>
                             </div>
@@ -247,7 +235,7 @@
                     </div>
                     <div class="about-image" data-tilt>
                         <div class="about-image-inner">
-                            <img src="assets/images/tournaments/lol-tournament.jpg" alt="League of Legends" class="tournament-photo">
+                            <img src="assets/images/tournaments/lol-tournament.jpg" alt="League of Legends" class="tournament-photo" loading="lazy" decoding="async">
                             <div class="image-overlay">
                                 <span class="image-title">League of Legends</span>
                             </div>
@@ -255,7 +243,7 @@
                     </div>
                     <div class="about-image" data-tilt>
                         <div class="about-image-inner">
-                            <img src="assets/images/tournament-cards/mobile-fest.jpg" alt="Mobile Esports Fest" class="tournament-photo">
+                            <img src="assets/images/tournament-cards/mobile-fest.jpg" alt="Mobile Esports Fest" class="tournament-photo" loading="lazy" decoding="async">
                             <div class="image-overlay">
                                 <span class="image-title">Mobile Esports Fest</span>
                             </div>
@@ -263,7 +251,7 @@
                     </div>
                     <div class="about-image about-image-small" data-tilt>
                         <div class="about-image-inner">
-                            <img src="assets/images/tournament-cards/volt-energy-cup.jpg" alt="Volt Energy Cup" class="tournament-photo">
+                            <img src="assets/images/tournament-cards/volt-energy-cup.jpg" alt="Volt Energy Cup" class="tournament-photo" loading="lazy" decoding="async">
                             <div class="image-overlay">
                                 <span class="image-title">Volt Energy Cup</span>
                             </div>
@@ -436,7 +424,7 @@
         <div class="tournaments-carousel" id="tournaments-carousel">
             <div class="tournament-card">
                 <div class="tournament-image">
-                    <img src="assets/images/tournament-cards/volt-energy-cup.jpg" alt="Volt Energy Cyber Cup" style="width: 100%; height: 100%; object-fit: cover;" draggable="false">
+                    <img src="assets/images/tournament-cards/volt-energy-cup.jpg" alt="Volt Energy Cyber Cup" style="width: 100%; height: 100%; object-fit: cover;" draggable="false" loading="lazy" decoding="async">
                 </div>
                 <div class="tournament-tags">
                     <span class="tag">Professional</span>
@@ -449,7 +437,7 @@
 
             <div class="tournament-card">
                 <div class="tournament-image">
-                    <img src="assets/images/tournament-cards/winline-cs2.jpg" alt="Winline Star Series CS2" style="width: 100%; height: 100%; object-fit: cover;" draggable="false">
+                    <img src="assets/images/tournament-cards/winline-cs2.jpg" alt="Winline Star Series CS2" style="width: 100%; height: 100%; object-fit: cover;" draggable="false" loading="lazy" decoding="async">
                 </div>
                 <div class="tournament-tags">
                     <span class="tag">Professional</span>
@@ -462,7 +450,7 @@
 
             <div class="tournament-card">
                 <div class="tournament-image">
-                    <img src="assets/images/tournament-cards/dota2-champions.jpg" alt="Dota2 Champions" style="width: 100%; height: 100%; object-fit: cover;" draggable="false">
+                    <img src="assets/images/tournament-cards/dota2-champions.jpg" alt="Dota2 Champions" style="width: 100%; height: 100%; object-fit: cover;" draggable="false" loading="lazy" decoding="async">
                 </div>
                 <div class="tournament-tags">
                     <span class="tag">Professional</span>
@@ -475,7 +463,7 @@
 
             <div class="tournament-card">
                 <div class="tournament-image">
-                    <img src="assets/images/tournament-cards/mobile-fest.jpg" alt="Mobile Esports Fest" style="width: 100%; height: 100%; object-fit: cover;" draggable="false">
+                    <img src="assets/images/tournament-cards/mobile-fest.jpg" alt="Mobile Esports Fest" style="width: 100%; height: 100%; object-fit: cover;" draggable="false" loading="lazy" decoding="async">
                 </div>
                 <div class="tournament-tags">
                     <span class="tag">Mobile</span>
@@ -564,12 +552,12 @@
                 <!-- Visual Card with 3D Element -->
                 <div class="bento-card visual-card">
                     <div class="visual-content">
-                        <img src="assets/webp/69.webp" alt="Dizband 3D Logo" class="visual-logo">
+                        <img src="assets/webp/69.webp" alt="Dizband 3D Logo" class="visual-logo" loading="lazy" decoding="async">
                     </div>
                 </div>
 
                 <!-- Contact Form Card -->
-                <div class="bento-card form-card">
+                <div id="proposal-submit-section" class="bento-card form-card">
                     <form class="bento-form" id="bentoContactForm">
                         <div class="bento-form-group">
                             <label for="bento-name">ИМЯ</label>
@@ -734,336 +722,12 @@
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
     
     <!-- Lenis Smooth Scroll Initialization -->
-    <script>
-        // Initialize Lenis with heavy/luxurious scroll settings like wlt.design
-        const lenis = new Lenis({
-            duration: 2.2,        // Немного быстрее, но все еще плавный
-            easing: (t) => 1 - Math.pow(1 - t, 4), // Quartic-out easing для плавного замедления
-            direction: 'vertical', // Вертикальный скролл
-            gestureDirection: 'vertical', // Направление жестов
-            smooth: true,         // Включить плавный скролл
-            mouseMultiplier: 0.7, // Немного быстрее скролл мышью
-            smoothTouch: false,   // Отключить на тач-устройствах
-            touchMultiplier: 1.4, // Множитель для тач-устройств
-            infinite: false,      // Отключить бесконечный скролл
-            lerp: 0.07,          // Немного быстрее интерполяция
-            wheelMultiplier: 0.6, // Немного быстрее множитель для колеса
-        });
+    <script src="js/modules/lenis-init.js"></script>
 
-        // Функция анимации
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-
-        // Запуск анимации
-        requestAnimationFrame(raf);
-
-        // Интеграция с якорными ссылками
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    lenis.scrollTo(target, {
-                        duration: 2.4,
-                        easing: (t) => 1 - Math.pow(1 - t, 4), // Тот же easing что и основной
-                        lerp: 0.08 // Немного быстрее для навигации
-                    });
-                }
-            });
-        });
-
-        // Остановка скролла при взаимодействии с модальными окнами
-        function stopLenis() {
-            lenis.stop();
-        }
-
-        function startLenis() {
-            lenis.start();
-        }
-
-        // Экспорт функций для использования в других скриптах
-        window.lenisStop = stopLenis;
-        window.lenisStart = startLenis;
-    </script>
-    
     <script src="js/script.js?v=3"></script>
-    <script>
-        // EXAMP Floating Dots
-        function createExampFloatingDots() {
-            const container = document.getElementById('exampFloatingDots');
-            if (!container) return;
-            
-            setInterval(() => {
-                const dot = document.createElement('div');
-                dot.className = 'examp-dot';
-                dot.style.left = Math.random() * 100 + '%';
-                dot.style.animationDelay = Math.random() * 2 + 's';
-                dot.style.animationDuration = (15 + Math.random() * 10) + 's';
-                
-                container.appendChild(dot);
-                
-                // Удаляем точку после анимации
-                setTimeout(() => {
-                    if (dot.parentNode) {
-                        dot.parentNode.removeChild(dot);
-                    }
-                }, 25000);
-            }, 300);
-        }
+    <script src="js/modules/legacy-modals.js"></script>
 
-
-
-        // Запуск создания точек - DISABLED (removed firefly effect)
-        document.addEventListener('DOMContentLoaded', function() {
-            // createExampFloatingDots();
-            
-            // Скрытие загрузочного экрана
-            setTimeout(function() {
-                const loadingScreen = document.getElementById('loading-screen');
-                if (loadingScreen) {
-                    loadingScreen.style.opacity = '0';
-                    setTimeout(function() {
-                        loadingScreen.style.display = 'none';
-                    }, 500);
-                }
-            }, 2000); // Показываем загрузочный экран 2 секунды
-        });
-
-        // Simple modal functionality
-        function showTournamentModal(title, description, index) {
-            console.log('Modal function called:', title, description, index);
-            
-            const modal = document.getElementById('tournament-modal');
-            const modalTitle = document.getElementById('modal-tournament-title');
-            const modalDescription = document.getElementById('modal-tournament-description');
-            
-            if (!modal || !modalTitle || !modalDescription) {
-                console.error('Modal elements not found');
-                return;
-            }
-            
-            // Tournament data
-            const tournaments = [
-                {
-                    title: 'VOLT ENERGY CYBER CUP',
-                    description: 'Турнир по Dota 2 с призовым фондом 5,000,000₽',
-                    prizePool: '5,000,000₽',
-                    format: 'Single Elimination',
-                    date: '15-20 декабря 2024',
-                    teams: '16 команд',
-                    tags: ['Professional', 'Dota 2', 'Online']
-                },
-                {
-                    title: 'WINLINE STAR SERIES CS2',
-                    description: 'Профессиональная серия турниров по CS2 от Winline. Призовой фонд 1,200,000₽',
-                    prizePool: '1,200,000₽',
-                    format: 'Swiss System + Playoffs',
-                    date: '10-15 января 2025',
-                    teams: '24 команды',
-                    tags: ['Professional', 'CS2', 'Offline']
-                },
-                {
-                    title: 'DOTA2 CHAMPIONS',
-                    description: 'Чемпионат по Dota 2 среди лучших команд региона',
-                    prizePool: '2,500,000₽',
-                    format: 'Double Elimination',
-                    date: '1-10 февраля 2025',
-                    teams: '12 команд',
-                    tags: ['Professional', 'Championship', 'Offline']
-                },
-                {
-                    title: 'MOBILE ESPORTS FEST',
-                    description: 'Фестиваль мобильного киберспорта с турнирами',
-                    prizePool: '800,000₽',
-                    format: 'Round Robin',
-                    date: '20-25 марта 2025',
-                    teams: '20 команд',
-                    tags: ['Mobile', 'Festival', 'Online']
-                }
-            ];
-            
-            const tournament = tournaments[index] || tournaments[0];
-            
-            // Fill modal content
-            modalTitle.textContent = tournament.title;
-            modalDescription.textContent = tournament.description;
-            
-            const modalTags = document.getElementById('modal-tournament-tags');
-            const modalPrizePool = document.getElementById('modal-prize-pool');
-            const modalFormat = document.getElementById('modal-format');
-            const modalDate = document.getElementById('modal-date');
-            const modalTeams = document.getElementById('modal-teams');
-            
-            if (modalTags) {
-                modalTags.innerHTML = tournament.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
-            }
-            if (modalPrizePool) modalPrizePool.textContent = tournament.prizePool;
-            if (modalFormat) modalFormat.textContent = tournament.format;
-            if (modalDate) modalDate.textContent = tournament.date;
-            if (modalTeams) modalTeams.textContent = tournament.teams;
-            
-            // Show modal
-            modal.style.display = 'flex';
-            // Add active class so opacity and animations apply
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            
-            // Остановить плавный скролл при открытии модального окна
-            if (window.lenisStop) {
-                window.lenisStop();
-            }
-        }
-        
-        function closeModal() {
-            const modal = document.getElementById('tournament-modal');
-            if (modal) {
-                // Remove active class and hide
-                modal.classList.remove('active');
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-                
-                // Возобновить плавный скролл при закрытии модального окна
-                if (window.lenisStart) {
-                    window.lenisStart();
-                }
-            }
-        }
-        
-
-        
-        // Close modal when clicking outside or close button
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('tournament-modal');
-            const closeButton = document.querySelector('.modal-close');
-
-            /*
-             * Close the modal when the user clicks on the overlay or anywhere
-             * outside of the modal content.  In the previous implementation
-             * we only closed the modal when the click target was the modal
-             * element itself (which sits behind an overlay).  As a result,
-             * clicks on the semi‑transparent overlay were ignored and the
-             * modal appeared to freeze the page.  To resolve this we also
-             * listen for clicks on the overlay and close the modal when
-             * detected.
-             */
-            if (modal) {
-                modal.addEventListener('click', function(e) {
-                    // If the click originated from the modal container or the overlay
-                    // (which has the class .modal-overlay), close the modal.  We do
-                    // not want to close the modal if the user clicks on the
-                    // modal content itself or its children.
-                    if (e.target === modal || e.target.classList.contains('modal-overlay')) {
-                        closeModal();
-                    }
-                });
-            }
-
-            // Close modal on click of the close button
-            if (closeButton) {
-                closeButton.addEventListener('click', closeModal);
-            }
-        });
-
-        // Service Modal Functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('new-service-modal');
-            const modalImage = document.getElementById('new-service-modal-image');
-            const modalTitle = document.getElementById('new-service-modal-title');
-            const modalSubtitle = document.getElementById('new-service-modal-subtitle');
-            const modalText = document.getElementById('new-service-modal-text');
-            const modalClose = document.getElementById('new-service-modal-close');
-            const modalOverlay = document.querySelector('.service-modal-overlay');
-            
-            // Service triggers
-            const serviceTriggers = document.querySelectorAll('.service-modal-trigger');
-            
-            // Fallback images for services
-            const fallbackImages = {
-                'planning': 'assets/images/tournaments/csgo-tournament.jpg',
-                'technical': 'assets/images/tournaments/dota2-championship.jpg',
-                'streaming': 'assets/images/tournaments/valorant-cup.jpg',
-                'prizes': 'assets/images/tournament-cards/volt-energy-cup.jpg',
-                'marketing': 'assets/images/tournament-cards/winline-cs2.jpg',
-                'judging': 'assets/images/tournament-cards/dota2-champions.jpg'
-            };
-            
-            // Open modal function
-            function openServiceModal(serviceData) {
-                const serviceId = serviceData.serviceId;
-                const imageSrc = serviceData.image || fallbackImages[serviceId] || 'assets/webp/69.webp';
-                
-                modalImage.src = imageSrc;
-                modalImage.alt = serviceData.title;
-                modalTitle.textContent = serviceData.title;
-                modalSubtitle.textContent = serviceData.subtitle;
-                modalText.textContent = serviceData.description;
-                
-                // Show modal with animation
-                modal.style.display = 'flex';
-                document.body.classList.add('modal-open');
-                
-                // Trigger animation
-                setTimeout(() => {
-                    modal.classList.add('active');
-                }, 10);
-                
-                // Stop smooth scroll if exists
-                if (window.lenisStop) {
-                    window.lenisStop();
-                }
-            }
-            
-            // Close modal function
-            function closeServiceModal() {
-                modal.classList.remove('active');
-                modal.classList.add('closing');
-                
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                    modal.classList.remove('closing');
-                    document.body.classList.remove('modal-open');
-                    
-                    // Resume smooth scroll if exists
-                    if (window.lenisStart) {
-                        window.lenisStart();
-                    }
-                }, 300);
-            }
-            
-            // Add click listeners to service cards
-            serviceTriggers.forEach(trigger => {
-                trigger.addEventListener('click', function() {
-                    const serviceData = {
-                        serviceId: this.dataset.serviceId,
-                        title: this.dataset.title,
-                        subtitle: this.dataset.subtitle,
-                        image: this.dataset.image,
-                        description: this.dataset.description
-                    };
-                    
-                    openServiceModal(serviceData);
-                });
-            });
-            
-            // Close modal events
-            modalClose.addEventListener('click', closeServiceModal);
-            modalOverlay.addEventListener('click', closeServiceModal);
-            
-            // Close on Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && modal.classList.contains('active')) {
-                    closeServiceModal();
-                }
-            });
-            
-            // Prevent modal content clicks from closing modal
-            document.querySelector('.service-modal-container').addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        });
-    </script>
+    <script src="/js/cms-content.js"></script>
 
     <!-- Service Modal Template -->
     <div id="new-service-modal" class="service-modal">
@@ -1091,3 +755,4 @@
     </div>
 </body>
 </html>
+

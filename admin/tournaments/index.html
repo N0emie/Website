@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tournaments | Dizband Admin</title>
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <h2 class="admin-logo">Dizband Admin</h2>
+      <nav class="admin-nav">
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/media">Media</a>
+        <a href="/admin/tournaments" class="active">Tournaments</a>
+      </nav>
+      <button id="logoutBtn" class="secondary" style="margin-top:14px;">Выход</button>
+    </aside>
+    <main class="admin-main">
+      <div class="card row" style="justify-content:space-between;align-items:center;">
+        <div>
+          <h1>Наши турниры</h1>
+          <p class="muted">Добавляйте, редактируйте, удаляйте карточки.</p>
+        </div>
+        <a href="/admin/tournaments/new"><button>+ Новый турнир</button></a>
+      </div>
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Order</th>
+              <th>Published</th>
+              <th>Image</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="/admin/admin.js"></script>
+  <script>
+    async function render() {
+      await AdminApp.requireAuth();
+      const { items } = await AdminApp.api('/api/admin/tournaments');
+      const tbody = document.getElementById('rows');
+      tbody.innerHTML = '';
+      items.forEach((item) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.id}</td>
+          <td>${item.title}</td>
+          <td>${item.ordering}</td>
+          <td>${item.published ? 'Yes' : 'No'}</td>
+          <td>${item.image_url ? `<img class="thumb" src="${item.image_url}" alt="">` : ''}</td>
+          <td>
+            <a href="/admin/tournaments/${item.id}"><button class="secondary">Edit</button></a>
+            <button class="danger" data-id="${item.id}">Delete</button>
+          </td>
+        `;
+
+        tr.querySelector('button.danger').addEventListener('click', async () => {
+          if (!confirm('Удалить турнир?')) return;
+          try {
+            await AdminApp.api('/api/admin/tournaments', {
+              method: 'DELETE',
+              body: { id: item.id }
+            });
+            AdminApp.toast('Удалено');
+            render();
+          } catch (err) {
+            AdminApp.toast(err.message);
+          }
+        });
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', AdminApp.logout);
+    render();
+  </script>
+</body>
+</html>

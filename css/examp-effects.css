@@ -592,6 +592,11 @@ img.examp-dota-logo,
     }
 }
 
+/* Disabled intentionally: side hero character should not be shown on homepage. */
+.examp-gif-pers {
+    display: none !important;
+}
+
 /* pers.gif - по центру сайта, уменьшен на 30%, перемещен вверх на 100px и правее на 320px (120px * 0.7 = 84px) */
 .examp-gif-pers {
     position: absolute;

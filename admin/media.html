@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Media | Dizband Admin</title>
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <h2 class="admin-logo">Dizband Admin</h2>
+      <nav class="admin-nav">
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/media" class="active">Media</a>
+        <a href="/admin/tournaments">Tournaments</a>
+      </nav>
+      <button id="logoutBtn" class="secondary" style="margin-top:14px;">Выход</button>
+    </aside>
+    <main class="admin-main">
+      <div class="card">
+        <h1>Контент → Изображения</h1>
+        <p class="muted">Ключи контента, используемые на публичном сайте.</p>
+      </div>
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>Ключ</th>
+              <th>Название</th>
+              <th>URL</th>
+              <th>Alt</th>
+              <th>Preview</th>
+              <th>Upload</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="/admin/admin.js"></script>
+  <script>
+    async function render() {
+      await AdminApp.requireAuth();
+      const data = await AdminApp.api('/api/admin/assets');
+      const tbody = document.getElementById('rows');
+      tbody.innerHTML = '';
+
+      data.items.forEach((item) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.key}</td>
+          <td>${item.label}</td>
+          <td><input data-field="url" value="${item.url || ''}" /></td>
+          <td><input data-field="alt" value="${item.alt || ''}" /></td>
+          <td>${item.url ? `<img class="thumb" src="${item.url}" alt="">` : ''}</td>
+          <td><input data-field="file" type="file" accept="image/png,image/jpeg,image/webp" /></td>
+          <td><button data-action="save">Сохранить</button></td>
+        `;
+
+        tr.querySelector('[data-action="save"]').addEventListener('click', async () => {
+          try {
+            const urlInput = tr.querySelector('input[data-field="url"]');
+            const altInput = tr.querySelector('input[data-field="alt"]');
+            const fileInput = tr.querySelector('input[data-field="file"]');
+            let url = urlInput.value.trim();
+
+            if (fileInput.files && fileInput.files[0]) {
+              url = await AdminApp.uploadImage(fileInput.files[0]);
+              urlInput.value = url;
+            }
+
+            await AdminApp.api('/api/admin/assets', {
+              method: 'PUT',
+              body: { key: item.key, url, alt: altInput.value.trim() }
+            });
+            AdminApp.toast('Сохранено');
+            render();
+          } catch (err) {
+            AdminApp.toast(err.message);
+          }
+        });
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', AdminApp.logout);
+    render();
+  </script>
+</body>
+</html>

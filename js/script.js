@@ -1,118 +1,20 @@
-// Simple and Reliable Loading Screen
-console.log('🔧 Script.js loaded successfully!');
-console.log('🎨 3D Tilt Effect script loaded!');
+// Premium preloader lifecycle
+(function () {
+    const MIN_VISIBLE_MS = 3500;
+    const FADE_DURATION_MS = 320;
+    const CMS_WAIT_MAX_MS = 1400;
 
-// Test alert to confirm script loading
-setTimeout(() => {
-    console.log('🚀 Testing 3D Tilt Effect initialization...');
-}, 1000);
-
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Starting loading screen...');
-    
-    // Get loading screen elements
     const loadingScreen = document.getElementById('loading-screen');
-    const progressBar = document.querySelector('.loading-progress-fill');
-    const progressText = document.querySelector('.loading-percentage');
-    const loadingVideo = document.querySelector('.loading-logo video');
     const body = document.body;
     const html = document.documentElement;
-    
-    // Force video to play
-    if (loadingVideo) {
-        console.log('🎬 Attempting to play loading video...');
-        loadingVideo.play().then(() => {
-            console.log('✅ Loading video started successfully!');
-        }).catch(error => {
-            console.warn('⚠️ Video autoplay failed:', error);
-            // Try to play on user interaction
-            document.addEventListener('click', () => {
-                loadingVideo.play().catch(e => console.warn('Video play failed:', e));
-            }, { once: true });
-        });
-    }
-    
-    if (!loadingScreen || !progressBar || !progressText) {
-        console.error('❌ Loading screen elements not found!');
-        body.classList.remove('loading');
-        html.classList.remove('loading');
-        return;
-    }
-    
-    // Simple progress animation - guaranteed to reach 100%
-    function startProgressAnimation() {
-        const totalDuration = 4000; // 4 seconds total
-        const startTime = Date.now();
-        let animationId;
-        
-        function updateProgress() {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min((elapsed / totalDuration) * 100, 100);
-            
-            // Update UI
-            progressBar.style.width = progress + '%';
-            progressText.textContent = Math.floor(progress) + '%';
-            
-            console.log(`📊 Loading progress: ${Math.floor(progress)}%`);
-            
-            // Continue animation until 100%
-            if (progress < 100) {
-                animationId = requestAnimationFrame(updateProgress);
-            } else {
-                // Reached 100% - wait a moment then hide loading screen
-                console.log('🎉 Loading complete at 100%!');
-                setTimeout(hideLoadingScreen, 300);
-            }
-        }
-        
-        // Start the animation
-        animationId = requestAnimationFrame(updateProgress);
-        
-        // Safety fallback - force completion after 5 seconds
-        setTimeout(() => {
-            if (body.classList.contains('loading')) {
-                console.log('🚨 Safety fallback - forcing completion');
-                cancelAnimationFrame(animationId);
-                progressBar.style.width = '100%';
-                progressText.textContent = '100%';
-                setTimeout(hideLoadingScreen, 300);
-            }
-        }, 5000);
-    }
-    
-    // Hide loading screen and show content
-    function hideLoadingScreen() {
-        console.log('✨ Hiding loading screen and showing content...');
-        
-        // Remove loading class from html and body
-        body.classList.remove('loading');
-        html.classList.remove('loading');
-        
-        // Add fade out animation to loading screen
-        loadingScreen.classList.add('fade-out');
-        
-        // Force show all content immediately
-        const contentElements = document.querySelectorAll('.social-icons-corner, .hero-logo-corner, .hero-lisa, .main-content, .examp-background, .examp-fog-left, .examp-fog-right, .examp-crystal, .examp-dota-logo, .examp-gif');
-        contentElements.forEach(el => {
-            el.style.opacity = '1';
-            el.style.visibility = 'visible';
-            el.style.pointerEvents = 'auto';
-        });
-        
-        // Remove loading screen from DOM after fade animation
-        setTimeout(() => {
-            loadingScreen.style.display = 'none';
-            console.log('🎯 Loading screen completely removed - site ready!');
-            
-            // Initialize lazy loading for videos
-            setupLazyVideoLoading();
-        }, 500);
-    }
-    
-    // Setup lazy loading for videos
+    let minTimeElapsed = false;
+    let pageLoaded = document.readyState === 'complete';
+    let cmsReady = !window.__cmsContentReadyPromise;
+    let hidden = false;
+
     function setupLazyVideoLoading() {
         const lazyVideos = document.querySelectorAll('video[preload="none"]');
-        
+
         if ('IntersectionObserver' in window) {
             const videoObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -121,23 +23,66 @@ document.addEventListener('DOMContentLoaded', function() {
                         video.preload = 'metadata';
                         video.load();
                         videoObserver.unobserve(video);
-                        console.log('🎬 Lazy loading video:', video.querySelector('source')?.src || video.src);
                     }
                 });
             }, {
                 rootMargin: '50px'
             });
-            
+
             lazyVideos.forEach(video => {
                 videoObserver.observe(video);
             });
         }
     }
-    
-    // Start the loading animation
-    startProgressAnimation();
-});
 
+    function hideLoader() {
+        if (hidden) return;
+        hidden = true;
+
+        body.classList.remove('loading');
+        html.classList.remove('loading');
+
+        if (!loadingScreen) {
+            setupLazyVideoLoading();
+            return;
+        }
+
+        loadingScreen.classList.add('is-hidden');
+        loadingScreen.setAttribute('aria-hidden', 'true');
+
+        setTimeout(() => {
+            loadingScreen.style.display = 'none';
+            setupLazyVideoLoading();
+        }, FADE_DURATION_MS);
+    }
+
+    function scheduleHide() {
+        if (!minTimeElapsed || !pageLoaded || !cmsReady) return;
+        hideLoader();
+    }
+
+    window.setTimeout(() => {
+        minTimeElapsed = true;
+        scheduleHide();
+    }, MIN_VISIBLE_MS);
+
+    if (!pageLoaded) {
+        window.addEventListener('load', () => {
+            pageLoaded = true;
+            scheduleHide();
+        }, { once: true });
+    }
+
+    if (window.__cmsContentReadyPromise && typeof window.__cmsContentReadyPromise.then === 'function') {
+        Promise.race([
+            window.__cmsContentReadyPromise,
+            new Promise((resolve) => setTimeout(resolve, CMS_WAIT_MAX_MS))
+        ]).finally(() => {
+            cmsReady = true;
+            scheduleHide();
+        });
+    }
+})();
 // Tournament Carousel Drag-and-Drop Navigation
 document.addEventListener('DOMContentLoaded', function() {
     const carousel = document.getElementById('tournaments-carousel');
@@ -146,31 +91,42 @@ document.addEventListener('DOMContentLoaded', function() {
     let isDown = false;
     let startX;
     let scrollLeft;
+    let hasDragged = false;
     window.dragDistance = 0;
+    window.suppressTournamentClickUntil = 0;
 
     carousel.addEventListener('mousedown', (e) => {
         isDown = true;
         carousel.classList.add('active');
         startX = e.pageX - carousel.offsetLeft;
         scrollLeft = carousel.scrollLeft;
+        hasDragged = false;
         window.dragDistance = 0;
     });
 
     carousel.addEventListener('mouseleave', () => {
         isDown = false;
         carousel.classList.remove('active');
+        if (hasDragged || window.dragDistance > 8) {
+            window.suppressTournamentClickUntil = Date.now() + 350;
+        }
         // Reset drag distance after a short delay
         setTimeout(() => {
             window.dragDistance = 0;
+            hasDragged = false;
         }, 100);
     });
 
     carousel.addEventListener('mouseup', () => {
         isDown = false;
         carousel.classList.remove('active');
+        if (hasDragged || window.dragDistance > 8) {
+            window.suppressTournamentClickUntil = Date.now() + 350;
+        }
         // Reset drag distance after a short delay
         setTimeout(() => {
             window.dragDistance = 0;
+            hasDragged = false;
         }, 100);
     });
 
@@ -183,12 +139,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Track drag distance
         window.dragDistance = Math.abs(x - startX);
+        if (window.dragDistance > 8) {
+            hasDragged = true;
+        }
     });
 
     // Touch events for mobile
     carousel.addEventListener('touchstart', (e) => {
         startX = e.touches[0].pageX - carousel.offsetLeft;
         scrollLeft = carousel.scrollLeft;
+        hasDragged = false;
         window.dragDistance = 0;
     });
 
@@ -200,14 +160,28 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Track drag distance for touch
         window.dragDistance = Math.abs(x - startX);
+        if (window.dragDistance > 8) {
+            hasDragged = true;
+        }
     });
 
     carousel.addEventListener('touchend', () => {
+        if (hasDragged || window.dragDistance > 8) {
+            window.suppressTournamentClickUntil = Date.now() + 400;
+        }
         // Reset drag distance after a short delay
         setTimeout(() => {
             window.dragDistance = 0;
+            hasDragged = false;
         }, 100);
     });
+
+    carousel.addEventListener('click', (e) => {
+        if (Date.now() < (window.suppressTournamentClickUntil || 0)) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    }, true);
 });
 
 // Contact Form Handler
@@ -221,11 +195,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData(contactForm);
         const data = Object.fromEntries(formData);
         
-        console.log('Form submitted:', data);
         
         // Here you would typically send the data to your server
         // For now, we'll just show a success message
-        alert('Спасибо за заявку! Мы свяжемся с вами в ближайшее время.');
+        alert('РЎРїР°СЃРёР±Рѕ Р·Р° Р·Р°СЏРІРєСѓ! РњС‹ СЃРІСЏР¶РµРјСЃСЏ СЃ РІР°РјРё РІ Р±Р»РёР¶Р°Р№С€РµРµ РІСЂРµРјСЏ.');
         
         // Reset form
         contactForm.reset();
@@ -291,24 +264,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Tournament card click functionality
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎯 Setting up tournament card click handlers...');
     const tournamentCards = document.querySelectorAll('.tournament-card');
-    console.log('🎯 Found tournament cards:', tournamentCards.length);
 
     tournamentCards.forEach((card, index) => {
         card.addEventListener('click', function(e) {
-            console.log('🎯 Tournament card clicked:', index);
             // If a drag has occurred (dragDistance > threshold), do not open the modal.
             // This prevents accidental modal openings when the user is scrolling through the carousel.
             const threshold = 10;
             if (window.dragDistance && window.dragDistance > threshold) {
-                console.log('🎯 Drag detected, not opening modal. Distance:', window.dragDistance);
                 return;
             }
 
             const tournamentTitle = card.querySelector('.tournament-title').textContent;
             const tournamentDescription = card.querySelector('.tournament-description').textContent;
-            console.log('🎯 Opening modal for:', tournamentTitle);
             // Show modal for tournament details
             showTournamentModal(tournamentTitle, tournamentDescription, index);
         });
@@ -317,14 +285,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Tournament Modal Functions
 function showTournamentModal(title, description, index) {
-    console.log('🎯 showTournamentModal called with:', title, description, index);
     // Use existing modal from HTML
     const modal = document.getElementById('tournament-modal');
     if (!modal) {
-        console.error('❌ Tournament modal not found in HTML');
+        console.error('вќЊ Tournament modal not found in HTML');
         return;
     }
-    console.log('✅ Modal found:', modal);
 
     // Fetch the corresponding tournament card to extract extra data (image and tags)
     const cards = document.querySelectorAll('.tournament-card');
@@ -348,28 +314,28 @@ function showTournamentModal(title, description, index) {
     // Tournament data based on index
     const tournamentData = [
         {
-            prizePool: '5,000,000₽',
+            prizePool: '5,000,000в‚Ѕ',
             format: 'Online',
-            date: 'Декабрь 2025',
-            teams: '16 команд'
+            date: 'Р”РµРєР°Р±СЂСЊ 2025',
+            teams: '16 РєРѕРјР°РЅРґ'
         },
         {
-            prizePool: '1,200,000₽',
+            prizePool: '1,200,000в‚Ѕ',
             format: 'Offline',
-            date: 'Январь 2026',
-            teams: '8 команд'
+            date: 'РЇРЅРІР°СЂСЊ 2026',
+            teams: '8 РєРѕРјР°РЅРґ'
         },
         {
-            prizePool: '800,000₽',
+            prizePool: '800,000в‚Ѕ',
             format: 'Offline',
-            date: 'Февраль 2026',
-            teams: '12 команд'
+            date: 'Р¤РµРІСЂР°Р»СЊ 2026',
+            teams: '12 РєРѕРјР°РЅРґ'
         },
         {
-            prizePool: '300,000₽',
+            prizePool: '300,000в‚Ѕ',
             format: 'Online',
-            date: 'Март 2026',
-            teams: '32 команды'
+            date: 'РњР°СЂС‚ 2026',
+            teams: '32 РєРѕРјР°РЅРґС‹'
         }
     ];
 
@@ -426,8 +392,313 @@ function closeTournamentModal() {
 // Compact Menu Navigation Functionality
 document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
+    const menuCapsule = document.getElementById('menuCapsule');
+    const menuToggle = document.getElementById('menuToggle');
+    const edgeMenuTab = document.getElementById('edgeMenuTab');
+    const capsuleLinksContainer = document.getElementById('menuNavPanel');
+    const capsuleLinks = document.querySelectorAll('.capsule__links .nav-link');
+    const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const bumpNav = document.getElementById('bumpNav');
+    const bumpToggle = document.getElementById('bumpNavToggle');
+    const bumpItems = bumpNav ? Array.from(bumpNav.querySelectorAll('.bump-nav__item')) : [];
+    const heroOrderButton = document.querySelector('.hero-button[data-target]');
+
+    function scrollToTarget(targetSelector) {
+        if (!targetSelector || !targetSelector.startsWith('#')) return;
+        const targetEl = document.querySelector(targetSelector);
+        if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    function closeCapsuleMenu() {
+        if (document.body.classList.contains('menu-fixed-open')) return;
+        if (!menuCapsule) return;
+        menuCapsule.classList.remove('is-open');
+        if (menuToggle) {
+            menuToggle.setAttribute('aria-expanded', 'false');
+        }
+        if (edgeMenuTab) {
+            edgeMenuTab.classList.remove('is-open');
+            edgeMenuTab.setAttribute('aria-expanded', 'false');
+        }
+    }
+
+    function setCapsuleMenuOpen(open) {
+        if (!menuCapsule) return;
+        if (document.body.classList.contains('menu-fixed-open')) {
+            menuCapsule.classList.add('is-open');
+            if (menuToggle) menuToggle.setAttribute('aria-expanded', 'true');
+            return;
+        }
+        menuCapsule.classList.toggle('is-open', open);
+        if (menuToggle) {
+            menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+        if (edgeMenuTab) {
+            edgeMenuTab.classList.toggle('is-open', open);
+            edgeMenuTab.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+    }
+
+    function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+    }
+
+    function syncCollapsed() {
+        if (!menuCapsule) return;
+        const toggleWidth = menuToggle ? Math.ceil(menuToggle.getBoundingClientRect().width) : 120;
+        const collapsed = clamp(toggleWidth + 14, 92, 220);
+        menuCapsule.style.setProperty('--collapsed', `${collapsed}px`);
+    }
+
+    function syncExpanded() {
+        if (!menuCapsule || !capsuleLinksContainer) return;
+
+        const wasOpen = menuCapsule.classList.contains('is-open');
+        menuCapsule.classList.add('is-open');
+
+        const linksWidth = Math.ceil(capsuleLinksContainer.scrollWidth);
+        const edgeWidth = edgeMenuTab ? Math.ceil(edgeMenuTab.getBoundingClientRect().width) : 70;
+        const horizontalPads = 48;
+        const rawExpanded = linksWidth + edgeWidth + horizontalPads;
+        const maxExpanded = Math.max(260, window.innerWidth - 40);
+        const expanded = clamp(rawExpanded, 220, maxExpanded);
+        menuCapsule.style.setProperty('--expanded', `${expanded}px`);
+
+        if (!wasOpen) {
+            menuCapsule.classList.remove('is-open');
+        }
+    }
+
+    function syncCapsuleMeasurements() {
+        syncCollapsed();
+        syncExpanded();
+    }
+
+    if (menuCapsule) {
+        if (window.innerWidth >= 1100) {
+            document.body.classList.add('menu-fixed-open');
+            menuCapsule.classList.add('is-open');
+            if (menuToggle) menuToggle.setAttribute('aria-expanded', 'true');
+        }
+        syncCapsuleMeasurements();
+
+        window.addEventListener('resize', function() {
+            syncCapsuleMeasurements();
+        });
+
+        if (document.fonts && typeof document.fonts.ready?.then === 'function') {
+            document.fonts.ready.then(() => {
+                syncCapsuleMeasurements();
+            }).catch(() => {});
+        }
+
+        if (supportsHover && edgeMenuTab) {
+            edgeMenuTab.addEventListener('mouseenter', function() {
+                setCapsuleMenuOpen(true);
+            });
+
+            edgeMenuTab.addEventListener('mouseleave', function() {
+                requestAnimationFrame(() => {
+                    const overTab = edgeMenuTab.matches(':hover');
+                    const overCapsule = menuCapsule.matches(':hover');
+                    if (!overTab && !overCapsule) {
+                        closeCapsuleMenu();
+                    }
+                });
+            });
+
+            menuCapsule.addEventListener('mouseleave', function() {
+                requestAnimationFrame(() => {
+                    const overTab = edgeMenuTab.matches(':hover');
+                    const overCapsule = menuCapsule.matches(':hover');
+                    if (!overTab && !overCapsule) {
+                        closeCapsuleMenu();
+                    }
+                });
+            });
+        } else if (menuToggle) {
+            menuToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const willOpen = !menuCapsule.classList.contains('is-open');
+                setCapsuleMenuOpen(willOpen);
+            });
+        }
+
+        if (edgeMenuTab) {
+            edgeMenuTab.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const willOpen = !menuCapsule.classList.contains('is-open');
+                setCapsuleMenuOpen(willOpen);
+            });
+        }
+
+        document.addEventListener('click', function(e) {
+            const clickInsideCapsule = menuCapsule.contains(e.target);
+            const clickInsideEdge = edgeMenuTab ? edgeMenuTab.contains(e.target) : false;
+            if (!clickInsideCapsule && !clickInsideEdge) {
+                closeCapsuleMenu();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeCapsuleMenu();
+            }
+        });
+    } else if (menuToggle && capsuleLinksContainer) {
+        // Legacy menu markup fallback: button in top-right + dropdown panel.
+        const legacyContainer = menuToggle.closest('.menu-toggle-container');
+        if (legacyContainer) {
+            legacyContainer.classList.add('legacy-menu-mode');
+        }
+
+        const openLegacyMenu = () => {
+            menuToggle.classList.add('is-open');
+            capsuleLinksContainer.classList.add('is-open');
+            menuToggle.setAttribute('aria-expanded', 'true');
+        };
+
+        const closeLegacyMenu = () => {
+            menuToggle.classList.remove('is-open');
+            capsuleLinksContainer.classList.remove('is-open');
+            menuToggle.setAttribute('aria-expanded', 'false');
+        };
+
+        menuToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const willOpen = !capsuleLinksContainer.classList.contains('is-open');
+            if (willOpen) openLegacyMenu();
+            else closeLegacyMenu();
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!menuToggle.contains(e.target) && !capsuleLinksContainer.contains(e.target)) {
+                closeLegacyMenu();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLegacyMenu();
+            }
+        });
+    }
+
+    function parseColor(color) {
+        if (!color || color === 'transparent') return null;
+        const rgba = color.match(/rgba?\(([^)]+)\)/i);
+        if (!rgba) return null;
+        const values = rgba[1].split(',').map((v) => Number.parseFloat(v.trim()));
+        if (values.length < 3) return null;
+        const alpha = values.length === 4 ? values[3] : 1;
+        if (alpha <= 0) return null;
+        return { r: values[0], g: values[1], b: values[2], a: alpha };
+    }
+
+    function getBackgroundUnderNav() {
+        if (!bumpNav) return { r: 9, g: 13, b: 27 };
+        const rect = bumpNav.getBoundingClientRect();
+        const sampleX = Math.max(1, Math.round(rect.left + rect.width / 2));
+        const sampleY = Math.max(1, Math.round(rect.top + rect.height / 2));
+        const stack = document.elementsFromPoint(sampleX, sampleY);
+        for (const el of stack) {
+            if (!el || el === bumpNav || el.closest('#bumpNav')) continue;
+            const parsed = parseColor(getComputedStyle(el).backgroundColor);
+            if (parsed) {
+                return parsed;
+            }
+        }
+        return { r: 9, g: 13, b: 27 };
+    }
+
+    function syncBumpTheme() {
+        if (!bumpNav) return;
+        const bg = getBackgroundUnderNav();
+        const luminance = (0.2126 * bg.r + 0.7152 * bg.g + 0.0722 * bg.b) / 255;
+        const darkBg = luminance < 0.5;
+        if (darkBg) {
+            bumpNav.style.setProperty('--bump-bg', 'rgba(205, 221, 255, 0.16)');
+            bumpNav.style.setProperty('--bump-border', 'rgba(196, 216, 255, 0.5)');
+            bumpNav.style.setProperty('--bump-icon', '#f2f7ff');
+            bumpNav.style.setProperty('--bump-active', '#ffffff');
+        } else {
+            bumpNav.style.setProperty('--bump-bg', 'rgba(8, 12, 22, 0.86)');
+            bumpNav.style.setProperty('--bump-border', 'rgba(108, 142, 232, 0.52)');
+            bumpNav.style.setProperty('--bump-icon', '#dbe7ff');
+            bumpNav.style.setProperty('--bump-active', '#ffffff');
+        }
+    }
+
+    function setBumpOpen(open) {
+        if (!bumpNav) return;
+        bumpNav.classList.toggle('is-open', open);
+        bumpNav.classList.toggle('is-collapsed', !open);
+        if (bumpToggle) {
+            bumpToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+    }
+
+    if (bumpNav && bumpItems.length > 0) {
+        if (bumpToggle) {
+            bumpToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setBumpOpen(!bumpNav.classList.contains('is-open'));
+            });
+        }
+
+        bumpItems.forEach((item) => {
+            item.addEventListener('click', () => {
+                bumpItems.forEach((btn) => btn.classList.remove('is-active'));
+                item.classList.add('is-active');
+                setBumpOpen(false);
+
+                const href = item.getAttribute('data-href');
+                if (href) {
+                    window.location.href = href;
+                    return;
+                }
+
+                const target = item.getAttribute('data-target');
+                if (target && target.startsWith('#')) {
+                    scrollToTarget(target);
+                }
+            });
+        });
+
+        setBumpOpen(false);
+        syncBumpTheme();
+        window.addEventListener('resize', syncBumpTheme);
+        window.addEventListener('scroll', syncBumpTheme, { passive: true });
+
+        if (document.fonts && typeof document.fonts.ready?.then === 'function') {
+            document.fonts.ready.then(() => syncBumpTheme()).catch(() => {});
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!bumpNav.contains(e.target)) {
+                setBumpOpen(false);
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                setBumpOpen(false);
+            }
+        });
+    }
+
+    if (heroOrderButton) {
+        heroOrderButton.addEventListener('click', () => {
+            scrollToTarget(heroOrderButton.getAttribute('data-target'));
+        });
+    }
     
-    console.log('🎯 Compact menu navigation initialized');
     
     // Add smooth scrolling to navigation links
     navLinks.forEach(link => {
@@ -454,12 +725,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         });
                     }
                 }
+
+                if (this.closest('.capsule__links')) {
+                    closeCapsuleMenu();
+                }
             }
         });
     });
     
-    console.log('✅ Navigation links configured');
-    console.log('🎉 Compact menu functionality fully loaded!');
 
     // Contact Form Handler
     const contactForm = document.getElementById('contactForm');
@@ -479,7 +752,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 message: formData.get('message')
             };
             
-            console.log('📧 Form submitted:', data);
             
             // Show success message
             if (successMessage) {
@@ -494,7 +766,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Here you would typically send the data to your server
             // For now, we'll just log it
-            console.log('✅ Contact form processed successfully');
         });
     }
 });
@@ -603,7 +874,6 @@ function init3DTilt() {
 // Enhanced Glare Effect - DISABLED
 function initGlareEffect() {
     // Glare effects disabled
-    console.log('🚫 Glare effects disabled');
 }
 
 // Performance optimization: Use RAF for smooth animations
@@ -631,12 +901,10 @@ function optimizeAnimations() {
 
 // Initialize all 3D effects
 function init3DServices() {
-    console.log('🎮 Initializing 3D Services...');
     
     // Check if services section exists
     const servicesSection = document.querySelector('.services-3d');
     if (!servicesSection) {
-        console.log('⚠️ 3D Services section not found');
         return;
     }
     
@@ -646,9 +914,8 @@ function init3DServices() {
         initGlareEffect();
         optimizeAnimations();
         
-        console.log('✅ 3D Services initialized successfully!');
     } catch (error) {
-        console.error('❌ Error initializing 3D Services:', error);
+        console.error('вќЊ Error initializing 3D Services:', error);
     }
 }
 
@@ -664,182 +931,182 @@ if (document.readyState === 'loading') {
 // Service data for modal content
 const serviceData = {
     planning: {
-        title: 'ПЛАНИРОВАНИЕ И КОНЦЕПЦИЯ',
-        description: 'Полный цикл разработки концепции турнира от идеи до детального плана реализации. Мы создаем уникальные форматы соревнований, которые запоминаются участникам и зрителям.',
+        title: 'РџР›РђРќРР РћР’РђРќРР• Р РљРћРќР¦Р•РџР¦РРЇ',
+        description: 'РџРѕР»РЅС‹Р№ С†РёРєР» СЂР°Р·СЂР°Р±РѕС‚РєРё РєРѕРЅС†РµРїС†РёРё С‚СѓСЂРЅРёСЂР° РѕС‚ РёРґРµРё РґРѕ РґРµС‚Р°Р»СЊРЅРѕРіРѕ РїР»Р°РЅР° СЂРµР°Р»РёР·Р°С†РёРё. РњС‹ СЃРѕР·РґР°РµРј СѓРЅРёРєР°Р»СЊРЅС‹Рµ С„РѕСЂРјР°С‚С‹ СЃРѕСЂРµРІРЅРѕРІР°РЅРёР№, РєРѕС‚РѕСЂС‹Рµ Р·Р°РїРѕРјРёРЅР°СЋС‚СЃСЏ СѓС‡Р°СЃС‚РЅРёРєР°Рј Рё Р·СЂРёС‚РµР»СЏРј.',
         features: [
-            'Разработка уникальной концепции турнира',
-            'Создание детального регламента соревнований',
-            'Планирование формата и структуры турнира',
-            'Определение призового фонда и наград',
-            'Составление календаря мероприятий',
-            'Анализ целевой аудитории и конкурентов'
+            'Р Р°Р·СЂР°Р±РѕС‚РєР° СѓРЅРёРєР°Р»СЊРЅРѕР№ РєРѕРЅС†РµРїС†РёРё С‚СѓСЂРЅРёСЂР°',
+            'РЎРѕР·РґР°РЅРёРµ РґРµС‚Р°Р»СЊРЅРѕРіРѕ СЂРµРіР»Р°РјРµРЅС‚Р° СЃРѕСЂРµРІРЅРѕРІР°РЅРёР№',
+            'РџР»Р°РЅРёСЂРѕРІР°РЅРёРµ С„РѕСЂРјР°С‚Р° Рё СЃС‚СЂСѓРєС‚СѓСЂС‹ С‚СѓСЂРЅРёСЂР°',
+            'РћРїСЂРµРґРµР»РµРЅРёРµ РїСЂРёР·РѕРІРѕРіРѕ С„РѕРЅРґР° Рё РЅР°РіСЂР°Рґ',
+            'РЎРѕСЃС‚Р°РІР»РµРЅРёРµ РєР°Р»РµРЅРґР°СЂСЏ РјРµСЂРѕРїСЂРёСЏС‚РёР№',
+            'РђРЅР°Р»РёР· С†РµР»РµРІРѕР№ Р°СѓРґРёС‚РѕСЂРёРё Рё РєРѕРЅРєСѓСЂРµРЅС‚РѕРІ'
         ],
         process: [
             {
-                title: 'Анализ требований',
-                description: 'Изучаем ваши цели, бюджет и ожидания от турнира'
+                title: 'РђРЅР°Р»РёР· С‚СЂРµР±РѕРІР°РЅРёР№',
+                description: 'РР·СѓС‡Р°РµРј РІР°С€Рё С†РµР»Рё, Р±СЋРґР¶РµС‚ Рё РѕР¶РёРґР°РЅРёСЏ РѕС‚ С‚СѓСЂРЅРёСЂР°'
             },
             {
-                title: 'Разработка концепции',
-                description: 'Создаем уникальную идею и формат соревнований'
+                title: 'Р Р°Р·СЂР°Р±РѕС‚РєР° РєРѕРЅС†РµРїС†РёРё',
+                description: 'РЎРѕР·РґР°РµРј СѓРЅРёРєР°Р»СЊРЅСѓСЋ РёРґРµСЋ Рё С„РѕСЂРјР°С‚ СЃРѕСЂРµРІРЅРѕРІР°РЅРёР№'
             },
             {
-                title: 'Детальное планирование',
-                description: 'Прорабатываем все аспекты проведения турнира'
+                title: 'Р”РµС‚Р°Р»СЊРЅРѕРµ РїР»Р°РЅРёСЂРѕРІР°РЅРёРµ',
+                description: 'РџСЂРѕСЂР°Р±Р°С‚С‹РІР°РµРј РІСЃРµ Р°СЃРїРµРєС‚С‹ РїСЂРѕРІРµРґРµРЅРёСЏ С‚СѓСЂРЅРёСЂР°'
             },
             {
-                title: 'Согласование',
-                description: 'Представляем финальный план и вносим корректировки'
+                title: 'РЎРѕРіР»Р°СЃРѕРІР°РЅРёРµ',
+                description: 'РџСЂРµРґСЃС‚Р°РІР»СЏРµРј С„РёРЅР°Р»СЊРЅС‹Р№ РїР»Р°РЅ Рё РІРЅРѕСЃРёРј РєРѕСЂСЂРµРєС‚РёСЂРѕРІРєРё'
             }
         ]
     },
     technical: {
-        title: 'ТЕХНИЧЕСКОЕ ОБЕСПЕЧЕНИЕ',
-        description: 'Профессиональная настройка всей технической инфраструктуры для проведения киберспортивных турниров. Гарантируем стабильную работу серверов и защиту от читеров.',
+        title: 'РўР•РҐРќРР§Р•РЎРљРћР• РћР‘Р•РЎРџР•Р§Р•РќРР•',
+        description: 'РџСЂРѕС„РµСЃСЃРёРѕРЅР°Р»СЊРЅР°СЏ РЅР°СЃС‚СЂРѕР№РєР° РІСЃРµР№ С‚РµС…РЅРёС‡РµСЃРєРѕР№ РёРЅС„СЂР°СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР»СЏ РїСЂРѕРІРµРґРµРЅРёСЏ РєРёР±РµСЂСЃРїРѕСЂС‚РёРІРЅС‹С… С‚СѓСЂРЅРёСЂРѕРІ. Р“Р°СЂР°РЅС‚РёСЂСѓРµРј СЃС‚Р°Р±РёР»СЊРЅСѓСЋ СЂР°Р±РѕС‚Сѓ СЃРµСЂРІРµСЂРѕРІ Рё Р·Р°С‰РёС‚Сѓ РѕС‚ С‡РёС‚РµСЂРѕРІ.',
         features: [
-            'Настройка и администрирование игровых серверов',
-            'Установка и настройка античит систем',
-            'Техническая поддержка участников 24/7',
-            'Мониторинг производительности серверов',
-            'Резервное копирование и восстановление данных',
-            'Настройка сетевой инфраструктуры'
+            'РќР°СЃС‚СЂРѕР№РєР° Рё Р°РґРјРёРЅРёСЃС‚СЂРёСЂРѕРІР°РЅРёРµ РёРіСЂРѕРІС‹С… СЃРµСЂРІРµСЂРѕРІ',
+            'РЈСЃС‚Р°РЅРѕРІРєР° Рё РЅР°СЃС‚СЂРѕР№РєР° Р°РЅС‚РёС‡РёС‚ СЃРёСЃС‚РµРј',
+            'РўРµС…РЅРёС‡РµСЃРєР°СЏ РїРѕРґРґРµСЂР¶РєР° СѓС‡Р°СЃС‚РЅРёРєРѕРІ 24/7',
+            'РњРѕРЅРёС‚РѕСЂРёРЅРі РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё СЃРµСЂРІРµСЂРѕРІ',
+            'Р РµР·РµСЂРІРЅРѕРµ РєРѕРїРёСЂРѕРІР°РЅРёРµ Рё РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С…',
+            'РќР°СЃС‚СЂРѕР№РєР° СЃРµС‚РµРІРѕР№ РёРЅС„СЂР°СЃС‚СЂСѓРєС‚СѓСЂС‹'
         ],
         process: [
             {
-                title: 'Анализ требований',
-                description: 'Определяем технические требования для вашего турнира'
+                title: 'РђРЅР°Р»РёР· С‚СЂРµР±РѕРІР°РЅРёР№',
+                description: 'РћРїСЂРµРґРµР»СЏРµРј С‚РµС…РЅРёС‡РµСЃРєРёРµ С‚СЂРµР±РѕРІР°РЅРёСЏ РґР»СЏ РІР°С€РµРіРѕ С‚СѓСЂРЅРёСЂР°'
             },
             {
-                title: 'Подготовка серверов',
-                description: 'Настраиваем и тестируем игровые серверы'
+                title: 'РџРѕРґРіРѕС‚РѕРІРєР° СЃРµСЂРІРµСЂРѕРІ',
+                description: 'РќР°СЃС‚СЂР°РёРІР°РµРј Рё С‚РµСЃС‚РёСЂСѓРµРј РёРіСЂРѕРІС‹Рµ СЃРµСЂРІРµСЂС‹'
             },
             {
-                title: 'Установка защиты',
-                description: 'Внедряем античит системы и настраиваем безопасность'
+                title: 'РЈСЃС‚Р°РЅРѕРІРєР° Р·Р°С‰РёС‚С‹',
+                description: 'Р’РЅРµРґСЂСЏРµРј Р°РЅС‚РёС‡РёС‚ СЃРёСЃС‚РµРјС‹ Рё РЅР°СЃС‚СЂР°РёРІР°РµРј Р±РµР·РѕРїР°СЃРЅРѕСЃС‚СЊ'
             },
             {
-                title: 'Поддержка',
-                description: 'Обеспечиваем техническую поддержку во время турнира'
+                title: 'РџРѕРґРґРµСЂР¶РєР°',
+                description: 'РћР±РµСЃРїРµС‡РёРІР°РµРј С‚РµС…РЅРёС‡РµСЃРєСѓСЋ РїРѕРґРґРµСЂР¶РєСѓ РІРѕ РІСЂРµРјСЏ С‚СѓСЂРЅРёСЂР°'
             }
         ]
     },
     streaming: {
-        title: 'ТРАНСЛЯЦИЯ И СТРИМ',
-        description: 'Профессиональная трансляция турниров с качественным видео, экспертными комментариями и красивым графическим оформлением для максимального вовлечения зрителей.',
+        title: 'РўР РђРќРЎР›РЇР¦РРЇ Р РЎРўР РРњ',
+        description: 'РџСЂРѕС„РµСЃСЃРёРѕРЅР°Р»СЊРЅР°СЏ С‚СЂР°РЅСЃР»СЏС†РёСЏ С‚СѓСЂРЅРёСЂРѕРІ СЃ РєР°С‡РµСЃС‚РІРµРЅРЅС‹Рј РІРёРґРµРѕ, СЌРєСЃРїРµСЂС‚РЅС‹РјРё РєРѕРјРјРµРЅС‚Р°СЂРёСЏРјРё Рё РєСЂР°СЃРёРІС‹Рј РіСЂР°С„РёС‡РµСЃРєРёРј РѕС„РѕСЂРјР»РµРЅРёРµРј РґР»СЏ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ РІРѕРІР»РµС‡РµРЅРёСЏ Р·СЂРёС‚РµР»РµР№.',
         features: [
-            'Многокамерная трансляция в высоком качестве',
-            'Профессиональные комментаторы и аналитики',
-            'Уникальное графическое оформление',
-            'Интерактивные элементы для зрителей',
-            'Трансляция на множество платформ',
-            'Запись и монтаж highlights'
+            'РњРЅРѕРіРѕРєР°РјРµСЂРЅР°СЏ С‚СЂР°РЅСЃР»СЏС†РёСЏ РІ РІС‹СЃРѕРєРѕРј РєР°С‡РµСЃС‚РІРµ',
+            'РџСЂРѕС„РµСЃСЃРёРѕРЅР°Р»СЊРЅС‹Рµ РєРѕРјРјРµРЅС‚Р°С‚РѕСЂС‹ Рё Р°РЅР°Р»РёС‚РёРєРё',
+            'РЈРЅРёРєР°Р»СЊРЅРѕРµ РіСЂР°С„РёС‡РµСЃРєРѕРµ РѕС„РѕСЂРјР»РµРЅРёРµ',
+            'РРЅС‚РµСЂР°РєС‚РёРІРЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ РґР»СЏ Р·СЂРёС‚РµР»РµР№',
+            'РўСЂР°РЅСЃР»СЏС†РёСЏ РЅР° РјРЅРѕР¶РµСЃС‚РІРѕ РїР»Р°С‚С„РѕСЂРј',
+            'Р—Р°РїРёСЃСЊ Рё РјРѕРЅС‚Р°Р¶ highlights'
         ],
         process: [
             {
-                title: 'Планирование трансляции',
-                description: 'Разрабатываем концепцию и сценарий трансляции'
+                title: 'РџР»Р°РЅРёСЂРѕРІР°РЅРёРµ С‚СЂР°РЅСЃР»СЏС†РёРё',
+                description: 'Р Р°Р·СЂР°Р±Р°С‚С‹РІР°РµРј РєРѕРЅС†РµРїС†РёСЋ Рё СЃС†РµРЅР°СЂРёР№ С‚СЂР°РЅСЃР»СЏС†РёРё'
             },
             {
-                title: 'Подготовка оборудования',
-                description: 'Настраиваем камеры, микрофоны и стриминговое ПО'
+                title: 'РџРѕРґРіРѕС‚РѕРІРєР° РѕР±РѕСЂСѓРґРѕРІР°РЅРёСЏ',
+                description: 'РќР°СЃС‚СЂР°РёРІР°РµРј РєР°РјРµСЂС‹, РјРёРєСЂРѕС„РѕРЅС‹ Рё СЃС‚СЂРёРјРёРЅРіРѕРІРѕРµ РџРћ'
             },
             {
-                title: 'Создание графики',
-                description: 'Разрабатываем уникальные графические элементы'
+                title: 'РЎРѕР·РґР°РЅРёРµ РіСЂР°С„РёРєРё',
+                description: 'Р Р°Р·СЂР°Р±Р°С‚С‹РІР°РµРј СѓРЅРёРєР°Р»СЊРЅС‹Рµ РіСЂР°С„РёС‡РµСЃРєРёРµ СЌР»РµРјРµРЅС‚С‹'
             },
             {
-                title: 'Проведение трансляции',
-                description: 'Обеспечиваем качественную трансляцию турнира'
+                title: 'РџСЂРѕРІРµРґРµРЅРёРµ С‚СЂР°РЅСЃР»СЏС†РёРё',
+                description: 'РћР±РµСЃРїРµС‡РёРІР°РµРј РєР°С‡РµСЃС‚РІРµРЅРЅСѓСЋ С‚СЂР°РЅСЃР»СЏС†РёСЋ С‚СѓСЂРЅРёСЂР°'
             }
         ]
     },
     prize: {
-        title: 'ПРИЗОВОЙ ФОНД',
-        description: 'Организация призового фонда турнира, поиск спонсоров и партнеров, справедливое распределение наград между победителями и участниками соревнований.',
+        title: 'РџР РР—РћР’РћР™ Р¤РћРќР”',
+        description: 'РћСЂРіР°РЅРёР·Р°С†РёСЏ РїСЂРёР·РѕРІРѕРіРѕ С„РѕРЅРґР° С‚СѓСЂРЅРёСЂР°, РїРѕРёСЃРє СЃРїРѕРЅСЃРѕСЂРѕРІ Рё РїР°СЂС‚РЅРµСЂРѕРІ, СЃРїСЂР°РІРµРґР»РёРІРѕРµ СЂР°СЃРїСЂРµРґРµР»РµРЅРёРµ РЅР°РіСЂР°Рґ РјРµР¶РґСѓ РїРѕР±РµРґРёС‚РµР»СЏРјРё Рё СѓС‡Р°СЃС‚РЅРёРєР°РјРё СЃРѕСЂРµРІРЅРѕРІР°РЅРёР№.',
         features: [
-            'Формирование призового фонда турнира',
-            'Поиск и привлечение спонсоров',
-            'Организация партнерских программ',
-            'Справедливое распределение призов',
-            'Оформление наградной атрибутики',
-            'Церемония награждения победителей'
+            'Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ РїСЂРёР·РѕРІРѕРіРѕ С„РѕРЅРґР° С‚СѓСЂРЅРёСЂР°',
+            'РџРѕРёСЃРє Рё РїСЂРёРІР»РµС‡РµРЅРёРµ СЃРїРѕРЅСЃРѕСЂРѕРІ',
+            'РћСЂРіР°РЅРёР·Р°С†РёСЏ РїР°СЂС‚РЅРµСЂСЃРєРёС… РїСЂРѕРіСЂР°РјРј',
+            'РЎРїСЂР°РІРµРґР»РёРІРѕРµ СЂР°СЃРїСЂРµРґРµР»РµРЅРёРµ РїСЂРёР·РѕРІ',
+            'РћС„РѕСЂРјР»РµРЅРёРµ РЅР°РіСЂР°РґРЅРѕР№ Р°С‚СЂРёР±СѓС‚РёРєРё',
+            'Р¦РµСЂРµРјРѕРЅРёСЏ РЅР°РіСЂР°Р¶РґРµРЅРёСЏ РїРѕР±РµРґРёС‚РµР»РµР№'
         ],
         process: [
             {
-                title: 'Планирование бюджета',
-                description: 'Определяем размер призового фонда и источники финансирования'
+                title: 'РџР»Р°РЅРёСЂРѕРІР°РЅРёРµ Р±СЋРґР¶РµС‚Р°',
+                description: 'РћРїСЂРµРґРµР»СЏРµРј СЂР°Р·РјРµСЂ РїСЂРёР·РѕРІРѕРіРѕ С„РѕРЅРґР° Рё РёСЃС‚РѕС‡РЅРёРєРё С„РёРЅР°РЅСЃРёСЂРѕРІР°РЅРёСЏ'
             },
             {
-                title: 'Поиск спонсоров',
-                description: 'Привлекаем партнеров и спонсоров для увеличения фонда'
+                title: 'РџРѕРёСЃРє СЃРїРѕРЅСЃРѕСЂРѕРІ',
+                description: 'РџСЂРёРІР»РµРєР°РµРј РїР°СЂС‚РЅРµСЂРѕРІ Рё СЃРїРѕРЅСЃРѕСЂРѕРІ РґР»СЏ СѓРІРµР»РёС‡РµРЅРёСЏ С„РѕРЅРґР°'
             },
             {
-                title: 'Подготовка призов',
-                description: 'Организуем призы, кубки и наградную атрибутику'
+                title: 'РџРѕРґРіРѕС‚РѕРІРєР° РїСЂРёР·РѕРІ',
+                description: 'РћСЂРіР°РЅРёР·СѓРµРј РїСЂРёР·С‹, РєСѓР±РєРё Рё РЅР°РіСЂР°РґРЅСѓСЋ Р°С‚СЂРёР±СѓС‚РёРєСѓ'
             },
             {
-                title: 'Награждение',
-                description: 'Проводим торжественную церемонию награждения'
+                title: 'РќР°РіСЂР°Р¶РґРµРЅРёРµ',
+                description: 'РџСЂРѕРІРѕРґРёРј С‚РѕСЂР¶РµСЃС‚РІРµРЅРЅСѓСЋ С†РµСЂРµРјРѕРЅРёСЋ РЅР°РіСЂР°Р¶РґРµРЅРёСЏ'
             }
         ]
     },
     marketing: {
-        title: 'МАРКЕТИНГ И ПРОДВИЖЕНИЕ',
-        description: 'Комплексное продвижение турнира в социальных сетях, работа с медиа и блогерами, привлечение максимального количества участников и зрителей.',
+        title: 'РњРђР РљР•РўРРќР“ Р РџР РћР”Р’РР–Р•РќРР•',
+        description: 'РљРѕРјРїР»РµРєСЃРЅРѕРµ РїСЂРѕРґРІРёР¶РµРЅРёРµ С‚СѓСЂРЅРёСЂР° РІ СЃРѕС†РёР°Р»СЊРЅС‹С… СЃРµС‚СЏС…, СЂР°Р±РѕС‚Р° СЃ РјРµРґРёР° Рё Р±Р»РѕРіРµСЂР°РјРё, РїСЂРёРІР»РµС‡РµРЅРёРµ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ РєРѕР»РёС‡РµСЃС‚РІР° СѓС‡Р°СЃС‚РЅРёРєРѕРІ Рё Р·СЂРёС‚РµР»РµР№.',
         features: [
-            'Стратегия продвижения в социальных сетях',
-            'Работа с игровыми медиа и блогерами',
-            'Создание рекламных материалов',
-            'PR-кампании и пресс-релизы',
-            'Привлечение участников и зрителей',
-            'Аналитика и отчетность по результатам'
+            'РЎС‚СЂР°С‚РµРіРёСЏ РїСЂРѕРґРІРёР¶РµРЅРёСЏ РІ СЃРѕС†РёР°Р»СЊРЅС‹С… СЃРµС‚СЏС…',
+            'Р Р°Р±РѕС‚Р° СЃ РёРіСЂРѕРІС‹РјРё РјРµРґРёР° Рё Р±Р»РѕРіРµСЂР°РјРё',
+            'РЎРѕР·РґР°РЅРёРµ СЂРµРєР»Р°РјРЅС‹С… РјР°С‚РµСЂРёР°Р»РѕРІ',
+            'PR-РєР°РјРїР°РЅРёРё Рё РїСЂРµСЃСЃ-СЂРµР»РёР·С‹',
+            'РџСЂРёРІР»РµС‡РµРЅРёРµ СѓС‡Р°СЃС‚РЅРёРєРѕРІ Рё Р·СЂРёС‚РµР»РµР№',
+            'РђРЅР°Р»РёС‚РёРєР° Рё РѕС‚С‡РµС‚РЅРѕСЃС‚СЊ РїРѕ СЂРµР·СѓР»СЊС‚Р°С‚Р°Рј'
         ],
         process: [
             {
-                title: 'Разработка стратегии',
-                description: 'Создаем план продвижения и определяем каналы'
+                title: 'Р Р°Р·СЂР°Р±РѕС‚РєР° СЃС‚СЂР°С‚РµРіРёРё',
+                description: 'РЎРѕР·РґР°РµРј РїР»Р°РЅ РїСЂРѕРґРІРёР¶РµРЅРёСЏ Рё РѕРїСЂРµРґРµР»СЏРµРј РєР°РЅР°Р»С‹'
             },
             {
-                title: 'Создание контента',
-                description: 'Разрабатываем рекламные материалы и контент'
+                title: 'РЎРѕР·РґР°РЅРёРµ РєРѕРЅС‚РµРЅС‚Р°',
+                description: 'Р Р°Р·СЂР°Р±Р°С‚С‹РІР°РµРј СЂРµРєР»Р°РјРЅС‹Рµ РјР°С‚РµСЂРёР°Р»С‹ Рё РєРѕРЅС‚РµРЅС‚'
             },
             {
-                title: 'Запуск кампании',
-                description: 'Запускаем рекламные кампании в различных каналах'
+                title: 'Р—Р°РїСѓСЃРє РєР°РјРїР°РЅРёРё',
+                description: 'Р—Р°РїСѓСЃРєР°РµРј СЂРµРєР»Р°РјРЅС‹Рµ РєР°РјРїР°РЅРёРё РІ СЂР°Р·Р»РёС‡РЅС‹С… РєР°РЅР°Р»Р°С…'
             },
             {
-                title: 'Анализ результатов',
-                description: 'Отслеживаем эффективность и корректируем стратегию'
+                title: 'РђРЅР°Р»РёР· СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ',
+                description: 'РћС‚СЃР»РµР¶РёРІР°РµРј СЌС„С„РµРєС‚РёРІРЅРѕСЃС‚СЊ Рё РєРѕСЂСЂРµРєС‚РёСЂСѓРµРј СЃС‚СЂР°С‚РµРіРёСЋ'
             }
         ]
     },
     judging: {
-        title: 'СУДЕЙСТВО',
-        description: 'Профессиональные судьи с опытом проведения киберспортивных турниров, контроль честности игры и оперативное разрешение любых спорных ситуаций.',
+        title: 'РЎРЈР”Р•Р™РЎРўР’Рћ',
+        description: 'РџСЂРѕС„РµСЃСЃРёРѕРЅР°Р»СЊРЅС‹Рµ СЃСѓРґСЊРё СЃ РѕРїС‹С‚РѕРј РїСЂРѕРІРµРґРµРЅРёСЏ РєРёР±РµСЂСЃРїРѕСЂС‚РёРІРЅС‹С… С‚СѓСЂРЅРёСЂРѕРІ, РєРѕРЅС‚СЂРѕР»СЊ С‡РµСЃС‚РЅРѕСЃС‚Рё РёРіСЂС‹ Рё РѕРїРµСЂР°С‚РёРІРЅРѕРµ СЂР°Р·СЂРµС€РµРЅРёРµ Р»СЋР±С‹С… СЃРїРѕСЂРЅС‹С… СЃРёС‚СѓР°С†РёР№.',
         features: [
-            'Команда опытных киберспортивных судей',
-            'Контроль честности и правил игры',
-            'Разрешение спорных ситуаций',
-            'Мониторинг соблюдения регламента',
-            'Взаимодействие с участниками',
-            'Документирование нарушений'
+            'РљРѕРјР°РЅРґР° РѕРїС‹С‚РЅС‹С… РєРёР±РµСЂСЃРїРѕСЂС‚РёРІРЅС‹С… СЃСѓРґРµР№',
+            'РљРѕРЅС‚СЂРѕР»СЊ С‡РµСЃС‚РЅРѕСЃС‚Рё Рё РїСЂР°РІРёР» РёРіСЂС‹',
+            'Р Р°Р·СЂРµС€РµРЅРёРµ СЃРїРѕСЂРЅС‹С… СЃРёС‚СѓР°С†РёР№',
+            'РњРѕРЅРёС‚РѕСЂРёРЅРі СЃРѕР±Р»СЋРґРµРЅРёСЏ СЂРµРіР»Р°РјРµРЅС‚Р°',
+            'Р’Р·Р°РёРјРѕРґРµР№СЃС‚РІРёРµ СЃ СѓС‡Р°СЃС‚РЅРёРєР°РјРё',
+            'Р”РѕРєСѓРјРµРЅС‚РёСЂРѕРІР°РЅРёРµ РЅР°СЂСѓС€РµРЅРёР№'
         ],
         process: [
             {
-                title: 'Подбор судей',
-                description: 'Формируем команду квалифицированных судей'
+                title: 'РџРѕРґР±РѕСЂ СЃСѓРґРµР№',
+                description: 'Р¤РѕСЂРјРёСЂСѓРµРј РєРѕРјР°РЅРґСѓ РєРІР°Р»РёС„РёС†РёСЂРѕРІР°РЅРЅС‹С… СЃСѓРґРµР№'
             },
             {
-                title: 'Изучение регламента',
-                description: 'Судьи изучают правила и особенности турнира'
+                title: 'РР·СѓС‡РµРЅРёРµ СЂРµРіР»Р°РјРµРЅС‚Р°',
+                description: 'РЎСѓРґСЊРё РёР·СѓС‡Р°СЋС‚ РїСЂР°РІРёР»Р° Рё РѕСЃРѕР±РµРЅРЅРѕСЃС‚Рё С‚СѓСЂРЅРёСЂР°'
             },
             {
-                title: 'Контроль игры',
-                description: 'Наблюдаем за ходом матчей и соблюдением правил'
+                title: 'РљРѕРЅС‚СЂРѕР»СЊ РёРіСЂС‹',
+                description: 'РќР°Р±Р»СЋРґР°РµРј Р·Р° С…РѕРґРѕРј РјР°С‚С‡РµР№ Рё СЃРѕР±Р»СЋРґРµРЅРёРµРј РїСЂР°РІРёР»'
             },
             {
-                title: 'Разрешение споров',
-                description: 'Оперативно решаем любые спорные ситуации'
+                title: 'Р Р°Р·СЂРµС€РµРЅРёРµ СЃРїРѕСЂРѕРІ',
+                description: 'РћРїРµСЂР°С‚РёРІРЅРѕ СЂРµС€Р°РµРј Р»СЋР±С‹Рµ СЃРїРѕСЂРЅС‹Рµ СЃРёС‚СѓР°С†РёРё'
             }
         ]
     }
@@ -850,7 +1117,6 @@ let currentModal = null;
 let originalCardRect = null;
 
 function openServiceModal(serviceType, cardElement) {
-    console.log('🎮 Opening service modal:', serviceType);
     
     const modal = document.getElementById('service-modal');
     const modalContainer = modal.querySelector('.modal-container');
@@ -861,7 +1127,7 @@ function openServiceModal(serviceType, cardElement) {
     const modalProcessSteps = modal.querySelector('.modal-process-steps');
     
     if (!modal || !serviceData[serviceType]) {
-        console.error('❌ Modal or service data not found');
+        console.error('вќЊ Modal or service data not found');
         return;
     }
     
@@ -931,7 +1197,6 @@ function openServiceModal(serviceType, cardElement) {
 function closeServiceModal() {
     if (!currentModal) return;
     
-    console.log('🎮 Closing service modal');
     
     const modalContainer = currentModal.querySelector('.modal-container');
     
@@ -969,7 +1234,6 @@ function closeServiceModal() {
 
 // Initialize service modal functionality
 function initServiceModals() {
-    console.log('🎮 Initializing service modals...');
     
     // Add click listeners to service cards
     const serviceCards = document.querySelectorAll('.service-3d-card[data-service]');
@@ -1022,7 +1286,6 @@ function initServiceModals() {
         });
     }
     
-    console.log('✅ Service modals initialized successfully!');
 }
 
 // Initialize service modals when DOM is ready
@@ -1034,10 +1297,8 @@ if (document.readyState === 'loading') {
 
 // 3D Tilt Effect for About Images
 function initTiltEffect() {
-    console.log('🎨 Initializing 3D Tilt Effect...');
     
     const elements = document.querySelectorAll('[data-tilt]');
-    console.log('Found', elements.length, 'elements with data-tilt attribute');
     
     if (elements.length === 0) {
         console.warn('No elements with data-tilt found!');
@@ -1045,7 +1306,6 @@ function initTiltEffect() {
     }
     
     elements.forEach((element, index) => {
-        console.log(`Setting up tilt for element ${index + 1}:`, element);
         
         const inner = element.querySelector('.about-image-inner');
         if (!inner) {
@@ -1053,12 +1313,10 @@ function initTiltEffect() {
             return;
         }
         
-        console.log(`Found inner element for ${index + 1}:`, inner);
         
         // Mouse enter
         element.addEventListener('mouseenter', function(e) {
-            console.log('Mouse entered element', index + 1);
-            // Оставляем плавный переход для красивой анимации
+            // РћСЃС‚Р°РІР»СЏРµРј РїР»Р°РІРЅС‹Р№ РїРµСЂРµС…РѕРґ РґР»СЏ РєСЂР°СЃРёРІРѕР№ Р°РЅРёРјР°С†РёРё
         });
         
         // Mouse move
@@ -1092,35 +1350,28 @@ function initTiltEffect() {
         
         // Mouse leave
         element.addEventListener('mouseleave', function(e) {
-            console.log('Mouse left element', index + 1);
             inner.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
             inner.style.setProperty('--glare-opacity', '0');
         });
     });
     
-    console.log('✅ 3D Tilt Effect initialized successfully!');
 }
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 DOM Content Loaded - initializing tilt effect');
     initTiltEffect();
 });
 
 // Also try to initialize immediately if DOM is already loaded
 if (document.readyState === 'loading') {
-    console.log('📄 Document still loading, waiting for DOMContentLoaded');
 } else {
-    console.log('📄 Document already loaded, initializing tilt effect immediately');
     initTiltEffect();
 }
 
 // ===== 3D TILT EFFECT FOR SERVICE CARDS =====
 function initServiceCardsTilt() {
-    console.log('🎨 Initializing 3D Tilt Effect for Service Cards...');
 
     const serviceCards = document.querySelectorAll('.service-organic-card[data-tilt]');
-    console.log('Found', serviceCards.length, 'service cards with data-tilt attribute');
 
     if (serviceCards.length === 0) {
         console.warn('No service cards with data-tilt found!');
@@ -1128,7 +1379,6 @@ function initServiceCardsTilt() {
     }
 
     serviceCards.forEach((card, index) => {
-        console.log(`Setting up tilt for service card ${index + 1}:`, card);
 
         // Caption under the card (title + short subtitle)
         const title = card.dataset.title || '';
@@ -1144,7 +1394,6 @@ function initServiceCardsTilt() {
 
         // Mouse enter
         card.addEventListener('mouseenter', () => {
-            console.log('Mouse entered service card', index + 1);
             isHovering = true;
             card.style.transition = 'transform 0.1s ease-out';
         });
@@ -1160,7 +1409,7 @@ function initServiceCardsTilt() {
             mouseX = e.clientX - centerX;
             mouseY = e.clientY - centerY;
 
-            const maxTilt = 8; // Более выраженный эффект для карточек услуг
+            const maxTilt = 8; // Р‘РѕР»РµРµ РІС‹СЂР°Р¶РµРЅРЅС‹Р№ СЌС„С„РµРєС‚ РґР»СЏ РєР°СЂС‚РѕС‡РµРє СѓСЃР»СѓРі
             const rotateX = (mouseY / (rect.height / 2)) * -maxTilt;
             const rotateY = (mouseX / (rect.width / 2)) * maxTilt;
 
@@ -1175,7 +1424,6 @@ function initServiceCardsTilt() {
 
         // Mouse leave
         card.addEventListener('mouseleave', function(e) {
-            console.log('Mouse left service card', index + 1);
             isHovering = false;
             card.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
             card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
@@ -1193,19 +1441,15 @@ function initServiceCardsTilt() {
         animateServiceCard();
     });
 
-    console.log('✅ 3D Tilt Effect for Service Cards initialized successfully!');
 }
 
 // Initialize service cards tilt effect when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 DOM Content Loaded - initializing service cards tilt effect');
     initServiceCardsTilt();
 });
 
 // Also try to initialize immediately if DOM is already loaded
 if (document.readyState === 'loading') {
-    console.log('📄 Document still loading, waiting for DOMContentLoaded for service cards');
 } else {
-    console.log('📄 Document already loaded, initializing service cards tilt effect immediately');
     initServiceCardsTilt();
 }
