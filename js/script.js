@@ -1,14 +1,10 @@
 // Simple and Reliable Loading Screen
-console.log('🔧 Script.js loaded successfully!');
-console.log('🎨 3D Tilt Effect script loaded!');
 
 // Test alert to confirm script loading
 setTimeout(() => {
-    console.log('🚀 Testing 3D Tilt Effect initialization...');
 }, 1000);
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Starting loading screen...');
     
     // Get loading screen elements
     const loadingScreen = document.getElementById('loading-screen');
@@ -20,9 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Force video to play
     if (loadingVideo) {
-        console.log('🎬 Attempting to play loading video...');
         loadingVideo.play().then(() => {
-            console.log('✅ Loading video started successfully!');
         }).catch(error => {
             console.warn('⚠️ Video autoplay failed:', error);
             // Try to play on user interaction
@@ -53,14 +47,12 @@ document.addEventListener('DOMContentLoaded', function() {
             progressBar.style.width = progress + '%';
             progressText.textContent = Math.floor(progress) + '%';
             
-            console.log(`📊 Loading progress: ${Math.floor(progress)}%`);
             
             // Continue animation until 100%
             if (progress < 100) {
                 animationId = requestAnimationFrame(updateProgress);
             } else {
                 // Reached 100% - wait a moment then hide loading screen
-                console.log('🎉 Loading complete at 100%!');
                 setTimeout(hideLoadingScreen, 300);
             }
         }
@@ -71,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Safety fallback - force completion after 5 seconds
         setTimeout(() => {
             if (body.classList.contains('loading')) {
-                console.log('🚨 Safety fallback - forcing completion');
                 cancelAnimationFrame(animationId);
                 progressBar.style.width = '100%';
                 progressText.textContent = '100%';
@@ -82,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Hide loading screen and show content
     function hideLoadingScreen() {
-        console.log('✨ Hiding loading screen and showing content...');
         
         // Remove loading class from html and body
         body.classList.remove('loading');
@@ -102,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Remove loading screen from DOM after fade animation
         setTimeout(() => {
             loadingScreen.style.display = 'none';
-            console.log('🎯 Loading screen completely removed - site ready!');
             
             // Initialize lazy loading for videos
             setupLazyVideoLoading();
@@ -121,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         video.preload = 'metadata';
                         video.load();
                         videoObserver.unobserve(video);
-                        console.log('🎬 Lazy loading video:', video.querySelector('source')?.src || video.src);
                     }
                 });
             }, {
@@ -250,7 +238,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData(contactForm);
         const data = Object.fromEntries(formData);
         
-        console.log('Form submitted:', data);
         
         // Here you would typically send the data to your server
         // For now, we'll just show a success message
@@ -320,24 +307,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Tournament card click functionality
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎯 Setting up tournament card click handlers...');
     const tournamentCards = document.querySelectorAll('.tournament-card');
-    console.log('🎯 Found tournament cards:', tournamentCards.length);
 
     tournamentCards.forEach((card, index) => {
         card.addEventListener('click', function(e) {
-            console.log('🎯 Tournament card clicked:', index);
             // If a drag has occurred (dragDistance > threshold), do not open the modal.
             // This prevents accidental modal openings when the user is scrolling through the carousel.
             const threshold = 10;
             if (window.dragDistance && window.dragDistance > threshold) {
-                console.log('🎯 Drag detected, not opening modal. Distance:', window.dragDistance);
                 return;
             }
 
             const tournamentTitle = card.querySelector('.tournament-title').textContent;
             const tournamentDescription = card.querySelector('.tournament-description').textContent;
-            console.log('🎯 Opening modal for:', tournamentTitle);
             // Show modal for tournament details
             showTournamentModal(tournamentTitle, tournamentDescription, index);
         });
@@ -346,14 +328,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Tournament Modal Functions
 function showTournamentModal(title, description, index) {
-    console.log('🎯 showTournamentModal called with:', title, description, index);
     // Use existing modal from HTML
     const modal = document.getElementById('tournament-modal');
     if (!modal) {
         console.error('❌ Tournament modal not found in HTML');
         return;
     }
-    console.log('✅ Modal found:', modal);
 
     // Fetch the corresponding tournament card to extract extra data (image and tags)
     const cards = document.querySelectorAll('.tournament-card');
@@ -750,7 +730,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    console.log('🎯 Compact menu navigation initialized');
     
     // Add smooth scrolling to navigation links
     navLinks.forEach(link => {
@@ -785,8 +764,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    console.log('✅ Navigation links configured');
-    console.log('🎉 Compact menu functionality fully loaded!');
 
     // Contact Form Handler
     const contactForm = document.getElementById('contactForm');
@@ -806,7 +783,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 message: formData.get('message')
             };
             
-            console.log('📧 Form submitted:', data);
             
             // Show success message
             if (successMessage) {
@@ -821,7 +797,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Here you would typically send the data to your server
             // For now, we'll just log it
-            console.log('✅ Contact form processed successfully');
         });
     }
 });
@@ -930,7 +905,6 @@ function init3DTilt() {
 // Enhanced Glare Effect - DISABLED
 function initGlareEffect() {
     // Glare effects disabled
-    console.log('🚫 Glare effects disabled');
 }
 
 // Performance optimization: Use RAF for smooth animations
@@ -958,12 +932,10 @@ function optimizeAnimations() {
 
 // Initialize all 3D effects
 function init3DServices() {
-    console.log('🎮 Initializing 3D Services...');
     
     // Check if services section exists
     const servicesSection = document.querySelector('.services-3d');
     if (!servicesSection) {
-        console.log('⚠️ 3D Services section not found');
         return;
     }
     
@@ -973,7 +945,6 @@ function init3DServices() {
         initGlareEffect();
         optimizeAnimations();
         
-        console.log('✅ 3D Services initialized successfully!');
     } catch (error) {
         console.error('❌ Error initializing 3D Services:', error);
     }
@@ -1177,7 +1148,6 @@ let currentModal = null;
 let originalCardRect = null;
 
 function openServiceModal(serviceType, cardElement) {
-    console.log('🎮 Opening service modal:', serviceType);
     
     const modal = document.getElementById('service-modal');
     const modalContainer = modal.querySelector('.modal-container');
@@ -1258,7 +1228,6 @@ function openServiceModal(serviceType, cardElement) {
 function closeServiceModal() {
     if (!currentModal) return;
     
-    console.log('🎮 Closing service modal');
     
     const modalContainer = currentModal.querySelector('.modal-container');
     
@@ -1296,7 +1265,6 @@ function closeServiceModal() {
 
 // Initialize service modal functionality
 function initServiceModals() {
-    console.log('🎮 Initializing service modals...');
     
     // Add click listeners to service cards
     const serviceCards = document.querySelectorAll('.service-3d-card[data-service]');
@@ -1349,7 +1317,6 @@ function initServiceModals() {
         });
     }
     
-    console.log('✅ Service modals initialized successfully!');
 }
 
 // Initialize service modals when DOM is ready
@@ -1361,10 +1328,8 @@ if (document.readyState === 'loading') {
 
 // 3D Tilt Effect for About Images
 function initTiltEffect() {
-    console.log('🎨 Initializing 3D Tilt Effect...');
     
     const elements = document.querySelectorAll('[data-tilt]');
-    console.log('Found', elements.length, 'elements with data-tilt attribute');
     
     if (elements.length === 0) {
         console.warn('No elements with data-tilt found!');
@@ -1372,7 +1337,6 @@ function initTiltEffect() {
     }
     
     elements.forEach((element, index) => {
-        console.log(`Setting up tilt for element ${index + 1}:`, element);
         
         const inner = element.querySelector('.about-image-inner');
         if (!inner) {
@@ -1380,11 +1344,9 @@ function initTiltEffect() {
             return;
         }
         
-        console.log(`Found inner element for ${index + 1}:`, inner);
         
         // Mouse enter
         element.addEventListener('mouseenter', function(e) {
-            console.log('Mouse entered element', index + 1);
             // Оставляем плавный переход для красивой анимации
         });
         
@@ -1419,35 +1381,28 @@ function initTiltEffect() {
         
         // Mouse leave
         element.addEventListener('mouseleave', function(e) {
-            console.log('Mouse left element', index + 1);
             inner.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
             inner.style.setProperty('--glare-opacity', '0');
         });
     });
     
-    console.log('✅ 3D Tilt Effect initialized successfully!');
 }
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 DOM Content Loaded - initializing tilt effect');
     initTiltEffect();
 });
 
 // Also try to initialize immediately if DOM is already loaded
 if (document.readyState === 'loading') {
-    console.log('📄 Document still loading, waiting for DOMContentLoaded');
 } else {
-    console.log('📄 Document already loaded, initializing tilt effect immediately');
     initTiltEffect();
 }
 
 // ===== 3D TILT EFFECT FOR SERVICE CARDS =====
 function initServiceCardsTilt() {
-    console.log('🎨 Initializing 3D Tilt Effect for Service Cards...');
 
     const serviceCards = document.querySelectorAll('.service-organic-card[data-tilt]');
-    console.log('Found', serviceCards.length, 'service cards with data-tilt attribute');
 
     if (serviceCards.length === 0) {
         console.warn('No service cards with data-tilt found!');
@@ -1455,7 +1410,6 @@ function initServiceCardsTilt() {
     }
 
     serviceCards.forEach((card, index) => {
-        console.log(`Setting up tilt for service card ${index + 1}:`, card);
 
         // Caption under the card (title + short subtitle)
         const title = card.dataset.title || '';
@@ -1471,7 +1425,6 @@ function initServiceCardsTilt() {
 
         // Mouse enter
         card.addEventListener('mouseenter', () => {
-            console.log('Mouse entered service card', index + 1);
             isHovering = true;
             card.style.transition = 'transform 0.1s ease-out';
         });
@@ -1502,7 +1455,6 @@ function initServiceCardsTilt() {
 
         // Mouse leave
         card.addEventListener('mouseleave', function(e) {
-            console.log('Mouse left service card', index + 1);
             isHovering = false;
             card.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
             card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
@@ -1520,19 +1472,15 @@ function initServiceCardsTilt() {
         animateServiceCard();
     });
 
-    console.log('✅ 3D Tilt Effect for Service Cards initialized successfully!');
 }
 
 // Initialize service cards tilt effect when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 DOM Content Loaded - initializing service cards tilt effect');
     initServiceCardsTilt();
 });
 
 // Also try to initialize immediately if DOM is already loaded
 if (document.readyState === 'loading') {
-    console.log('📄 Document still loading, waiting for DOMContentLoaded for service cards');
 } else {
-    console.log('📄 Document already loaded, initializing service cards tilt effect immediately');
     initServiceCardsTilt();
 }
