@@ -4,7 +4,18 @@ const path = require("path");
 const targetFiles = [
   "api",
   "scripts",
-  "admin"
+  "admin",
+  "js",
+  "css"
+];
+
+const rootFiles = [
+  "index.html",
+  "vercel.json",
+  "package.json",
+  "README.md",
+  "ADMIN_BACKEND.md",
+  "AUDIT.md"
 ];
 
 function walk(dir, files = []) {
@@ -31,6 +42,16 @@ for (const rel of targetFiles) {
       console.error(`Tab character found: ${path.relative(process.cwd(), file)}`);
       hasError = true;
     }
+  }
+}
+
+for (const rel of rootFiles) {
+  const full = path.join(process.cwd(), rel);
+  if (!fs.existsSync(full)) continue;
+  const content = fs.readFileSync(full, "utf8");
+  if (content.includes("\t")) {
+    console.error(`Tab character found: ${path.relative(process.cwd(), full)}`);
+    hasError = true;
   }
 }
 

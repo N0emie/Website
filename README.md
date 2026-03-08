@@ -79,3 +79,32 @@ Main commands:
 - `npm run db:migrate`
 - `npm run db:seed:assets`
 - `npm run admin:create`
+
+## Developer Quickstart (updated)
+
+Local run:
+
+1. `npm install`
+2. Create `.env.local` based on `.env.example`
+3. `npm run db:migrate`
+4. `npm run admin:create`
+5. Start local server (static + API workflow):
+   - `vercel dev`
+   - or your current static server command for frontend-only checks
+
+Quality checks:
+
+- `npm run lint`
+- `npm run build`
+
+Current structure (high-level):
+
+- `index.html` - public page entry
+- `css/style.css` - stylesheet entry with section imports
+- `css/style.*.css` - sectioned CSS modules (foundation, hero, sections, modal/nav, etc.)
+- `js/script.js` - main public interactions
+- `js/modules/*` - extracted runtime modules (Lenis init, modal bridge logic)
+- `js/cms-content.js` - CMS/public content binding
+- `admin/*` - admin pages
+- `api/*` - Vercel serverless backend
+- `sql/migrations/*` - database schema migrations
