@@ -11,6 +11,12 @@ function methodNotAllowed(res, allow) {
 
 function serverError(res, error) {
   console.error(error);
+  if (error && /too large/i.test(String(error.message || ""))) {
+    return json(res, 413, { error: "Request body is too large" });
+  }
+  if (error && /invalid json/i.test(String(error.message || ""))) {
+    return json(res, 400, { error: "Invalid JSON body" });
+  }
   return json(res, 500, { error: "Internal server error" });
 }
 
@@ -20,8 +26,13 @@ function getRequestBody(req) {
   }
 
   return new Promise((resolve, reject) => {
+    const maxBodyBytes = Number(process.env.MAX_BODY_BYTES || 1024 * 1024);
     let data = "";
     req.on("data", (chunk) => {
+      if (data.length + chunk.length > maxBodyBytes) {
+        reject(new Error("Request body is too large"));
+        return;
+      }
       data += chunk;
     });
     req.on("end", () => {
