@@ -35,10 +35,6 @@
             <label>Season / Date</label>
             <input id="season">
           </div>
-          <div style="width:140px;">
-            <label>Order</label>
-            <input id="order" type="number" value="0">
-          </div>
         </div>
 
         <div>
@@ -143,7 +139,6 @@
             imageFit: document.getElementById('imageFit').value,
             linkUrl: document.getElementById('linkUrl').value.trim(),
             tags: document.getElementById('tags').value.trim(),
-            order: Number(document.getElementById('order').value || 0),
             published: document.getElementById('published').checked
           }
         });

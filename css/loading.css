@@ -1,361 +1,166 @@
-/* Loading Screen - Completely Separate Overlay */
-/* Более специфичный селектор для перекрытия style.min.css */
-#loading-screen.loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    /* Фон как на основном сайте - темно-серый с точками */
-    background-color: #313131 !important;
-    background-image: 
-        radial-gradient(circle, #242424 1px, rgba(0,0,0,.9) 0) !important;
-    background-position: 50px 50px !important;
-    background-size: 100px 100px !important;
-    z-index: 999999 !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
+/* Premium loading overlay */
 .loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    /* Фон как на основном сайте - темно-серый с точками */
-    background-color: #313131 !important;
-    background-image: 
-        radial-gradient(circle, #242424 1px, rgba(0,0,0,.9) 0) !important;
-    background-position: 50px 50px !important;
-    background-size: 100px 100px !important;
-    z-index: 999999 !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+  --loader-bg: transparent;
+  --badge-bg: linear-gradient(135deg, #ff7b24 0%, #ff8f3c 55%, #ff6d1f 100%);
+  --badge-text: #ffffff;
+  --stick-size-w: 34px;
+  --stick-size-h: 12px;
+
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--loader-bg);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1), visibility 280ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-
-.loading-screen.fade-out {
-    opacity: 0;
-    visibility: hidden;
-}
-
-/* Анимированные точки как на основном сайте */
-.loading-floating-dots {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.loading-floating-dot {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: #ffffff;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: loadingFloatDot 8s linear infinite;
-}
-
-.loading-floating-dot:nth-child(2n) {
-    background: #cccccc;
-    animation-duration: 12s;
-    animation-delay: -2s;
-}
-
-.loading-floating-dot:nth-child(3n) {
-    background: #aaaaaa;
-    animation-duration: 10s;
-    animation-delay: -4s;
-}
-
-.loading-floating-dot:nth-child(4n) {
-    width: 1px;
-    height: 1px;
-    background: #888888;
-    animation-duration: 15s;
-    animation-delay: -6s;
-}
-
-@keyframes loadingFloatDot {
-    0% {
-        transform: translateY(100vh) translateX(0);
-        opacity: 0;
-    }
-    10% {
-        opacity: 0.8;
-    }
-    90% {
-        opacity: 0.8;
-    }
-    100% {
-        transform: translateY(-10vh) translateX(50px);
-        opacity: 0;
-    }
-}
-
-
-
-
 
 .loading-container {
-    text-align: center;
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 2; /* Поверх тумана */
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
 }
 
-/* Более специфичные селекторы для перекрытия style.min.css */
-#loading-screen .loading-logo,
-.loading-screen .loading-logo {
-    width: 600px;
-    height: 600px;
-    margin-bottom: 60px;
-    background: transparent !important;
-    background-color: transparent !important;
-    /* Убираем любые возможные фоны с контейнера */
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
+.loading-badge {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+  bottom: clamp(22px, 4vh, 52px);
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  padding: 23px 32px;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--badge-text);
+  box-shadow: none;
+  overflow: hidden;
+  animation: loaderBadgeIn 160ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.loading-logo {
-    width: 600px;
-    height: 600px;
-    margin-bottom: 60px;
-    background: transparent !important;
-    background-color: transparent !important;
-    /* Убираем любые возможные фоны с контейнера */
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
+.loading-badge::before {
+  content: "";
+  position: absolute;
+  inset: -120% -20%;
+  background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.24) 50%, transparent 80%);
+  opacity: 0;
+  transform: translateX(-46%);
+  animation: loaderShimmer 6.2s linear infinite;
+  pointer-events: none;
 }
 
-/* Более специфичные селекторы для видео и изображений */
-#loading-screen .loading-logo video,
-#loading-screen .loading-logo img,
-.loading-screen .loading-logo video,
-.loading-screen .loading-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background: transparent !important;
-    background-color: transparent !important;
-    /* Убираем любые возможные фоны */
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
+.loading-text {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(24px, 2.56vw, 42px);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: 0 8px 26px rgba(0, 0, 0, 0.45);
 }
 
-.loading-logo video,
-.loading-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background: transparent !important;
-    background-color: transparent !important;
-    /* Убираем любые возможные фоны */
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
+.loading-stick {
+  position: relative;
+  z-index: 1;
+  width: clamp(63px, 5.8vw, 99px);
+  height: clamp(20px, 1.84vw, 31px);
+  border-radius: 999px;
+  background: #ffffff;
+  transform-origin: 50% 50%;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.4);
+  animation: loaderStickFlip 820ms cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
 
-.loading-progress {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100vw;
-    height: 20px;
-    overflow: hidden;
-    z-index: 1000000;
-    background: rgba(0, 0, 0, 0.3);
-    
-    /* Создаем объемную форму щупальца с волнами сверху и снизу */
-    clip-path: polygon(
-        0% 85%, 
-        3% 80%, 
-        6% 83%, 
-        10% 77%, 
-        14% 81%, 
-        18% 73%, 
-        22% 77%, 
-        26% 70%, 
-        30% 73%, 
-        34% 67%, 
-        38% 70%, 
-        42% 63%, 
-        46% 67%, 
-        50% 60%, 
-        54% 63%, 
-        58% 57%, 
-        62% 60%, 
-        66% 53%, 
-        70% 57%, 
-        74% 50%, 
-        78% 53%, 
-        82% 47%, 
-        86% 50%, 
-        90% 43%, 
-        94% 47%, 
-        98% 40%, 
-        100% 43%, 
-        100% 57%, 
-        98% 60%, 
-        94% 53%, 
-        90% 57%, 
-        86% 50%, 
-        82% 53%, 
-        78% 47%, 
-        74% 50%, 
-        70% 43%, 
-        66% 47%, 
-        62% 40%, 
-        58% 43%, 
-        54% 37%, 
-        50% 40%, 
-        46% 33%, 
-        42% 37%, 
-        38% 30%, 
-        34% 33%, 
-        30% 27%, 
-        26% 30%, 
-        22% 23%, 
-        18% 27%, 
-        14% 19%, 
-        10% 23%, 
-        6% 17%, 
-        3% 20%, 
-        0% 15%
-    );
+.loading-screen.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
-.loading-progress-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #7c6ce8, #a855f7, #7c6ce8);
-    transition: width 0.1s ease;
-    box-shadow: 0 0 15px rgba(124, 108, 232, 0.8);
-    position: relative;
+.loading-screen.is-hidden .loading-badge {
+  transform: scale(1.02);
+  filter: blur(0px);
+  transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1), filter 280ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Добавляем анимацию волн и присоски */
-.loading-progress-fill::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(90deg, 
-        rgba(124, 108, 232, 0.4), 
-        rgba(168, 85, 247, 0.6), 
-        rgba(124, 108, 232, 0.4)
-    );
-    animation: tentacle-wave 3s ease-in-out infinite;
+@keyframes loaderBadgeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(4px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
-/* Добавляем эффект присосок */
-.loading-progress-fill::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: repeating-linear-gradient(
-        90deg,
-        transparent 0px,
-        transparent 15px,
-        rgba(255, 255, 255, 0.1) 15px,
-        rgba(255, 255, 255, 0.1) 18px,
-        transparent 18px,
-        transparent 30px
-    );
-    animation: sucker-pulse 2s ease-in-out infinite alternate;
+@keyframes loaderShimmer {
+  0% {
+    transform: translateX(-46%);
+  }
+  100% {
+    transform: translateX(46%);
+  }
 }
 
-@keyframes tentacle-wave {
-    0%, 100% {
-        transform: scaleY(1) scaleX(1);
-    }
-    33% {
-        transform: scaleY(1.1) scaleX(0.98);
-    }
-    66% {
-        transform: scaleY(0.9) scaleX(1.02);
-    }
+@keyframes loaderStickFlip {
+  0% {
+    transform: rotateZ(0deg) rotateY(0deg) scaleX(1) scaleY(1);
+  }
+  20% {
+    transform: rotateZ(76deg) rotateY(20deg) scaleX(0.9) scaleY(1.06);
+  }
+  45% {
+    transform: rotateZ(164deg) rotateY(44deg) scaleX(1.07) scaleY(0.9);
+  }
+  63% {
+    transform: rotateZ(214deg) rotateY(26deg) scaleX(0.95) scaleY(1.03);
+  }
+  79% {
+    transform: rotateZ(188deg) rotateY(6deg) scaleX(1.03) scaleY(0.97);
+  }
+  90% {
+    transform: rotateZ(182deg) rotateY(2deg) scaleX(0.98) scaleY(1.02);
+  }
+  100% {
+    transform: rotateZ(180deg) rotateY(0deg) scaleX(1) scaleY(1);
+  }
 }
 
-@keyframes sucker-pulse {
-    0% {
-        opacity: 0.3;
-    }
-    100% {
-        opacity: 0.7;
-    }
-}
-
-.loading-percentage {
-    display: none;
-}
-
-/* Hide ALL content during loading EXCEPT loading screen */
+/* Hide all page content during loading except loader */
 body.loading > *:not(.loading-screen) {
-    visibility: hidden !important;
-    opacity: 0 !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 
-/* Ensure loading screen is always visible during loading */
 body.loading .loading-screen {
-    visibility: visible !important;
-    opacity: 1 !important;
-    display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
-body.loading .loading-screen * {
-    visibility: visible !important;
-    opacity: 1 !important;
-}
+@media (prefers-reduced-motion: reduce) {
+  .loading-screen,
+  .loading-badge,
+  .loading-stick,
+  .loading-badge::before {
+    animation: none !important;
+    transition: none !important;
+  }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .loading-logo {
-        width: 450px;
-        height: 450px;
-    }
-    
-    .loading-progress {
-        width: 80%;
-    }
-    
-    .loading-percentage {
-        font-size: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .loading-logo {
-        width: 360px;
-        height: 360px;
-    }
-    
-    .loading-percentage {
-        font-size: 18px;
-    }
+  .loading-badge::before {
+    display: none;
+  }
 }

@@ -119,6 +119,24 @@ td {
   font-size: 14px;
 }
 
+.drag-handle-cell {
+  width: 40px;
+  text-align: center;
+}
+
+.drag-handle {
+  display: inline-block;
+  cursor: grab;
+  color: #9ea8cc;
+  font-size: 18px;
+  line-height: 1;
+  user-select: none;
+}
+
+tr.dragging {
+  opacity: 0.55;
+}
+
 .muted {
   color: #9ea8cc;
 }

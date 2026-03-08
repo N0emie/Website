@@ -19,15 +19,6 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     // createExampFloatingDots();
-
-    setTimeout(() => {
-      const loadingScreen = document.getElementById("loading-screen");
-      if (!loadingScreen) return;
-      loadingScreen.style.opacity = "0";
-      setTimeout(() => {
-        loadingScreen.style.display = "none";
-      }, 500);
-    }, 2000);
   });
 
   window.showTournamentModal = function showTournamentModal(title, description, index) {
@@ -139,17 +130,10 @@
       return;
     }
 
-    const fallbackImages = {
-      planning: "assets/images/tournaments/csgo-tournament.jpg",
-      technical: "assets/images/tournaments/dota2-championship.jpg",
-      streaming: "assets/images/tournaments/valorant-cup.jpg",
-      prizes: "assets/images/tournament-cards/volt-energy-cup.jpg",
-      marketing: "assets/images/tournament-cards/winline-cs2.jpg",
-      judging: "assets/images/tournament-cards/dota2-champions.jpg"
-    };
+    const serviceModalImage = "assets/images/services/test.png";
 
     function openServiceModal(serviceData) {
-      const imageSrc = serviceData.image || fallbackImages[serviceData.serviceId] || "assets/webp/69.webp";
+      const imageSrc = serviceModalImage;
 
       modalImage.src = imageSrc;
       modalImage.alt = serviceData.title || "";

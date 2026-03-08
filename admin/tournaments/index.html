@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8">
@@ -21,7 +21,8 @@
       <div class="card row" style="justify-content:space-between;align-items:center;">
         <div>
           <h1>Наши турниры</h1>
-          <p class="muted">Добавляйте, редактируйте, удаляйте карточки.</p>
+          <p class="muted">Добавляйте, редактируйте и удаляйте карточки.</p>
+          <p class="muted">Перетаскивайте строки за ползунок слева — этот порядок сразу применяется на основном сайте.</p>
         </div>
         <a href="/admin/tournaments/new"><button>+ Новый турнир</button></a>
       </div>
@@ -29,6 +30,7 @@
         <table>
           <thead>
             <tr>
+              <th style="width:40px;"></th>
               <th>ID</th>
               <th>Title</th>
               <th>Order</th>
@@ -45,14 +47,65 @@
 
   <script src="/admin/admin.js"></script>
   <script>
+    let draggedRow = null;
+
+    function wireDnD(tbody) {
+      const rows = Array.from(tbody.querySelectorAll('tr[data-id]'));
+      rows.forEach((row) => {
+        row.draggable = true;
+        row.addEventListener('dragstart', () => {
+          draggedRow = row;
+          row.classList.add('dragging');
+        });
+        row.addEventListener('dragend', () => {
+          row.classList.remove('dragging');
+          draggedRow = null;
+        });
+      });
+
+      tbody.ondragover = (e) => {
+        e.preventDefault();
+        const target = e.target.closest('tr[data-id]');
+        if (!draggedRow || !target || draggedRow === target) return;
+
+        const rect = target.getBoundingClientRect();
+        const before = e.clientY < rect.top + rect.height / 2;
+        if (before) {
+          tbody.insertBefore(draggedRow, target);
+        } else {
+          tbody.insertBefore(draggedRow, target.nextSibling);
+        }
+      };
+
+      tbody.ondrop = async (e) => {
+        e.preventDefault();
+        if (!draggedRow) return;
+
+        try {
+          const orderIds = Array.from(tbody.querySelectorAll('tr[data-id]')).map((tr) => Number(tr.dataset.id));
+          await AdminApp.api('/api/admin/tournaments', {
+            method: 'PUT',
+            body: { orderIds }
+          });
+          AdminApp.toast('Порядок сохранен');
+          await render();
+        } catch (err) {
+          AdminApp.toast(err.message);
+        }
+      };
+    }
+
     async function render() {
       await AdminApp.requireAuth();
       const { items } = await AdminApp.api('/api/admin/tournaments');
       const tbody = document.getElementById('rows');
       tbody.innerHTML = '';
+
       items.forEach((item) => {
         const tr = document.createElement('tr');
+        tr.dataset.id = String(item.id);
         tr.innerHTML = `
+          <td class="drag-handle-cell"><span class="drag-handle" title="Перетащить">||</span></td>
           <td>${item.id}</td>
           <td>${item.title}</td>
           <td>${item.ordering}</td>
@@ -80,6 +133,8 @@
 
         tbody.appendChild(tr);
       });
+
+      wireDnD(tbody);
     }
 
     document.getElementById('logoutBtn').addEventListener('click', AdminApp.logout);

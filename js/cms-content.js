@@ -1,4 +1,15 @@
 (function () {
+  let cmsReadyResolve = null;
+  window.__cmsContentReadyPromise = new Promise((resolve) => {
+    cmsReadyResolve = resolve;
+  });
+
+  function markCmsReady() {
+    if (!cmsReadyResolve) return;
+    cmsReadyResolve();
+    cmsReadyResolve = null;
+  }
+
   const ASSET_BINDINGS = [
     { key: "hero.logo", selector: ".hero-logo img" },
     { key: "about.gallery.1", selector: ".about-images .about-image:nth-child(1) img" },
@@ -239,6 +250,10 @@
   document.addEventListener("DOMContentLoaded", async () => {
     rebuildTournamentModalShell();
     patchTournamentModal();
-    await loadContent();
+    try {
+      await loadContent();
+    } finally {
+      markCmsReady();
+    }
   });
 })();

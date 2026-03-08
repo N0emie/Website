@@ -1380,6 +1380,53 @@
     --capsule-height: 48px !important;
 }
 
+/* Tournament details typography tune */
+#tournament-modal .tournament-modal-details h3,
+#tournament-modal .modal-details h3 {
+    color: #f2f5ff !important;
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px !important;
+}
+
+#tournament-modal .tournament-modal-details .detail-label,
+#tournament-modal .modal-details .detail-label {
+    color: #f2f5ff !important;
+    font-size: 1.08rem !important;
+    font-weight: 500 !important;
+}
+
+#tournament-modal .tournament-modal-details .detail-value,
+#tournament-modal .modal-details .detail-value {
+    color: #f2f5ff !important;
+    font-size: 1.08rem !important;
+    font-weight: 600 !important;
+}
+
+#tournament-modal .tournament-modal-details .detail-item,
+#tournament-modal .modal-details .detail-item {
+    border-bottom-color: rgba(201, 214, 255, 0.2) !important;
+}
+
+/* Push details block lower to leave more room for tournament description */
+#tournament-modal .tournament-modal-details,
+#tournament-modal .modal-details {
+    margin-top: auto !important;
+    margin-bottom: 0 !important;
+}
+
+/* Keep right column as a vertical flow so details can stick to bottom */
+#tournament-modal .service-modal-content {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 100% !important;
+}
+
+/* Description stays above details */
+#tournament-modal .service-modal-description {
+    margin-bottom: 18px !important;
+}
+
 .menu-toggle-container .capsule {
     width: var(--expanded) !important;
     max-width: calc(100vw - 24px) !important;

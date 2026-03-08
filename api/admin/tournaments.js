@@ -53,13 +53,16 @@ module.exports = async function handler(req, res) {
       const modalImageUrl = String(body.modalImageUrl || "").trim();
       const imageFitRaw = String(body.imageFit || "").trim().toLowerCase();
       const imageFit = ["cover", "contain", "fill"].includes(imageFitRaw) ? imageFitRaw : "cover";
-      const order = Number.isFinite(Number(body.order)) ? Number(body.order) : 0;
       const published = Boolean(body.published);
       const tags = normalizeTags(body.tags);
 
       if (!title || !shortDescription || !imageUrl) {
         return json(res, 400, { error: "title, shortDescription and imageUrl are required" });
       }
+
+      const minOrderingResult = await query("SELECT COALESCE(MIN(ordering), 0) AS min_ordering FROM tournaments");
+      const minOrdering = Number(minOrderingResult.rows?.[0]?.min_ordering ?? 0);
+      const order = minOrdering - 1;
 
       const result = await query(
         `
@@ -94,6 +97,23 @@ module.exports = async function handler(req, res) {
 
     if (req.method === "PUT") {
       const body = await getRequestBody(req);
+      if (Array.isArray(body.orderIds)) {
+        const orderIds = body.orderIds
+          .map((v) => Number(v))
+          .filter((v) => Number.isInteger(v) && v > 0);
+
+        if (!orderIds.length) {
+          return json(res, 400, { error: "orderIds is required" });
+        }
+
+        const uniqueIds = [...new Set(orderIds)];
+        for (let i = 0; i < uniqueIds.length; i += 1) {
+          await query("UPDATE tournaments SET ordering = $1, updated_at = NOW() WHERE id = $2", [i, uniqueIds[i]]);
+        }
+
+        return json(res, 200, { ok: true });
+      }
+
       const id = Number(body.id);
       if (!Number.isInteger(id) || id <= 0) return json(res, 400, { error: "Invalid id" });
 
