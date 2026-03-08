@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Админ вход | Dizband</title>
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+  <div class="auth-wrap card">
+    <h1>Вход в админку</h1>
+    <p class="muted">Логин + пароль администратора.</p>
+    <form id="loginForm" class="stack">
+      <div>
+        <label for="login">Логин</label>
+        <input id="login" type="text" required>
+      </div>
+      <div>
+        <label for="password">Пароль</label>
+        <input id="password" type="password" minlength="8" required>
+      </div>
+      <button type="submit">Войти</button>
+    </form>
+    <div id="setupWrap" class="card" style="display:none; margin-top:16px;">
+      <h3>Первичная настройка</h3>
+      <p class="muted">Админ еще не создан. Создайте первого пользователя.</p>
+      <form id="setupForm" class="stack">
+        <div>
+          <label for="setupLogin">Логин</label>
+          <input id="setupLogin" type="text" required>
+        </div>
+        <div>
+          <label for="setupPassword">Пароль (min 8)</label>
+          <input id="setupPassword" type="password" minlength="8" required>
+        </div>
+        <button type="submit">Создать админа</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/admin/admin.js"></script>
+  <script>
+    (async function init() {
+      try {
+        const session = await AdminApp.api('/api/auth/session');
+        if (session.authenticated) {
+          window.location.href = '/admin';
+          return;
+        }
+      } catch {}
+
+      try {
+        const setupState = await AdminApp.api('/api/admin/setup');
+        if (!setupState.hasUsers) {
+          document.getElementById('setupWrap').style.display = 'block';
+        }
+      } catch {}
+    })();
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const login = document.getElementById('login').value.trim();
+      const password = document.getElementById('password').value;
+      try {
+        await AdminApp.api('/api/auth/login', { method: 'POST', body: { login, password } });
+        window.location.href = '/admin';
+      } catch (err) {
+        AdminApp.toast(err.message);
+      }
+    });
+
+    document.getElementById('setupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const login = document.getElementById('setupLogin').value.trim();
+      const password = document.getElementById('setupPassword').value;
+      try {
+        await AdminApp.api('/api/admin/setup', { method: 'POST', body: { login, password } });
+        AdminApp.toast('Админ создан, теперь войдите');
+      } catch (err) {
+        AdminApp.toast(err.message);
+      }
+    });
+  </script>
+</body>
+</html>

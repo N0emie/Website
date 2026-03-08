@@ -1,0 +1,10 @@
+{
+  "rewrites": [
+    { "source": "/admin/login", "destination": "/admin/login.html" },
+    { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/admin/media", "destination": "/admin/media.html" },
+    { "source": "/admin/tournaments", "destination": "/admin/tournaments/index.html" },
+    { "source": "/admin/tournaments/new", "destination": "/admin/tournaments/new.html" },
+    { "source": "/admin/tournaments/:id", "destination": "/admin/tournaments/edit.html?id=:id" }
+  ]
+}

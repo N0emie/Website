@@ -84,25 +84,33 @@
 </head>
 <body class="loading">
     <!-- FIXED ELEMENTS - MOVED TO BODY ROOT TO AVOID TRANSFORM ISSUES -->
-    <!-- Menu Button in Top Right Corner -->
-    <div class="menu-toggle-container">
-        <div class="menu-toggle" id="menuToggle">
-            <span class="menu-text">МЕНЮ</span>
-            <div class="menu-lines">
-                <span class="line line1"></span>
-                <span class="line line2"></span>
-            </div>
+    <!-- Top-right icon menu -->
+    <nav class="bump-nav is-collapsed" id="bumpNav" aria-label="Быстрое меню">
+        <button class="bump-nav__toggle" id="bumpNavToggle" type="button" aria-expanded="false" aria-label="Открыть меню">
+            <span class="bump-nav__toggle-line"></span>
+            <span class="bump-nav__toggle-line"></span>
+        </button>
+        <div class="bump-nav__items" role="group" aria-label="Разделы">
+            <button class="bump-nav__item is-active" type="button" data-target="#home" aria-label="Главная">
+                <svg viewBox="0 0 24 24"><path d="M3 11.5L12 4l9 7.5"></path><path d="M6.5 10.5V20h11V10.5"></path></svg>
+            </button>
+            <button class="bump-nav__item" type="button" data-target="#services" aria-label="Услуги">
+                <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"></rect><path d="M8 9h8M8 13h5"></path></svg>
+            </button>
+            <button class="bump-nav__item" type="button" data-target="#tournaments" aria-label="Турниры">
+                <svg viewBox="0 0 24 24"><path d="M7 4h10v3a4 4 0 0 1-4 4h-2a4 4 0 0 1-4-4V4Z"></path><path d="M10 11v3.5A2.5 2.5 0 0 0 12.5 17H13"></path><path d="M9 20h6"></path></svg>
+            </button>
+            <button class="bump-nav__item" type="button" data-target="#about" aria-label="О нас">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"></circle><path d="M6.5 20a5.5 5.5 0 0 1 11 0"></path></svg>
+            </button>
+            <button class="bump-nav__item" type="button" data-target="#contacts" aria-label="Контакты">
+                <svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2"></rect><path d="m4.5 8 7.5 5 7.5-5"></path></svg>
+            </button>
+            <button class="bump-nav__item" type="button" data-href="/admin/login" aria-label="Вход в админку">
+                <svg viewBox="0 0 24 24"><circle cx="8.5" cy="12" r="3"></circle><path d="M11.5 12H21"></path><path d="M18 12v2.5"></path><path d="M15.5 12v2"></path></svg>
+            </button>
         </div>
-        
-        <!-- Compact Navigation Panel -->
-        <div class="menu-nav-panel" id="menuNavPanel">
-            <a href="#home" class="nav-link">Главная</a>
-            <a href="#services" class="nav-link">Услуги</a>
-            <a href="#tournaments" class="nav-link">Турниры</a>
-            <a href="#about" class="nav-link">О нас</a>
-            <a href="#contacts" class="nav-link">Контакты</a>
-        </div>
-    </div>
+    </nav>
     
 
     
@@ -130,7 +138,7 @@
     <!-- <img src="assets/1012 (1)(1).gif" alt="" class="examp-gif examp-gif-3"> -->
 
 
-    <img src="assets/webp/pers.webp" alt="Персонаж игры" class="examp-gif examp-gif-pers" loading="lazy">
+    
     
 
     
@@ -1064,6 +1072,8 @@
             });
         });
     </script>
+
+    <script src="/js/cms-content.js"></script>
 
     <!-- Service Modal Template -->
     <div id="new-service-modal" class="service-modal">

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Админка | Dizband</title>
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <h2 class="admin-logo">Dizband Admin</h2>
+      <nav class="admin-nav">
+        <a href="/admin" class="active">Dashboard</a>
+        <a href="/admin/media">Media</a>
+        <a href="/admin/tournaments">Tournaments</a>
+        <a href="/" target="_blank">Открыть сайт</a>
+      </nav>
+      <button id="logoutBtn" class="secondary" style="margin-top:14px;">Выход</button>
+    </aside>
+    <main class="admin-main">
+      <div class="card">
+        <h1>Панель управления</h1>
+        <p class="muted">Управляйте изображениями и разделом "Наши турниры" без правки кода.</p>
+      </div>
+      <div class="row">
+        <div class="card" style="min-width:280px;">
+          <h3>Изображения</h3>
+          <p class="muted">Обновление URL изображений по ключам контента.</p>
+          <a href="/admin/media">Перейти</a>
+        </div>
+        <div class="card" style="min-width:280px;">
+          <h3>Турниры</h3>
+          <p class="muted">CRUD карточек "Наши турниры".</p>
+          <a href="/admin/tournaments">Перейти</a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/admin/admin.js"></script>
+  <script>
+    (async function() {
+      await AdminApp.requireAuth();
+    })();
+    document.getElementById('logoutBtn').addEventListener('click', AdminApp.logout);
+  </script>
+</body>
+</html>

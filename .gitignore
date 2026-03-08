@@ -35,3 +35,5 @@ build/
 
 # Cache directories
 .cache/
+.vercel
+.env*.local

@@ -1,0 +1,4 @@
+ALTER TABLE tournaments
+  ADD COLUMN IF NOT EXISTS modal_image_url TEXT,
+  ADD COLUMN IF NOT EXISTS image_fit TEXT NOT NULL DEFAULT 'cover';
+

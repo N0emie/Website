@@ -67,3 +67,15 @@ website/
 
 ---
 © 2025 Dizband. Все права защищены.
+
+## Admin Backend
+
+Backend/admin setup and Vercel deployment guide:
+
+- `ADMIN_BACKEND.md`
+
+Main commands:
+
+- `npm run db:migrate`
+- `npm run db:seed:assets`
+- `npm run admin:create`

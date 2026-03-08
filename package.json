@@ -1,0 +1,19 @@
+{
+  "name": "dizband-website",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo \"Static site build: no compile step required\"",
+    "lint": "node scripts/lint.js",
+    "db:migrate": "node scripts/migrate.js",
+    "db:seed:assets": "node scripts/seed-site-assets.js",
+    "admin:create": "node scripts/create-admin.js"
+  },
+  "dependencies": {
+    "@vercel/blob": "^0.27.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.12.0"
+  }
+}

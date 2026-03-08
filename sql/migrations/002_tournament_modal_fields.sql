@@ -1,0 +1,6 @@
+ALTER TABLE tournaments
+  ADD COLUMN IF NOT EXISTS modal_description TEXT,
+  ADD COLUMN IF NOT EXISTS prize_pool TEXT,
+  ADD COLUMN IF NOT EXISTS tournament_format TEXT,
+  ADD COLUMN IF NOT EXISTS teams TEXT;
+

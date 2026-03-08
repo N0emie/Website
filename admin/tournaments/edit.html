@@ -1,0 +1,183 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Редактировать турнир | Dizband Admin</title>
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <h2 class="admin-logo">Dizband Admin</h2>
+      <nav class="admin-nav">
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/media">Media</a>
+        <a href="/admin/tournaments" class="active">Tournaments</a>
+      </nav>
+      <button id="logoutBtn" class="secondary" style="margin-top:14px;">Выход</button>
+    </aside>
+    <main class="admin-main">
+      <div class="card">
+        <h1>Редактировать турнир</h1>
+      </div>
+      <form id="form" class="card stack">
+        <div>
+          <label>Название</label>
+          <input id="title" required>
+        </div>
+        <div>
+          <label>Краткое описание карточки</label>
+          <textarea id="shortDescription" required></textarea>
+        </div>
+        <div class="row">
+          <div style="flex:1;">
+            <label>Season / Date</label>
+            <input id="season">
+          </div>
+          <div style="width:140px;">
+            <label>Order</label>
+            <input id="order" type="number" value="0">
+          </div>
+        </div>
+
+        <div>
+          <label>URL картинки</label>
+          <input id="imageUrl">
+        </div>
+        <div>
+          <label>Загрузить картинку</label>
+          <input id="file" type="file" accept="image/png,image/jpeg,image/webp">
+        </div>
+        <div>
+          <label>Растягивание картинки карточки</label>
+          <select id="imageFit">
+            <option value="cover">Cover (заполнять блок)</option>
+            <option value="contain">Contain (вписывать целиком)</option>
+            <option value="fill">Fill (растянуть)</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Подзаголовок окна</label>
+          <input id="modalSubtitle" placeholder="ONLINE / MEDIA LEAGUA">
+        </div>
+        <div>
+          <label>Описание окна (модалки)</label>
+          <textarea id="modalDescription"></textarea>
+        </div>
+        <div>
+          <label>URL картинки окна турнира</label>
+          <input id="modalImageUrl">
+        </div>
+        <div>
+          <label>Загрузить картинку окна турнира</label>
+          <input id="modalFile" type="file" accept="image/png,image/jpeg,image/webp">
+        </div>
+        <div class="row">
+          <div style="flex:1;">
+            <label>Призовой фонд</label>
+            <input id="prizePool" placeholder="1,200,000₽">
+          </div>
+          <div style="flex:1;">
+            <label>Формат</label>
+            <input id="tournamentFormat" placeholder="Online / LAN / Swiss">
+          </div>
+          <div style="flex:1;">
+            <label>Команды</label>
+            <input id="teams" placeholder="16 команд">
+          </div>
+        </div>
+
+        <div>
+          <label>Ссылка (опционально)</label>
+          <input id="linkUrl">
+        </div>
+        <div>
+          <label>Теги (через запятую)</label>
+          <input id="tags">
+        </div>
+        <div>
+          <label><input id="published" type="checkbox" style="width:auto;"> Published</label>
+        </div>
+        <div class="row">
+          <button type="submit">Сохранить</button>
+          <a href="/admin/tournaments"><button type="button" class="secondary">Назад</button></a>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <script src="/admin/admin.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const id = Number(params.get('id') || pathParts[pathParts.length - 1]);
+
+    async function load() {
+      await AdminApp.requireAuth();
+      const { item } = await AdminApp.api(`/api/admin/tournament?id=${id}`);
+      document.getElementById('title').value = item.title || '';
+      document.getElementById('shortDescription').value = item.short_description || '';
+      document.getElementById('season').value = item.season || '';
+      document.getElementById('imageUrl').value = item.image_url || '';
+      document.getElementById('modalSubtitle').value = item.modal_subtitle || '';
+      document.getElementById('modalDescription').value = item.modal_description || '';
+      document.getElementById('prizePool').value = item.prize_pool || '';
+      document.getElementById('tournamentFormat').value = item.tournament_format || '';
+      document.getElementById('teams').value = item.teams || '';
+      document.getElementById('modalImageUrl').value = item.modal_image_url || '';
+      document.getElementById('imageFit').value = item.image_fit || 'cover';
+      document.getElementById('linkUrl').value = item.link_url || '';
+      document.getElementById('order').value = item.ordering || 0;
+      document.getElementById('published').checked = Boolean(item.published);
+      document.getElementById('tags').value = Array.isArray(item.tags) ? item.tags.join(', ') : '';
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', AdminApp.logout);
+
+    document.getElementById('form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        const file = document.getElementById('file').files[0];
+        const imageUrlInput = document.getElementById('imageUrl');
+        if (file) imageUrlInput.value = await AdminApp.uploadImage(file);
+        if (!imageUrlInput.value.trim()) {
+          throw new Error('Укажите URL картинки или загрузите файл');
+        }
+
+        const modalFile = document.getElementById('modalFile').files[0];
+        const modalImageUrlInput = document.getElementById('modalImageUrl');
+        if (modalFile) modalImageUrlInput.value = await AdminApp.uploadImage(modalFile);
+
+        await AdminApp.api('/api/admin/tournaments', {
+          method: 'PUT',
+          body: {
+            id,
+            title: document.getElementById('title').value.trim(),
+            shortDescription: document.getElementById('shortDescription').value.trim(),
+            season: document.getElementById('season').value.trim(),
+            imageUrl: imageUrlInput.value.trim(),
+            modalSubtitle: document.getElementById('modalSubtitle').value.trim(),
+            modalDescription: document.getElementById('modalDescription').value.trim(),
+            prizePool: document.getElementById('prizePool').value.trim(),
+            tournamentFormat: document.getElementById('tournamentFormat').value.trim(),
+            teams: document.getElementById('teams').value.trim(),
+            modalImageUrl: modalImageUrlInput.value.trim(),
+            imageFit: document.getElementById('imageFit').value,
+            linkUrl: document.getElementById('linkUrl').value.trim(),
+            tags: document.getElementById('tags').value.trim(),
+            order: Number(document.getElementById('order').value || 0),
+            published: document.getElementById('published').checked
+          }
+        });
+        AdminApp.toast('Сохранено');
+      } catch (err) {
+        AdminApp.toast(err.message);
+      }
+    });
+
+    load().catch((err) => AdminApp.toast(err.message));
+  </script>
+</body>
+</html>
