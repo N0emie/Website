@@ -14,6 +14,7 @@
     
     <!-- Resource Hints for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="//youtube.com">
     <link rel="dns-prefetch" href="//twitch.tv">
     <link rel="dns-prefetch" href="//t.me">
@@ -23,7 +24,6 @@
     <link rel="preload" href="/assets/video/new_loading_logo_final.webm" as="video" type="video/webm">
     <link rel="preload" href="/css/style.css" as="style">
     <link rel="preload" href="/css/loading.css" as="style">
-    <link rel="preload" href="/js/script.min.js" as="script">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -46,19 +46,6 @@
         html { visibility: hidden; opacity: 0; }
         html.loaded { visibility: visible; opacity: 1; transition: opacity 0.3s ease-in-out; }
     </style>
-    
-    <!-- Resource hints for better performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://t.me">
-    <link rel="dns-prefetch" href="https://youtube.com">
-    <link rel="dns-prefetch" href="https://twitch.tv">
-    
-    <!-- Preload critical resources -->
-    <link rel="preload" href="assets/webp/69.webp" as="image">
-    <link rel="preload" href="assets/webp/telegram.webp" as="image">
-    <link rel="preload" href="assets/webp/youtube.webp" as="image">
-    <link rel="preload" href="assets/webp/twitch.webp" as="image">
     
     <!-- Critical CSS -->
     <link rel="stylesheet" href="css/loading.css">
@@ -231,7 +218,7 @@
                 <div class="about-images">
                     <div class="about-image" data-tilt>
                         <div class="about-image-inner">
-                            <img src="assets/images/tournaments/csgo-tournament.jpg" alt="Турнир CS:GO" class="tournament-photo">
+                            <img src="assets/images/tournaments/csgo-tournament.jpg" alt="Турнир CS:GO" class="tournament-photo" loading="lazy" decoding="async">
                             <div class="image-overlay">
                                 <span class="image-title">Турнир CS:GO</span>
                             </div>
@@ -239,7 +226,7 @@
                     </div>
                     <div class="about-image" data-tilt>
                         <div class="about-image-inner">
-                            <img src="assets/images/tournaments/dota2-championship.jpg" alt="Dota 2 Championship" class="tournament-photo">
+                            <img src="assets/images/tournaments/dota2-championship.jpg" alt="Dota 2 Championship" class="tournament-photo" loading="lazy" decoding="async">
                             <div class="image-overlay">
                                 <span class="image-title">Dota 2 Championship</span>
                             </div>
@@ -247,7 +234,7 @@
                     </div>
                     <div class="about-image" data-tilt>
                         <div class="about-image-inner">
-                            <img src="assets/images/tournaments/valorant-cup.jpg" alt="Valorant Cup" class="tournament-photo">
+                            <img src="assets/images/tournaments/valorant-cup.jpg" alt="Valorant Cup" class="tournament-photo" loading="lazy" decoding="async">
                             <div class="image-overlay">
                                 <span class="image-title">Valorant Cup</span>
                             </div>
@@ -255,7 +242,7 @@
                     </div>
                     <div class="about-image" data-tilt>
                         <div class="about-image-inner">
-                            <img src="assets/images/tournaments/lol-tournament.jpg" alt="League of Legends" class="tournament-photo">
+                            <img src="assets/images/tournaments/lol-tournament.jpg" alt="League of Legends" class="tournament-photo" loading="lazy" decoding="async">
                             <div class="image-overlay">
                                 <span class="image-title">League of Legends</span>
                             </div>
@@ -263,7 +250,7 @@
                     </div>
                     <div class="about-image" data-tilt>
                         <div class="about-image-inner">
-                            <img src="assets/images/tournament-cards/mobile-fest.jpg" alt="Mobile Esports Fest" class="tournament-photo">
+                            <img src="assets/images/tournament-cards/mobile-fest.jpg" alt="Mobile Esports Fest" class="tournament-photo" loading="lazy" decoding="async">
                             <div class="image-overlay">
                                 <span class="image-title">Mobile Esports Fest</span>
                             </div>
@@ -271,7 +258,7 @@
                     </div>
                     <div class="about-image about-image-small" data-tilt>
                         <div class="about-image-inner">
-                            <img src="assets/images/tournament-cards/volt-energy-cup.jpg" alt="Volt Energy Cup" class="tournament-photo">
+                            <img src="assets/images/tournament-cards/volt-energy-cup.jpg" alt="Volt Energy Cup" class="tournament-photo" loading="lazy" decoding="async">
                             <div class="image-overlay">
                                 <span class="image-title">Volt Energy Cup</span>
                             </div>
@@ -444,7 +431,7 @@
         <div class="tournaments-carousel" id="tournaments-carousel">
             <div class="tournament-card">
                 <div class="tournament-image">
-                    <img src="assets/images/tournament-cards/volt-energy-cup.jpg" alt="Volt Energy Cyber Cup" style="width: 100%; height: 100%; object-fit: cover;" draggable="false">
+                    <img src="assets/images/tournament-cards/volt-energy-cup.jpg" alt="Volt Energy Cyber Cup" style="width: 100%; height: 100%; object-fit: cover;" draggable="false" loading="lazy" decoding="async">
                 </div>
                 <div class="tournament-tags">
                     <span class="tag">Professional</span>
@@ -457,7 +444,7 @@
 
             <div class="tournament-card">
                 <div class="tournament-image">
-                    <img src="assets/images/tournament-cards/winline-cs2.jpg" alt="Winline Star Series CS2" style="width: 100%; height: 100%; object-fit: cover;" draggable="false">
+                    <img src="assets/images/tournament-cards/winline-cs2.jpg" alt="Winline Star Series CS2" style="width: 100%; height: 100%; object-fit: cover;" draggable="false" loading="lazy" decoding="async">
                 </div>
                 <div class="tournament-tags">
                     <span class="tag">Professional</span>
@@ -470,7 +457,7 @@
 
             <div class="tournament-card">
                 <div class="tournament-image">
-                    <img src="assets/images/tournament-cards/dota2-champions.jpg" alt="Dota2 Champions" style="width: 100%; height: 100%; object-fit: cover;" draggable="false">
+                    <img src="assets/images/tournament-cards/dota2-champions.jpg" alt="Dota2 Champions" style="width: 100%; height: 100%; object-fit: cover;" draggable="false" loading="lazy" decoding="async">
                 </div>
                 <div class="tournament-tags">
                     <span class="tag">Professional</span>
@@ -483,7 +470,7 @@
 
             <div class="tournament-card">
                 <div class="tournament-image">
-                    <img src="assets/images/tournament-cards/mobile-fest.jpg" alt="Mobile Esports Fest" style="width: 100%; height: 100%; object-fit: cover;" draggable="false">
+                    <img src="assets/images/tournament-cards/mobile-fest.jpg" alt="Mobile Esports Fest" style="width: 100%; height: 100%; object-fit: cover;" draggable="false" loading="lazy" decoding="async">
                 </div>
                 <div class="tournament-tags">
                     <span class="tag">Mobile</span>
@@ -572,7 +559,7 @@
                 <!-- Visual Card with 3D Element -->
                 <div class="bento-card visual-card">
                     <div class="visual-content">
-                        <img src="assets/webp/69.webp" alt="Dizband 3D Logo" class="visual-logo">
+                        <img src="assets/webp/69.webp" alt="Dizband 3D Logo" class="visual-logo" loading="lazy" decoding="async">
                     </div>
                 </div>
 
