@@ -31,6 +31,57 @@
 
   let tournamentsCache = [];
 
+  function renderAchievements(data) {
+    const achievements = data.achievements || {};
+    const titleElement = document.querySelector("#achievements .section-title");
+    const statsContainer = document.querySelector(".achievements-stats");
+    const highlightsContainer = document.querySelector(".achievements-highlights");
+
+    if (titleElement && achievements.title) {
+      titleElement.textContent = achievements.title;
+    }
+
+    if (statsContainer && Array.isArray(achievements.stats) && achievements.stats.length) {
+      statsContainer.innerHTML = achievements.stats
+        .map(
+          (item) => `
+            <div class="achievement-stat">
+              <div class="stat-number">${escapeHtml(item.value_text)}</div>
+              <div class="stat-label">${escapeHtml(item.label)}</div>
+            </div>
+          `
+        )
+        .join("");
+    }
+
+    if (highlightsContainer && Array.isArray(achievements.highlights) && achievements.highlights.length) {
+      highlightsContainer.innerHTML = achievements.highlights
+        .map(
+          (item) => `
+            <div class="highlight">
+              <h3>${escapeHtml(item.text)}</h3>
+            </div>
+          `
+        )
+        .join("");
+    }
+  }
+
+  function renderClients(data) {
+    const container = document.querySelector(".clients-list");
+    if (!container) return;
+
+    const list = Array.isArray(data.clients) ? data.clients : [];
+    if (!list.length) return;
+
+    container.innerHTML = list
+      .map((item) => {
+        const cyrillicClass = /[А-Яа-яЁё]/.test(String(item.name || "")) ? " client--cyrillic" : "";
+        return `<div class="client${cyrillicClass}">${escapeHtml(item.name)}</div>`;
+      })
+      .join("");
+  }
+
   function escapeHtml(value) {
     return String(value || "")
       .replaceAll("&", "&amp;")
@@ -118,6 +169,14 @@
       if (!element || !asset || !asset.url) return;
       element.src = asset.url;
       if (asset.alt) element.alt = asset.alt;
+
+       if (binding.key.startsWith("about.gallery.")) {
+        const card = element.closest(".about-image");
+        const title = card ? card.querySelector(".image-title") : null;
+        if (title && asset.alt) {
+          title.textContent = asset.alt;
+        }
+      }
     });
 
     const serviceCards = document.querySelectorAll(".service-modal-trigger[data-service-id]");
@@ -242,6 +301,8 @@
       if (!data || typeof data !== "object") return;
       applyAssets(data.assets || {});
       renderTournaments(data);
+      renderClients(data);
+      renderAchievements(data);
     } catch (error) {
       console.warn("CMS content load skipped", error);
     }

@@ -2,12 +2,12 @@
   { key: "hero.logo", label: "Hero: логотип в левом верхнем углу" },
   { key: "hero.sideCharacter", label: "Hero: персонаж справа (если используется)" },
 
-  { key: "about.gallery.1", label: "О нас: карточка «Турнир CS:GO»" },
-  { key: "about.gallery.2", label: "О нас: карточка «Dota 2 Championship»" },
-  { key: "about.gallery.3", label: "О нас: карточка «Valorant Cup»" },
-  { key: "about.gallery.4", label: "О нас: карточка «League of Legends»" },
-  { key: "about.gallery.5", label: "О нас: карточка «Mobile Esports Fest»" },
-  { key: "about.gallery.6", label: "О нас: карточка «Volt Energy Cup»" },
+  { key: "about.gallery.1", label: "О нас: карточка 1 (картинка + подпись)" },
+  { key: "about.gallery.2", label: "О нас: карточка 2 (картинка + подпись)" },
+  { key: "about.gallery.3", label: "О нас: карточка 3 (картинка + подпись)" },
+  { key: "about.gallery.4", label: "О нас: карточка 4 (картинка + подпись)" },
+  { key: "about.gallery.5", label: "О нас: карточка 5 (картинка + подпись)" },
+  { key: "about.gallery.6", label: "О нас: карточка 6 (картинка + подпись)" },
 
   { key: "services.planning.image", label: "Услуги (модалка): Планирование и концепция" },
   { key: "services.technical.image", label: "Услуги (модалка): Техническое обеспечение" },

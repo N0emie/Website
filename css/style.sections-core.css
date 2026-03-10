@@ -444,8 +444,8 @@ section {
     border: 1px solid rgba(0, 255, 255, 0.2);
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
-    flex: 0 0 900px;
-    min-width: 900px;
+    flex: 0 0 760px;
+    min-width: 760px;
     /* Hide the default pointer on tournament cards so the custom cursor is visible */
     cursor: none;
     pointer-events: auto;
@@ -472,7 +472,7 @@ section {
 }
 
 .tournament-image {
-    height: 660px;
+    height: 520px;
     position: relative;
 }
 
@@ -497,18 +497,18 @@ section {
 
 .tournament-title {
     font-family: 'Orbitron', monospace;
-    font-size: 36px;
+    font-size: 30px;
     font-weight: 700;
-    margin: 40px 40px 20px;
+    margin: 30px 32px 16px;
     color: #ffffff;
     text-transform: uppercase;
 }
 
 .tournament-description {
     color: #cccccc;
-    padding: 0 40px 40px;
+    padding: 0 32px 32px;
     line-height: 1.6;
-    font-size: 18px;
+    font-size: 17px;
 }
 
 /* Achievements Section */
@@ -598,6 +598,13 @@ section {
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+.client--cyrillic {
+    font-family: 'Roboto', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
 }
 
 .client:hover {

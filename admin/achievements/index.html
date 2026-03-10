@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Достижения | Dizband Admin</title>
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <h2 class="admin-logo">Dizband Admin</h2>
+      <nav class="admin-nav">
+        <a href="/admin">Панель</a>
+        <a href="/admin/media">Изображения</a>
+        <a href="/admin/tournaments">Турниры</a>
+        <a href="/admin/clients">Клиенты</a>
+        <a href="/admin/achievements" class="active">Достижения</a>
+      </nav>
+      <button id="logoutBtn" class="secondary" style="margin-top:14px;">Выход</button>
+    </aside>
+    <main class="admin-main">
+      <div class="card">
+        <h1>Наши достижения</h1>
+        <p class="muted">Управление заголовком, карточками статистики и нижними тезисами секции.</p>
+      </div>
+
+      <div class="card" style="max-width:760px;">
+        <h3 style="margin-top:0;">Заголовок секции</h3>
+        <div class="row" style="align-items:end;">
+          <div style="flex:1 1 420px;">
+            <label for="achievementsTitle">Текст заголовка</label>
+            <input id="achievementsTitle" type="text">
+          </div>
+          <button id="saveTitleBtn">Сохранить</button>
+        </div>
+      </div>
+
+      <div class="card" style="max-width:980px;">
+        <h3 style="margin-top:0;">Добавить карточку статистики</h3>
+        <div class="row" style="align-items:end;">
+          <div style="flex:0 0 180px;">
+            <label for="statValue">Значение</label>
+            <input id="statValue" type="text" placeholder="50+">
+          </div>
+          <div style="flex:1 1 420px;">
+            <label for="statLabel">Подпись</label>
+            <input id="statLabel" type="text" placeholder="ПРОВЕДЕННЫХ ТУРНИРОВ">
+          </div>
+          <label style="display:flex;align-items:center;gap:8px;margin:0 0 10px;">
+            <input id="statPublished" type="checkbox" checked style="width:auto;">
+            <span>Показывать</span>
+          </label>
+          <button id="createStatBtn">Добавить</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0;">Карточки статистики</h3>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:40px;"></th>
+              <th>ID</th>
+              <th>Значение</th>
+              <th>Подпись</th>
+              <th>Порядок</th>
+              <th>Показывать</th>
+              <th>Действия</th>
+            </tr>
+          </thead>
+          <tbody id="statsRows"></tbody>
+        </table>
+      </div>
+
+      <div class="card" style="max-width:980px;">
+        <h3 style="margin-top:0;">Добавить тезис</h3>
+        <div class="row" style="align-items:end;">
+          <div style="flex:1 1 620px;">
+            <label for="highlightText">Текст</label>
+            <input id="highlightText" type="text" placeholder="Первый турнир по CS2 в регионе с призовым фондом 500,000₽">
+          </div>
+          <label style="display:flex;align-items:center;gap:8px;margin:0 0 10px;">
+            <input id="highlightPublished" type="checkbox" checked style="width:auto;">
+            <span>Показывать</span>
+          </label>
+          <button id="createHighlightBtn">Добавить</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0;">Нижние тезисы</h3>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:40px;"></th>
+              <th>ID</th>
+              <th>Текст</th>
+              <th>Порядок</th>
+              <th>Показывать</th>
+              <th>Действия</th>
+            </tr>
+          </thead>
+          <tbody id="highlightsRows"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="/admin/admin.js"></script>
+  <script>
+    let draggedStatRow = null;
+    let draggedHighlightRow = null;
+
+    function wireDnD(tbody, type) {
+      const rows = Array.from(tbody.querySelectorAll("tr[data-id]"));
+      rows.forEach((row) => {
+        row.draggable = true;
+        row.addEventListener("dragstart", () => {
+          if (type === "stats") draggedStatRow = row;
+          if (type === "highlights") draggedHighlightRow = row;
+          row.classList.add("dragging");
+        });
+        row.addEventListener("dragend", () => {
+          row.classList.remove("dragging");
+          if (type === "stats") draggedStatRow = null;
+          if (type === "highlights") draggedHighlightRow = null;
+        });
+      });
+
+      tbody.ondragover = (e) => {
+        e.preventDefault();
+        const draggedRow = type === "stats" ? draggedStatRow : draggedHighlightRow;
+        const target = e.target.closest("tr[data-id]");
+        if (!draggedRow || !target || draggedRow === target) return;
+
+        const rect = target.getBoundingClientRect();
+        const before = e.clientY < rect.top + rect.height / 2;
+        if (before) {
+          tbody.insertBefore(draggedRow, target);
+        } else {
+          tbody.insertBefore(draggedRow, target.nextSibling);
+        }
+      };
+
+      tbody.ondrop = async (e) => {
+        e.preventDefault();
+        const draggedRow = type === "stats" ? draggedStatRow : draggedHighlightRow;
+        if (!draggedRow) return;
+
+        try {
+          const orderIds = Array.from(tbody.querySelectorAll("tr[data-id]")).map((tr) => Number(tr.dataset.id));
+          await AdminApp.api("/api/admin/achievements", {
+            method: "PUT",
+            body: {
+              entity: type === "stats" ? "stats-order" : "highlights-order",
+              orderIds
+            }
+          });
+          AdminApp.toast("Порядок сохранен");
+          await render();
+        } catch (err) {
+          AdminApp.toast(err.message);
+        }
+      };
+    }
+
+    function createStatRow(item) {
+      const tr = document.createElement("tr");
+      tr.dataset.id = String(item.id);
+      tr.innerHTML = `
+        <td class="drag-handle-cell"><span class="drag-handle" title="Перетащить">||</span></td>
+        <td>${item.id}</td>
+        <td><input data-field="valueText" value="${(item.value_text || "").replaceAll('"', "&quot;")}" /></td>
+        <td><input data-field="label" value="${(item.label || "").replaceAll('"', "&quot;")}" /></td>
+        <td><input data-field="ordering" type="number" value="${item.ordering ?? 0}" style="max-width:90px;" /></td>
+        <td><input data-field="published" type="checkbox" ${item.published ? "checked" : ""} style="width:auto;" /></td>
+        <td>
+          <button class="secondary" data-action="save">Сохранить</button>
+          <button class="danger" data-action="delete">Удалить</button>
+        </td>
+      `;
+
+      tr.querySelector("[data-action='save']").addEventListener("click", async () => {
+        try {
+          await AdminApp.api("/api/admin/achievements", {
+            method: "PUT",
+            body: {
+              entity: "stat",
+              id: item.id,
+              valueText: tr.querySelector("[data-field='valueText']").value.trim(),
+              label: tr.querySelector("[data-field='label']").value.trim(),
+              ordering: Number(tr.querySelector("[data-field='ordering']").value || 0),
+              published: tr.querySelector("[data-field='published']").checked
+            }
+          });
+          AdminApp.toast("Сохранено");
+          await render();
+        } catch (err) {
+          AdminApp.toast(err.message);
+        }
+      });
+
+      tr.querySelector("[data-action='delete']").addEventListener("click", async () => {
+        if (!confirm("Удалить карточку?")) return;
+        try {
+          await AdminApp.api("/api/admin/achievements", {
+            method: "DELETE",
+            body: { entity: "stat", id: item.id }
+          });
+          AdminApp.toast("Удалено");
+          await render();
+        } catch (err) {
+          AdminApp.toast(err.message);
+        }
+      });
+
+      return tr;
+    }
+
+    function createHighlightRow(item) {
+      const tr = document.createElement("tr");
+      tr.dataset.id = String(item.id);
+      tr.innerHTML = `
+        <td class="drag-handle-cell"><span class="drag-handle" title="Перетащить">||</span></td>
+        <td>${item.id}</td>
+        <td><input data-field="text" value="${(item.text || "").replaceAll('"', "&quot;")}" /></td>
+        <td><input data-field="ordering" type="number" value="${item.ordering ?? 0}" style="max-width:90px;" /></td>
+        <td><input data-field="published" type="checkbox" ${item.published ? "checked" : ""} style="width:auto;" /></td>
+        <td>
+          <button class="secondary" data-action="save">Сохранить</button>
+          <button class="danger" data-action="delete">Удалить</button>
+        </td>
+      `;
+
+      tr.querySelector("[data-action='save']").addEventListener("click", async () => {
+        try {
+          await AdminApp.api("/api/admin/achievements", {
+            method: "PUT",
+            body: {
+              entity: "highlight",
+              id: item.id,
+              text: tr.querySelector("[data-field='text']").value.trim(),
+              ordering: Number(tr.querySelector("[data-field='ordering']").value || 0),
+              published: tr.querySelector("[data-field='published']").checked
+            }
+          });
+          AdminApp.toast("Сохранено");
+          await render();
+        } catch (err) {
+          AdminApp.toast(err.message);
+        }
+      });
+
+      tr.querySelector("[data-action='delete']").addEventListener("click", async () => {
+        if (!confirm("Удалить тезис?")) return;
+        try {
+          await AdminApp.api("/api/admin/achievements", {
+            method: "DELETE",
+            body: { entity: "highlight", id: item.id }
+          });
+          AdminApp.toast("Удалено");
+          await render();
+        } catch (err) {
+          AdminApp.toast(err.message);
+        }
+      });
+
+      return tr;
+    }
+
+    async function render() {
+      await AdminApp.requireAuth();
+      const data = await AdminApp.api("/api/admin/achievements");
+
+      document.getElementById("achievementsTitle").value = data.title || "";
+
+      const statsRows = document.getElementById("statsRows");
+      statsRows.innerHTML = "";
+      (data.stats || []).forEach((item) => statsRows.appendChild(createStatRow(item)));
+      wireDnD(statsRows, "stats");
+
+      const highlightsRows = document.getElementById("highlightsRows");
+      highlightsRows.innerHTML = "";
+      (data.highlights || []).forEach((item) => highlightsRows.appendChild(createHighlightRow(item)));
+      wireDnD(highlightsRows, "highlights");
+    }
+
+    document.getElementById("saveTitleBtn").addEventListener("click", async () => {
+      try {
+        await AdminApp.api("/api/admin/achievements", {
+          method: "PUT",
+          body: {
+            entity: "title",
+            value: document.getElementById("achievementsTitle").value.trim()
+          }
+        });
+        AdminApp.toast("Заголовок сохранен");
+      } catch (err) {
+        AdminApp.toast(err.message);
+      }
+    });
+
+    document.getElementById("createStatBtn").addEventListener("click", async () => {
+      try {
+        await AdminApp.api("/api/admin/achievements", {
+          method: "POST",
+          body: {
+            entity: "stat",
+            valueText: document.getElementById("statValue").value.trim(),
+            label: document.getElementById("statLabel").value.trim(),
+            published: document.getElementById("statPublished").checked
+          }
+        });
+        document.getElementById("statValue").value = "";
+        document.getElementById("statLabel").value = "";
+        document.getElementById("statPublished").checked = true;
+        AdminApp.toast("Карточка добавлена");
+        await render();
+      } catch (err) {
+        AdminApp.toast(err.message);
+      }
+    });
+
+    document.getElementById("createHighlightBtn").addEventListener("click", async () => {
+      try {
+        await AdminApp.api("/api/admin/achievements", {
+          method: "POST",
+          body: {
+            entity: "highlight",
+            text: document.getElementById("highlightText").value.trim(),
+            published: document.getElementById("highlightPublished").checked
+          }
+        });
+        document.getElementById("highlightText").value = "";
+        document.getElementById("highlightPublished").checked = true;
+        AdminApp.toast("Тезис добавлен");
+        await render();
+      } catch (err) {
+        AdminApp.toast(err.message);
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", AdminApp.logout);
+    render();
+  </script>
+</body>
+</html>
