@@ -405,6 +405,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function scrollToTarget(targetSelector) {
         if (!targetSelector || !targetSelector.startsWith('#')) return;
+        if (targetSelector === '#home') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
         const targetEl = document.querySelector(targetSelector);
         if (targetEl) {
             targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
